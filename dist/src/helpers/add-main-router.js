@@ -40,12 +40,12 @@ exports.addMainRouter = void 0;
 var path_1 = require("path");
 var write_file_1 = require("./write-file");
 var file_exists_1 = require("./file-exists");
-var construct = function (projectName, path) { return __awaiter(void 0, void 0, void 0, function () {
+var construct = function (backendInstance, path) { return __awaiter(void 0, void 0, void 0, function () {
     var content;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                content = "module.exports = () => [\n  {\n    \"server_name\": \"your-app-name\"\n  },\n  {\n    \"path\": \"/".concat(projectName, "\",\n    \"proxy\": {\n      \"path\": \"/\"\n    }\n  }\n];\n");
+                content = "module.exports = () => [\n  {\n    \"server_name\": \"your-app-name\"\n  },\n  {\n    \"path\": \"/".concat(backendInstance, "\",\n    \"proxy\": {\n      \"path\": \"/\"\n    }\n  }\n];\n");
                 return [4, (0, write_file_1.writeFile)(path, content)];
             case 1:
                 _a.sent();
@@ -67,7 +67,7 @@ function addMainRouter(engineInstance) {
                 case 1:
                     exist = _a.sent();
                     if (!!exist) return [3, 3];
-                    return [4, construct(projectName, path)];
+                    return [4, construct('backend', path)];
                 case 2:
                     _a.sent();
                     _a.label = 3;

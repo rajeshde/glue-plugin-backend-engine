@@ -3,13 +3,13 @@ import { writeFile } from "./write-file";
 import { fileExists } from "./file-exists";
 import { PluginInstance } from "../PluginInstance";
 
-const construct = async (projectName: string, path: string): Promise<void> => {
+const construct = async (backendInstance: string, path: string): Promise<void> => {
   const content: string = `module.exports = () => [
   {
     "server_name": "your-app-name"
   },
   {
-    "path": "/${projectName}",
+    "path": "/${backendInstance}",
     "proxy": {
       "path": "/"
     }
@@ -30,7 +30,7 @@ export async function addMainRouter(engineInstance: PluginInstance): Promise<str
 
   const exist = await fileExists(path);
   if (!exist) {
-    await construct(projectName, path);
+    await construct('backend', path);
   }
 
   return Promise.resolve('done');
