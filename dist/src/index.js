@@ -121,7 +121,7 @@ var GlueStackPlugin = (function () {
         return __awaiter(this, void 0, void 0, function () {
             var enginePlugin;
             return __generator(this, function (_b) {
-                enginePlugin = this.app.getPluginByName("@gluestack/glue-plugin-engine");
+                enginePlugin = this.app.getPluginByName("@gluestack/glue-plugin-backend-engine");
                 if ((_a = enginePlugin === null || enginePlugin === void 0 ? void 0 : enginePlugin.getInstances()) === null || _a === void 0 ? void 0 : _a[0]) {
                     throw new Error("engine instance already installed as ".concat(enginePlugin
                         .getInstances()[0]

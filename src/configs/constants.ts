@@ -14,7 +14,7 @@
 export const backendPlugins: string[] = [
   '@gluestack/glue-plugin-postgres',
   '@gluestack/glue-plugin-graphql',
-  '@gluestack/glue-plugin-engine',
+  '@gluestack/glue-plugin-backend-engine',
   '@gluestack/glue-plugin-functions',
   '@gluestack/glue-plugin-functions.action',
   '@gluestack/glue-plugin-auth',

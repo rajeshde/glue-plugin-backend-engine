@@ -200,7 +200,7 @@ export default class GluestackEngine implements IGlueEngine {
         }
 
         // store engine plugin's instance name
-        if (details.name === '@gluestack/glue-plugin-engine') {
+        if (details.name === '@gluestack/glue-plugin-backend-engine') {
           setConfig('engineInstancePath', details.instance);
         }
 
@@ -255,7 +255,7 @@ export default class GluestackEngine implements IGlueEngine {
       }
 
       // If and only if the instance is engine plugin
-      if (plugin.name === '@gluestack/glue-plugin-engine') {
+      if (plugin.name === '@gluestack/glue-plugin-backend-engine') {
         this.engineExist = true;
         dockerCompose.addNginx(plugin);
       }

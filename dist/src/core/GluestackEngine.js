@@ -277,7 +277,7 @@ var GluestackEngine = (function () {
                             (0, GluestackConfig_1.setConfig)('hasuraInstanceStatus', instance.getContainerController().getStatus());
                             (0, GluestackConfig_1.setConfig)('hasuraInstancePath', details.instance);
                         }
-                        if (details.name === '@gluestack/glue-plugin-engine') {
+                        if (details.name === '@gluestack/glue-plugin-backend-engine') {
                             (0, GluestackConfig_1.setConfig)('engineInstancePath', details.instance);
                         }
                         if (details.name === '@gluestack/glue-plugin-auth') {
@@ -356,7 +356,7 @@ var GluestackEngine = (function () {
                                 dockerCompose.addHasura(plugin, postgresInstancePath);
                                 return [3, 4];
                             }
-                            if (plugin.name === '@gluestack/glue-plugin-engine') {
+                            if (plugin.name === '@gluestack/glue-plugin-backend-engine') {
                                 this.engineExist = true;
                                 dockerCompose.addNginx(plugin);
                             }

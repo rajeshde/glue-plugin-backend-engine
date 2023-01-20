@@ -98,7 +98,7 @@ export class GlueStackPlugin implements IPlugin, IManagesInstances, ILifeCycle {
 
   async checkAlreadyInstalled() {
     const enginePlugin: GlueStackPlugin = this.app.getPluginByName(
-      "@gluestack/glue-plugin-engine",
+      "@gluestack/glue-plugin-backend-engine",
     );
     //Validation
     if (enginePlugin?.getInstances()?.[0]) {
