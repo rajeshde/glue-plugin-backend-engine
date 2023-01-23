@@ -1,6 +1,6 @@
 {
     "name": "@gluestack/glue-plugin-backend-engine",
-    "version": "0.0.5",
+    "version": "0.0.6",
     "description": "Create an Application using GlueStack framework",
     "repository": {
         "type": "git",
@@ -24,6 +24,7 @@
         "enquirer": "^2.3.6",
         "json-schema": "^0.4.0",
         "lodash": "^4.17.21",
+        "moment": "^2.29.4",
         "node-cron": "^3.0.2",
         "yaml": "^2.2.1"
     },
@@ -38,7 +39,6 @@
     "devDependencies": {
         "@types/lodash": "^4.14.191",
         "@types/node-cron": "^3.0.7",
-        "moment": "^2.29.4",
         "typescript": "^4.9.4"
     }
 }
