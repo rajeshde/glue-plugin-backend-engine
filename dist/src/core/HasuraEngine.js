@@ -70,7 +70,7 @@ var HasuraEngine = (function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        filepath = (0, path_1.join)(process.cwd(), (0, GluestackConfig_1.getConfig)('backendInstancePath'), 'functions', this.pluginName);
+                        filepath = (0, path_1.join)(process.cwd(), (0, GluestackConfig_1.getConfig)('backendInstancePath'), 'services', this.pluginName);
                         return [4, (0, spawn_1.execute)('hasura', [
                                 'metadata',
                                 'export',
@@ -92,7 +92,7 @@ var HasuraEngine = (function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        filepath = (0, path_1.join)(process.cwd(), (0, GluestackConfig_1.getConfig)('backendInstancePath'), 'functions', this.pluginName);
+                        filepath = (0, path_1.join)(process.cwd(), (0, GluestackConfig_1.getConfig)('backendInstancePath'), 'services', this.pluginName);
                         return [4, (0, spawn_1.execute)('hasura', [
                                 'metadata',
                                 'apply',
@@ -115,7 +115,7 @@ var HasuraEngine = (function () {
                 switch (_a.label) {
                     case 0:
                         hasuraEnvs = this.metadata.hasuraEnvs;
-                        filepath = (0, path_1.join)(process.cwd(), (0, GluestackConfig_1.getConfig)('backendInstancePath'), 'functions', this.pluginName);
+                        filepath = (0, path_1.join)(process.cwd(), (0, GluestackConfig_1.getConfig)('backendInstancePath'), 'services', this.pluginName);
                         return [4, (0, spawn_1.execute)('hasura', [
                                 'migrate',
                                 'apply',
@@ -236,7 +236,7 @@ var HasuraEngine = (function () {
                         if (!authInstancePath || authInstancePath === '') {
                             return [2, Promise.resolve('No auth instance path found')];
                         }
-                        tracksPath = (0, path_1.join)(process.cwd(), backendInstancePath, 'functions', this.pluginName, 'tracks');
+                        tracksPath = (0, path_1.join)(process.cwd(), backendInstancePath, 'services', this.pluginName, 'tracks');
                         if (!(0, file_exists_1.fileExists)(tracksPath)) {
                             console.log('> Nothing to track into hasura engine...');
                             return [2, Promise.resolve('No tracks folder found. Skipping...')];
@@ -305,107 +305,117 @@ var HasuraEngine = (function () {
     HasuraEngine.prototype.scanActions = function () {
         var _a, e_3, _b, _c, _d, e_4, _e, _f;
         return __awaiter(this, void 0, void 0, function () {
-            var _g, _h, _j, plugin, exist, dirents, _k, dirents_2, dirents_2_1, dirent, e_4_1, e_3_1;
-            return __generator(this, function (_l) {
-                switch (_l.label) {
+            var _g, _h, _j, plugin, functionsDirectory, exist, dirents, _k, dirents_2, dirents_2_1, dirent, actionGQLFile, actionSettingFile, _l, _m, e_4_1, e_3_1;
+            return __generator(this, function (_o) {
+                switch (_o.label) {
                     case 0:
-                        _l.trys.push([0, 25, 26, 31]);
+                        _o.trys.push([0, 27, 28, 33]);
                         _g = true, _h = __asyncValues(this.actionPlugins);
-                        _l.label = 1;
+                        _o.label = 1;
                     case 1: return [4, _h.next()];
                     case 2:
-                        if (!(_j = _l.sent(), _a = _j.done, !_a)) return [3, 24];
+                        if (!(_j = _o.sent(), _a = _j.done, !_a)) return [3, 26];
                         _c = _j.value;
                         _g = false;
-                        _l.label = 3;
+                        _o.label = 3;
                     case 3:
-                        _l.trys.push([3, , 22, 23]);
+                        _o.trys.push([3, , 24, 25]);
                         plugin = _c;
-                        return [4, (0, file_exists_1.fileExists)("".concat(plugin.path, "/actions"))];
+                        functionsDirectory = (0, path_1.join)(plugin.path, 'functions');
+                        return [4, (0, file_exists_1.fileExists)(functionsDirectory)];
                     case 4:
-                        exist = _l.sent();
+                        exist = _o.sent();
                         if (!exist) {
                             console.log("> Action Instance ".concat(plugin.instance, " is missing. Skipping..."));
-                            return [3, 23];
+                            return [3, 25];
                         }
-                        return [4, (0, promises_1.readdir)("".concat(plugin.path, "/actions"), { withFileTypes: true })];
+                        return [4, (0, promises_1.readdir)(functionsDirectory, { withFileTypes: true })];
                     case 5:
-                        dirents = _l.sent();
-                        _l.label = 6;
+                        dirents = _o.sent();
+                        _o.label = 6;
                     case 6:
-                        _l.trys.push([6, 15, 16, 21]);
+                        _o.trys.push([6, 17, 18, 23]);
                         _k = true, dirents_2 = (e_4 = void 0, __asyncValues(dirents));
-                        _l.label = 7;
+                        _o.label = 7;
                     case 7: return [4, dirents_2.next()];
                     case 8:
-                        if (!(dirents_2_1 = _l.sent(), _d = dirents_2_1.done, !_d)) return [3, 14];
+                        if (!(dirents_2_1 = _o.sent(), _d = dirents_2_1.done, !_d)) return [3, 16];
                         _f = dirents_2_1.value;
                         _k = false;
-                        _l.label = 9;
+                        _o.label = 9;
                     case 9:
-                        _l.trys.push([9, , 12, 13]);
+                        _o.trys.push([9, , 14, 15]);
                         dirent = _f;
-                        if (!dirent.isDirectory()) return [3, 11];
-                        return [4, (0, file_exists_1.fileExists)((0, path_1.join)(plugin.path, "actions", dirent.name, this.actionGQLFile))];
+                        actionGQLFile = (0, path_1.join)(functionsDirectory, dirent.name, this.actionGQLFile);
+                        actionSettingFile = (0, path_1.join)(functionsDirectory, dirent.name, this.actionSettingFile);
+                        _m = dirent.isDirectory();
+                        if (!_m) return [3, 11];
+                        return [4, (0, file_exists_1.fileExists)(actionGQLFile)];
                     case 10:
-                        exist = _l.sent();
-                        if (!exist) {
-                            console.log("> Action Instance ".concat(plugin.instance, " does not have actions.graphql file. Skipping..."));
-                            return [3, 13];
-                        }
-                        this.actions.push({
-                            name: (0, remove_special_chars_1.removeSpecialChars)(dirent.name),
-                            handler: (0, remove_special_chars_1.removeSpecialChars)(plugin.instance),
-                            path: (0, path_1.join)(plugin.path, "actions", dirent.name),
-                            grapqhl_path: (0, path_1.join)(plugin.path, "actions", dirent.name, this.actionGQLFile),
-                            setting_path: (0, path_1.join)(plugin.path, "actions", dirent.name, this.actionSettingFile)
-                        });
-                        _l.label = 11;
-                    case 11: return [3, 13];
+                        _m = (_o.sent());
+                        _o.label = 11;
+                    case 11:
+                        _l = _m;
+                        if (!_l) return [3, 13];
+                        return [4, (0, file_exists_1.fileExists)(actionSettingFile)];
                     case 12:
+                        _l = (_o.sent());
+                        _o.label = 13;
+                    case 13:
+                        if (_l) {
+                            this.actions.push({
+                                name: (0, remove_special_chars_1.removeSpecialChars)(dirent.name),
+                                handler: (0, remove_special_chars_1.removeSpecialChars)(plugin.instance),
+                                path: (0, path_1.join)(functionsDirectory, dirent.name),
+                                grapqhl_path: actionGQLFile,
+                                setting_path: actionSettingFile
+                            });
+                        }
+                        return [3, 15];
+                    case 14:
                         _k = true;
                         return [7];
-                    case 13: return [3, 7];
-                    case 14: return [3, 21];
-                    case 15:
-                        e_4_1 = _l.sent();
-                        e_4 = { error: e_4_1 };
-                        return [3, 21];
-                    case 16:
-                        _l.trys.push([16, , 19, 20]);
-                        if (!(!_k && !_d && (_e = dirents_2.return))) return [3, 18];
-                        return [4, _e.call(dirents_2)];
+                    case 15: return [3, 7];
+                    case 16: return [3, 23];
                     case 17:
-                        _l.sent();
-                        _l.label = 18;
-                    case 18: return [3, 20];
+                        e_4_1 = _o.sent();
+                        e_4 = { error: e_4_1 };
+                        return [3, 23];
+                    case 18:
+                        _o.trys.push([18, , 21, 22]);
+                        if (!(!_k && !_d && (_e = dirents_2.return))) return [3, 20];
+                        return [4, _e.call(dirents_2)];
                     case 19:
+                        _o.sent();
+                        _o.label = 20;
+                    case 20: return [3, 22];
+                    case 21:
                         if (e_4) throw e_4.error;
                         return [7];
-                    case 20: return [7];
-                    case 21: return [3, 23];
-                    case 22:
+                    case 22: return [7];
+                    case 23: return [3, 25];
+                    case 24:
                         _g = true;
                         return [7];
-                    case 23: return [3, 1];
-                    case 24: return [3, 31];
-                    case 25:
-                        e_3_1 = _l.sent();
-                        e_3 = { error: e_3_1 };
-                        return [3, 31];
-                    case 26:
-                        _l.trys.push([26, , 29, 30]);
-                        if (!(!_g && !_a && (_b = _h.return))) return [3, 28];
-                        return [4, _b.call(_h)];
+                    case 25: return [3, 1];
+                    case 26: return [3, 33];
                     case 27:
-                        _l.sent();
-                        _l.label = 28;
-                    case 28: return [3, 30];
+                        e_3_1 = _o.sent();
+                        e_3 = { error: e_3_1 };
+                        return [3, 33];
+                    case 28:
+                        _o.trys.push([28, , 31, 32]);
+                        if (!(!_g && !_a && (_b = _h.return))) return [3, 30];
+                        return [4, _b.call(_h)];
                     case 29:
+                        _o.sent();
+                        _o.label = 30;
+                    case 30: return [3, 32];
+                    case 31:
                         if (e_3) throw e_3.error;
                         return [7];
-                    case 30: return [7];
-                    case 31: return [2];
+                    case 32: return [7];
+                    case 33: return [2];
                 }
             });
         });

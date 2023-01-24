@@ -42,7 +42,7 @@ export default class HasuraEngine implements IHasuraEngine {
 
   // Sync hasura engine's metadata with the local hasura metadata
   public async exportMetadata(): Promise<void> {
-    const filepath = join(process.cwd(), getConfig('backendInstancePath'), 'functions', this.pluginName);
+    const filepath: string = join(process.cwd(), getConfig('backendInstancePath'), 'services', this.pluginName);
 
     await execute('hasura', [
       'metadata',
@@ -56,7 +56,7 @@ export default class HasuraEngine implements IHasuraEngine {
 
   // Apply local metadata to the hasura engine's metadata
   public async applyMetadata(): Promise<void> {
-    const filepath = join(process.cwd(), getConfig('backendInstancePath'), 'functions', this.pluginName);
+    const filepath: string = join(process.cwd(), getConfig('backendInstancePath'), 'services', this.pluginName);
 
     await execute('hasura', [
       'metadata',
@@ -70,8 +70,8 @@ export default class HasuraEngine implements IHasuraEngine {
 
   // Apply local migrations to the hasura engine's migrations
   public async applyMigrate(): Promise<void> {
-    const hasuraEnvs = this.metadata.hasuraEnvs;
-    const filepath = join(process.cwd(), getConfig('backendInstancePath'), 'functions', this.pluginName);
+    const hasuraEnvs: any = this.metadata.hasuraEnvs;
+    const filepath: string = join(process.cwd(), getConfig('backendInstancePath'), 'services', this.pluginName);
 
     await execute('hasura', [
       'migrate',
@@ -135,7 +135,7 @@ export default class HasuraEngine implements IHasuraEngine {
 
     // Check if tracks directory exist in the auth instance
     const tracksPath = join(
-      process.cwd(), backendInstancePath, 'functions', this.pluginName, 'tracks'
+      process.cwd(), backendInstancePath, 'services', this.pluginName, 'tracks'
     );
     if (!fileExists(tracksPath)) {
       console.log('> Nothing to track into hasura engine...');
@@ -165,33 +165,38 @@ export default class HasuraEngine implements IHasuraEngine {
   // Scan all the actions files and prepares the actions array
   private async scanActions(): Promise<void>  {
     for await (const plugin of this.actionPlugins) {
+      const functionsDirectory: string = join(plugin.path, 'functions');
+
+      let exist = await fileExists(functionsDirectory);
       // Check if the plugin path exists
-      let exist = await fileExists(`${plugin.path}/actions`);
       if (!exist) {
         console.log(`> Action Instance ${plugin.instance} is missing. Skipping...`);
         continue;
       }
-      const dirents = await readdir(`${plugin.path}/actions`, {withFileTypes: true});
+
+      // Read all the directories in the actions folder
+      const dirents = await readdir(functionsDirectory, { withFileTypes: true });
       for await (const dirent of dirents) {
-        if (dirent.isDirectory()) {
-            // Check if the action.graphql file exists
-            exist = await fileExists(join(plugin.path, "actions", dirent.name, this.actionGQLFile));
-            if (!exist) {
-              console.log(`> Action Instance ${plugin.instance} does not have actions.graphql file. Skipping...`);
-              continue;
-            }
-      
-            // Push the action to the actions array
-            this.actions.push({
-              name: removeSpecialChars(dirent.name),
-              handler: removeSpecialChars(plugin.instance),
-              path: join(plugin.path, "actions", dirent.name),
-              grapqhl_path: join(plugin.path, "actions", dirent.name, this.actionGQLFile),
-              setting_path: join(plugin.path, "actions", dirent.name, this.actionSettingFile)
-            });
-          }
+        const actionGQLFile: string = join(functionsDirectory, dirent.name, this.actionGQLFile);
+        const actionSettingFile: string = join(functionsDirectory, dirent.name, this.actionSettingFile);
+
+        // Check if the action.graphql & action.setting files exists
+        if (
+          dirent.isDirectory() &&
+          await fileExists(actionGQLFile) &&
+          await fileExists(actionSettingFile)
+        ) {
+          // Push the action to the actions array
+          this.actions.push({
+            name: removeSpecialChars(dirent.name),
+            handler: removeSpecialChars(plugin.instance),
+            path: join(functionsDirectory, dirent.name),
+            grapqhl_path: actionGQLFile,
+            setting_path: actionSettingFile
+          });
         }
       }
+    }
   }
 
   // Drops all actions from the hasura engine

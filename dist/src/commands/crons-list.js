@@ -47,11 +47,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.list = exports.cronsList = void 0;
-var file_exists_1 = require("../helpers/file-exists");
+var colors = require("colors");
 var path_1 = __importDefault(require("path"));
 var cli_table3_1 = __importDefault(require("cli-table3"));
+var file_exists_1 = require("../helpers/file-exists");
 var file_time_stamp_1 = require("../helpers/file-time-stamp");
-var colors = require("colors");
 function cronsList(program, glueStackPlugin) {
     program
         .command("crons:list")

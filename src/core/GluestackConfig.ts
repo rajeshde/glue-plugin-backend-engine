@@ -19,14 +19,16 @@ export const config: any = {
 
   hasuraInstanceStatus: 'down',
 
-  hasuraEnvs: {}
+  hasuraEnvs: {},
+
+  services: []
 };
 
 // Gets the configuration
 export const getConfig = (key: string): string => config[key];
 
 // Sets the configuration
-export const setConfig = (key: string, value: string): string => config[key] = value;
+export const setConfig = (key: string, value: any): string => config[key] = value;
 
 // Prepare the configuration file for the engine
 export const prepareConfigJSON = async (newContent: any): Promise<void> => {

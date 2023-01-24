@@ -9,8 +9,9 @@ import { IHasuraMetadata } from './types/IHasuraMetadata';
 
 import { getConfig, setConfig } from './GluestackConfig';
 import { generate as generateEvent } from '../helpers/generate-events';
-import { generate as generateActionOrCustomType } from '../helpers/generate-action-custom-types';
-import { generateActionPermission } from '../helpers/generate-action-custom-types';
+import {
+  generate as generateActionOrCustomType, generateActionPermission
+ } from '../helpers/generate-action-custom-types';
 
 /**
  * HasuraMetadata
@@ -206,7 +207,7 @@ export default class HasuraMetadata implements IHasuraMetadata {
   // Capture the hasura envs from the .env file
   private captureEnvVars(): any {
     const envPath = join(
-      process.cwd(), getConfig('backendInstancePath'), 'functions', this.pluginName, '.env'
+      process.cwd(), getConfig('backendInstancePath'), 'services', this.pluginName, '.env'
     );
 
     return dotenv.config({ path: envPath }).parsed;

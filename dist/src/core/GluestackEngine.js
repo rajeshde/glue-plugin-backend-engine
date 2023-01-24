@@ -63,10 +63,11 @@ var GluestackConfig_1 = require("./GluestackConfig");
 var path_1 = require("path");
 var lodash_1 = require("lodash");
 var write_file_1 = require("../helpers/write-file");
-var constants_1 = require("../configs/constants");
 var wait_in_seconds_1 = require("../helpers/wait-in-seconds");
 var replace_keyword_1 = require("../helpers/replace-keyword");
+var valid_glue_service_1 = require("../helpers/valid-glue-service");
 var remove_special_chars_1 = require("../helpers/remove-special-chars");
+var constants_1 = require("../configs/constants");
 var GluestackEngine = (function () {
     function GluestackEngine(app, backendInstancePath) {
         this.engineExist = false;
@@ -232,13 +233,14 @@ var GluestackEngine = (function () {
         if (pluginType === void 0) { pluginType = 'stateless'; }
         if (status === void 0) { status = 'up'; }
         return __awaiter(this, void 0, void 0, function () {
-            var app, arr, instances, _d, instances_1, instances_1_1, instance, type, name_1, details, e_2_1;
+            var app, arr, instances, validPlugins, _d, instances_1, instances_1_1, instance, type, name_1, details, e_2_1;
             return __generator(this, function (_e) {
                 switch (_e.label) {
                     case 0:
                         app = this.app;
                         arr = [];
                         instances = app.getContainerTypePluginInstances(false);
+                        validPlugins = [];
                         _e.label = 1;
                     case 1:
                         _e.trys.push([1, 11, 12, 17]);
@@ -255,10 +257,11 @@ var GluestackEngine = (function () {
                         instance = _c;
                         type = instance === null || instance === void 0 ? void 0 : instance.callerPlugin.getType();
                         name_1 = instance === null || instance === void 0 ? void 0 : instance.callerPlugin.getName();
+                        validPlugins.push.apply(validPlugins, (0, valid_glue_service_1.isValidGluePlugin)(this.backendPlugins, name_1));
                         if (!(instance &&
                             (instance === null || instance === void 0 ? void 0 : instance.containerController) &&
                             type && type === pluginType &&
-                            name_1 && this.backendPlugins.includes(name_1))) return [3, 7];
+                            name_1 && validPlugins.includes(name_1))) return [3, 7];
                         details = {
                             name: name_1,
                             type: type,
@@ -283,11 +286,11 @@ var GluestackEngine = (function () {
                         if (details.name === '@gluestack/glue-plugin-auth') {
                             (0, GluestackConfig_1.setConfig)('authInstancePath', details.instance);
                         }
-                        if (details.name === '@gluestack/glue-plugin-functions.action') {
-                            this.actionPlugins.push(details);
-                        }
                         if (details.name === '@gluestack/glue-plugin-postgres') {
                             (0, GluestackConfig_1.setConfig)('postgresInstancePath', details.instance);
+                        }
+                        if (details.name.startsWith('@gluestack/glue-plugin-service-')) {
+                            this.actionPlugins.push(details);
                         }
                         details.status = instance.getContainerController().setStatus(status);
                         arr.push(details);

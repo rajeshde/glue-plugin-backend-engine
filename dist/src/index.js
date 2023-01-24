@@ -47,6 +47,7 @@ var add_main_router_1 = require("./helpers/add-main-router");
 var add_main_events_1 = require("./helpers/add-main-events");
 var add_main_cron_1 = require("./helpers/add-main-cron");
 var commands_1 = require("./commands");
+var service_add_1 = require("./commands/service-add");
 var GlueStackPlugin = (function () {
     function GlueStackPlugin(app, gluePluginStore) {
         this.type = "stateless";
@@ -62,6 +63,7 @@ var GlueStackPlugin = (function () {
         this.app.addCommand(function (program) { return (0, commands_1.cronsAdd)(program, _this); });
         this.app.addCommand(function (program) { return (0, commands_1.cronsList)(program, _this); });
         this.app.addCommand(function (program) { return (0, commands_1.cronsRemove)(program, _this); });
+        this.app.addCommand(function (program) { return (0, service_add_1.serviceAdd)(program, _this); });
     };
     GlueStackPlugin.prototype.destroy = function () {
     };

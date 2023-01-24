@@ -23,11 +23,7 @@ export async function addMainCron(engineInstance: PluginInstance): Promise<void>
   const installationPath = engineInstance.getInstallationPath();
 
   const fileName: string = 'crons.json';
-  const fileContent: object = [{
-    schedule: "* * * * *",
-    type: "function or webhook",
-    value: "function name or webhook url"
-  }];
+  const fileContent: object = [];
 
   await checkCreate(installationPath, fileName, JSON.stringify(fileContent, null, 2));
 };

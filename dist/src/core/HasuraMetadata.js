@@ -82,7 +82,6 @@ var node_fs_1 = require("node:fs");
 var GluestackConfig_1 = require("./GluestackConfig");
 var generate_events_1 = require("../helpers/generate-events");
 var generate_action_custom_types_1 = require("../helpers/generate-action-custom-types");
-var generate_action_custom_types_2 = require("../helpers/generate-action-custom-types");
 var HasuraMetadata = (function () {
     function HasuraMetadata(pluginName) {
         this.pluginName = pluginName;
@@ -157,7 +156,7 @@ var HasuraMetadata = (function () {
                         _a.label = 1;
                     case 1:
                         _a.trys.push([1, 3, , 4]);
-                        return [4, (0, generate_action_custom_types_2.generateActionPermission)(schema, roles)];
+                        return [4, (0, generate_action_custom_types_1.generateActionPermission)(schema, roles)];
                     case 2:
                         actionData = _a.sent();
                         return [3, 4];
@@ -347,7 +346,7 @@ var HasuraMetadata = (function () {
         });
     };
     HasuraMetadata.prototype.captureEnvVars = function () {
-        var envPath = (0, path_1.join)(process.cwd(), (0, GluestackConfig_1.getConfig)('backendInstancePath'), 'functions', this.pluginName, '.env');
+        var envPath = (0, path_1.join)(process.cwd(), (0, GluestackConfig_1.getConfig)('backendInstancePath'), 'services', this.pluginName, '.env');
         return dotenv.config({ path: envPath }).parsed;
     };
     return HasuraMetadata;

@@ -82,29 +82,38 @@ function list(_glueStackPlugin, args) {
                     _a = true;
                     switch (_a) {
                         case args.hasOwnProperty("all") || Object.entries(args).length === 0: return [3, 1];
-                        case args.hasOwnProperty("app"): return [3, 4];
-                        case args.hasOwnProperty("database"): return [3, 6];
+                        case args.hasOwnProperty("app"): return [3, 5];
+                        case args.hasOwnProperty("database"): return [3, 8];
                     }
-                    return [3, 8];
+                    return [3, 11];
                 case 1: return [4, getEvents(appEventPath, table, false)];
                 case 2:
                     _b.sent();
                     return [4, getEvents(dbEventPath, table, false)];
                 case 3:
                     _b.sent();
-                    console.log(table.toString());
-                    return [3, 8];
-                case 4: return [4, getEvents(appEventPath, table, false)];
-                case 5:
+                    return [4, sortingArray(table)];
+                case 4:
                     _b.sent();
                     console.log(table.toString());
-                    return [3, 8];
-                case 6: return [4, getEvents(dbEventPath, table, false)];
+                    return [3, 11];
+                case 5: return [4, getEvents(appEventPath, table, false)];
+                case 6:
+                    _b.sent();
+                    return [4, sortingArray(table)];
                 case 7:
                     _b.sent();
                     console.log(table.toString());
-                    return [3, 8];
-                case 8: return [2];
+                    return [3, 11];
+                case 8: return [4, getEvents(dbEventPath, table, false)];
+                case 9:
+                    _b.sent();
+                    return [4, sortingArray(table)];
+                case 10:
+                    _b.sent();
+                    console.log(table.toString());
+                    return [3, 11];
+                case 11: return [2];
             }
         });
     });
@@ -238,6 +247,60 @@ function getFiles(filePath) {
                         return resolve(files);
                     });
                 })];
+        });
+    });
+}
+function sortingArray(table) {
+    return __awaiter(this, void 0, void 0, function () {
+        var _this = this;
+        return __generator(this, function (_a) {
+            table.sort(function (a, b) { return __awaiter(_this, void 0, void 0, function () {
+                var timingA, timingB, timingAInSeconds, timingBInSeconds;
+                return __generator(this, function (_a) {
+                    switch (_a.label) {
+                        case 0:
+                            timingA = Object.values(a)[0][2];
+                            timingB = Object.values(b)[0][2];
+                            if (timingB.startsWith("a ") || timingB.startsWith("an ")) {
+                                timingB = "1 " + timingB.substring(2);
+                            }
+                            if (timingA.startsWith("a ") || timingA.startsWith("an ")) {
+                                timingA = "1 " + timingA.substring(2);
+                            }
+                            return [4, getSecondsFromTiming(timingA)];
+                        case 1:
+                            timingAInSeconds = _a.sent();
+                            return [4, getSecondsFromTiming(timingB)];
+                        case 2:
+                            timingBInSeconds = _a.sent();
+                            return [2, timingAInSeconds - timingBInSeconds];
+                    }
+                });
+            }); });
+            return [2];
+        });
+    });
+}
+function getSecondsFromTiming(timing) {
+    return __awaiter(this, void 0, void 0, function () {
+        var time, unit;
+        return __generator(this, function (_a) {
+            time = timing.match(/\d+/);
+            unit = timing.match(/[a-zA-Z]+/);
+            time = time ? time[0] : 1;
+            if (unit[0] === "day" || unit[0] === "days") {
+                return [2, time * 60 * 60 * 24];
+            }
+            else if (unit[0] === "hour" || unit[0] === "hours") {
+                return [2, time * 60 * 60];
+            }
+            else if (unit[0] === "minute" || unit[0] === "minutes") {
+                return [2, time * 60];
+            }
+            else if (unit[0] === "year" || unit[0] === "years") {
+                return [2, time * 365 * 24 * 60 * 60];
+            }
+            return [2];
         });
     });
 }

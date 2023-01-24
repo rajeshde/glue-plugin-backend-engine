@@ -5,11 +5,9 @@ exports.backendPlugins = [
     '@gluestack/glue-plugin-postgres',
     '@gluestack/glue-plugin-graphql',
     '@gluestack/glue-plugin-backend-engine',
-    '@gluestack/glue-plugin-functions',
-    '@gluestack/glue-plugin-functions.action',
     '@gluestack/glue-plugin-auth',
     '@gluestack/glue-plugin-storage',
-    '@gluestack/glue-plugin-functions-*'
+    '@gluestack/glue-plugin-service-*'
 ];
 exports.noDockerfiles = [
     '@gluestack/glue-plugin-graphql',

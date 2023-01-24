@@ -72,6 +72,7 @@ var cronsAdd = function (program, glueStackPlugin) {
     program
         .command("crons:add")
         .option("--s, --schedule <special>", "schedule value")
+        .option("--m, --method <method-name>", "Name of the method")
         .option("--f, --function <function-name>", "name of function")
         .option("--w, --webhook <webhook-url>", "webhook url")
         .description("Create the crons")
@@ -88,23 +89,28 @@ function create(_glueStackPlugin, args) {
                     _a = true;
                     switch (_a) {
                         case "function" in args && "webhook" in args || !args.hasOwnProperty("function") && !args.hasOwnProperty("webhook"): return [3, 1];
-                        case "function" in args: return [3, 2];
-                        case "webhook" in args: return [3, 4];
+                        case args.hasOwnProperty('function') && !args.hasOwnProperty('method'): return [3, 2];
+                        case "function" in args: return [3, 3];
+                        case "webhook" in args: return [3, 5];
                     }
-                    return [3, 6];
+                    return [3, 7];
                 case 1:
                     console.log(colors.brightRed("> enter either --f function or --w webhook-url"));
                     process.exit(0);
                     _b.label = 2;
-                case 2: return [4, createContent("function", args.function, args.schedule)];
-                case 3:
+                case 2:
+                    console.log(colors.brightRed("> enter method name with function --m method-name"));
+                    process.exit(0);
+                    _b.label = 3;
+                case 3: return [4, createContent("function", args, args.schedule)];
+                case 4:
                     content = _b.sent();
-                    return [3, 6];
-                case 4: return [4, createContent("webhook", args.webhook, args.schedule)];
-                case 5:
-                    content = _b.sent();
-                    return [3, 6];
+                    return [3, 7];
+                case 5: return [4, createContent("webhook", args, args.schedule)];
                 case 6:
+                    content = _b.sent();
+                    return [3, 7];
+                case 7:
                     isScheduleValid = args.hasOwnProperty("schedule") &&
                         (args.hasOwnProperty("function") || args.hasOwnProperty("webhook")) &&
                         cron.validate(args.schedule);
@@ -114,7 +120,7 @@ function create(_glueStackPlugin, args) {
                     }
                     cronsFilePath = "".concat(cronsPath, "/crons.json");
                     return [4, (0, file_exists_1.fileExists)(cronsFilePath)];
-                case 7:
+                case 8:
                     if (_b.sent()) {
                         data = require(path_1.default.join(process.cwd(), cronsPath.slice(2), "crons"));
                         data.push(content);
@@ -124,7 +130,7 @@ function create(_glueStackPlugin, args) {
                         fileContent = "[".concat(JSON.stringify(content, null, 2), "]");
                     }
                     return [4, (0, write_file_1.writeFile)(cronsFilePath, fileContent)];
-                case 8:
+                case 9:
                     _b.sent();
                     console.log(colors.brightGreen("> Successfully created!"));
                     return [2];
@@ -139,7 +145,7 @@ function createContent(type, value, schedule) {
             return [2, {
                     schedule: schedule,
                     type: type,
-                    value: value,
+                    value: type === 'function' ? "".concat(value.function, "::").concat(value.method) : value.webhook,
                 }];
         });
     });

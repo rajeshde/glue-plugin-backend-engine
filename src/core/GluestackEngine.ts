@@ -14,10 +14,11 @@ import { getConfig, setConfig } from "./GluestackConfig";
 import { join } from "path";
 import { includes } from "lodash";
 import { writeFile } from "../helpers/write-file";
-import { backendPlugins, noDockerfiles } from "../configs/constants";
 import { waitInSeconds } from "../helpers/wait-in-seconds";
 import { replaceKeyword } from "../helpers/replace-keyword";
+import { isValidGluePlugin } from "../helpers/valid-glue-service";
 import { removeSpecialChars } from "../helpers/remove-special-chars";
+import { backendPlugins, noDockerfiles } from "../configs/constants";
 
 import { IHasuraEngine } from "./types/IHasuraEngine";
 import { IGluestackCron } from "./types/IGluestackCron";
@@ -158,6 +159,8 @@ export default class GluestackEngine implements IGlueEngine {
     const instances: (IInstance & IHasContainerController)[] =
       app.getContainerTypePluginInstances(false);
 
+    const validPlugins: string[] = [];
+
     // Iterate over the instances
     for await (const instance of instances) {
 
@@ -165,12 +168,14 @@ export default class GluestackEngine implements IGlueEngine {
       const type: string | undefined = instance?.callerPlugin.getType();
       const name: string | undefined = instance?.callerPlugin.getName();
 
+      validPlugins.push(...isValidGluePlugin(this.backendPlugins, name));
+
       // If and only if the instance is a "stateless" + "backend" plugin
       if (
         instance &&
         instance?.containerController &&
         type && type === pluginType &&
-        name && this.backendPlugins.includes(name)
+        name && validPlugins.includes(name)
       ) {
 
         // Collects the instance details into the array
@@ -209,14 +214,14 @@ export default class GluestackEngine implements IGlueEngine {
           setConfig('authInstancePath', details.instance);
         }
 
-        // store functions plugin's instance name
-        if (details.name === '@gluestack/glue-plugin-functions.action') {
-          this.actionPlugins.push(details);
-        }
-
         // store postgres plugin's instance name
         if (details.name === '@gluestack/glue-plugin-postgres') {
           setConfig('postgresInstancePath', details.instance);
+        }
+
+        // store services plugin's instance details
+        if (details.name.startsWith('@gluestack/glue-plugin-service-')) {
+          this.actionPlugins.push(details);
         }
 
         details.status = instance.getContainerController().setStatus(status);
@@ -240,6 +245,7 @@ export default class GluestackEngine implements IGlueEngine {
     ];
 
     const postgresInstancePath: string = getConfig('postgresInstancePath');
+
     // Gather all the availables plugin instances
     for await (const plugin of plugins) {
       // If and only if the instance is postgres plugin

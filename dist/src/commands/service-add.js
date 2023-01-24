@@ -36,59 +36,73 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.addMainCron = void 0;
-var path_1 = require("path");
-var write_file_1 = require("./write-file");
-var file_exists_1 = require("./file-exists");
-var create_folder_1 = require("./create-folder");
-var construct = function (path) { return __awaiter(void 0, void 0, void 0, function () {
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0: return [4, (0, create_folder_1.createFolder)(path)];
-            case 1:
-                _a.sent();
-                return [2];
-        }
-    });
-}); };
-var checkCreate = function (installationPath, fileName, fileContent) { return __awaiter(void 0, void 0, void 0, function () {
-    var path, appExist;
+exports.serviceAdd = void 0;
+var prompts = require("prompts");
+var services = require("@gluestack/framework/constants/services");
+var spawn_1 = require("../helpers/spawn");
+function serviceAdd(program, glueStackPlugin) {
+    program
+        .command("service:add")
+        .description("Create the events")
+        .action(function (args) { return runner(glueStackPlugin, args); });
+}
+exports.serviceAdd = serviceAdd;
+var selectPluginName = function (services) { return __awaiter(void 0, void 0, void 0, function () {
+    var choices, value;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                path = (0, path_1.join)(installationPath, '..', 'crons');
-                return [4, (0, file_exists_1.fileExists)(path)];
+                choices = services.map(function (service) {
+                    return {
+                        title: service,
+                        description: "Select a language for your service",
+                        value: service,
+                    };
+                });
+                return [4, prompts({
+                        type: "select",
+                        name: "value",
+                        message: "Select a service plugin",
+                        choices: choices,
+                    })];
             case 1:
-                appExist = _a.sent();
-                if (!!appExist) return [3, 3];
-                return [4, construct(path)];
+                value = (_a.sent()).value;
+                return [2, value];
+        }
+    });
+}); };
+var runner = function (glueStackPlugin, args) { return __awaiter(void 0, void 0, void 0, function () {
+    var pluginName, instanceName;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0: return [4, selectPluginName(services)];
+            case 1:
+                pluginName = _a.sent();
+                if (!pluginName) {
+                    console.log("No plugin selected");
+                    return [2];
+                }
+                return [4, prompts({
+                        type: "text",
+                        name: "instanceName",
+                        message: "Enter the instance name",
+                        validate: function (value) { return value.length > 1 ? true : "Instance name must be longer than 1 character"; }
+                    })];
             case 2:
-                _a.sent();
-                _a.label = 3;
-            case 3: return [4, (0, write_file_1.writeFile)((0, path_1.join)(path, 'crons.json'), fileContent)];
-            case 4:
+                instanceName = (_a.sent()).instanceName;
+                return [4, (0, spawn_1.execute)('node', [
+                        'glue',
+                        'add',
+                        pluginName,
+                        instanceName
+                    ], {
+                        cwd: process.cwd(),
+                        stdio: 'inherit'
+                    })];
+            case 3:
                 _a.sent();
                 return [2];
         }
     });
 }); };
-function addMainCron(engineInstance) {
-    return __awaiter(this, void 0, void 0, function () {
-        var installationPath, fileName, fileContent;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    installationPath = engineInstance.getInstallationPath();
-                    fileName = 'crons.json';
-                    fileContent = [];
-                    return [4, checkCreate(installationPath, fileName, JSON.stringify(fileContent, null, 2))];
-                case 1:
-                    _a.sent();
-                    return [2];
-            }
-        });
-    });
-}
-exports.addMainCron = addMainCron;
-;
-//# sourceMappingURL=add-main-cron.js.map
+//# sourceMappingURL=service-add.js.map

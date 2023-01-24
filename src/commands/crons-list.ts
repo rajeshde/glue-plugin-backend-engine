@@ -1,9 +1,10 @@
-import { GlueStackPlugin } from "src";
-import { fileExists } from "../helpers/file-exists";
+const colors = require("colors");
+
 import path from "path";
 import Table from "cli-table3";
+import { GlueStackPlugin } from "src";
+import { fileExists } from "../helpers/file-exists";
 import { timeStamp } from "../helpers/file-time-stamp";
-const colors = require("colors");
 
 export function cronsList(program: any, glueStackPlugin: GlueStackPlugin) {
 	program
