@@ -6,6 +6,24 @@ var _a = require('lodash'), replace = _a.replace, has = _a.has, get = _a.get, ob
 var replaceRefDefinition = function (string) {
     return replace(get(string, '$ref'), '#/definitions/', '');
 };
+var replaceTypeDefinition = function (string) {
+    var _a, _b, _c, _d, _e, _f;
+    if ((string === null || string === void 0 ? void 0 : string.type) === 'array') {
+        if ((_a = string === null || string === void 0 ? void 0 : string.items) === null || _a === void 0 ? void 0 : _a.type['$ref']) {
+            return "[".concat(replace(get((_b = string === null || string === void 0 ? void 0 : string.items) === null || _b === void 0 ? void 0 : _b.type, "$ref"), "#/definitions/", ""), "]");
+        }
+        if ((_d = (_c = string === null || string === void 0 ? void 0 : string.items) === null || _c === void 0 ? void 0 : _c.type) === null || _d === void 0 ? void 0 : _d.type) {
+            return "[".concat(capitalize((_f = (_e = string === null || string === void 0 ? void 0 : string.items) === null || _e === void 0 ? void 0 : _e.type) === null || _f === void 0 ? void 0 : _f.type), "]");
+        }
+    }
+    return replace(get(string, '$ref'), '#/definitions/', '');
+};
+var requiresReplaceTypeDefinition = function (property) {
+    if (property.type && property.type !== 'array') {
+        return false;
+    }
+    return true;
+};
 var createCustomTypes = function (definitions) {
     var body = {
         type: 'set_custom_types',
@@ -24,9 +42,9 @@ var createCustomTypes = function (definitions) {
             var property = definition.properties[propKey];
             object.fields.push({
                 name: propKey,
-                type: (property.type
+                type: (!requiresReplaceTypeDefinition(property)
                     ? capitalize(property.type)
-                    : replaceRefDefinition(property)) + "!",
+                    : replaceTypeDefinition(property)) + "!",
             });
         });
         if (type === 'object') {

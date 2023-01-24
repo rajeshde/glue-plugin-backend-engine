@@ -8,6 +8,26 @@ const {
 const replaceRefDefinition = (string: any) =>
   replace(get(string, '$ref'), '#/definitions/', '');
 
+const replaceTypeDefinition = (string: any) => {
+  if (string?.type === 'array') {
+     if (string?.items?.type['$ref']) {
+      return `[${replace(get(string?.items?.type, "$ref"), "#/definitions/", "")}]`;
+     }
+     if (string?.items?.type?.type)  {
+      return `[${capitalize(string?.items?.type?.type)}]`;
+     }
+  }
+  return replace(get(string, '$ref'), '#/definitions/', '');
+};
+
+const requiresReplaceTypeDefinition = (property: any) => {
+  if (property.type && property.type !== 'array') {
+    return false;
+  }
+
+  return true;
+};
+
 const createCustomTypes = (definitions: any) => {
   const body: any = {
     type: 'set_custom_types',
@@ -30,9 +50,9 @@ const createCustomTypes = (definitions: any) => {
       object.fields.push({
         name: propKey,
         type:
-          (property.type
+          (!requiresReplaceTypeDefinition(property)
             ? capitalize(property.type)
-            : replaceRefDefinition(property)) + "!",
+            : replaceTypeDefinition(property)) + "!",
       });
     });
 
