@@ -7,7 +7,7 @@ const colors = require("colors");
 
 export const cronsAdd = (program: any, glueStackPlugin: GlueStackPlugin) => {
   program
-    .command("crons:add")
+    .command("cron:add")
     .option("--s, --schedule <special>", "schedule value")
     .option("--m, --method <method-name>", "Name of the method")
     .option("--f, --function <function-name>", "name of function")

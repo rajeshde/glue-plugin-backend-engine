@@ -47,7 +47,7 @@ var colors = require("colors");
 var _a = require('enquirer'), MultiSelect = _a.MultiSelect, confirm = _a.confirm;
 function cronsRemove(program, glueStackPlugin) {
     program
-        .command("crons:remove")
+        .command("cron:remove")
         .description("List the crons jobs with select option to delete")
         .action(function () { return deleteEvents(glueStackPlugin); });
 }

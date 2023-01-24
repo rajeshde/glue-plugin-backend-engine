@@ -7,7 +7,7 @@ const colors = require("colors");
 
 export function eventRemove(program: any, glueStackPlugin: GlueStackPlugin) {
 	program
-		.command("events:remove")
+		.command("event:remove")
 		.option("--a, --app <app-name>", "Name of the event")
 		.option(
 			"--t, --table <table-name>",

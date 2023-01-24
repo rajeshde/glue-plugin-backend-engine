@@ -55,7 +55,7 @@ var file_time_stamp_1 = require("../helpers/file-time-stamp");
 var colors = require("colors");
 function eventsList(program, glueStackPlugin) {
     program
-        .command("events:list")
+        .command("event:list")
         .option("--all", "list all the events")
         .option("--app", "list all app events")
         .option("--database", "list all database events")

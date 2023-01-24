@@ -54,7 +54,7 @@ var file_exists_1 = require("../helpers/file-exists");
 var file_time_stamp_1 = require("../helpers/file-time-stamp");
 function cronsList(program, glueStackPlugin) {
     program
-        .command("crons:list")
+        .command("cron:list")
         .description("List all crons")
         .action(function () { return list(glueStackPlugin); });
 }

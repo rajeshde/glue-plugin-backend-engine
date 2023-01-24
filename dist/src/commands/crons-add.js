@@ -70,7 +70,7 @@ var path_1 = __importDefault(require("path"));
 var colors = require("colors");
 var cronsAdd = function (program, glueStackPlugin) {
     program
-        .command("crons:add")
+        .command("cron:add")
         .option("--s, --schedule <special>", "schedule value")
         .option("--m, --method <method-name>", "Name of the method")
         .option("--f, --function <function-name>", "name of function")

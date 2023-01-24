@@ -8,7 +8,7 @@ import { timeStamp } from "../helpers/file-time-stamp";
 
 export function cronsList(program: any, glueStackPlugin: GlueStackPlugin) {
 	program
-		.command("crons:list")
+		.command("cron:list")
 		.description("List all crons")
 		.action(() => list(glueStackPlugin));
 }

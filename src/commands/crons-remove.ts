@@ -8,7 +8,7 @@ const { MultiSelect, confirm } = require('enquirer');
 
 export function cronsRemove(program: any, glueStackPlugin: GlueStackPlugin) {
 	program
-		.command("crons:remove")
+		.command("cron:remove")
 		.description(
 			"List the crons jobs with select option to delete",
 		)

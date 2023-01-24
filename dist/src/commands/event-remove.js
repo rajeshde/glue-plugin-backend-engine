@@ -47,7 +47,7 @@ var _a = require('enquirer'), MultiSelect = _a.MultiSelect, confirm = _a.confirm
 var colors = require("colors");
 function eventRemove(program, glueStackPlugin) {
     program
-        .command("events:remove")
+        .command("event:remove")
         .option("--a, --app <app-name>", "Name of the event")
         .option("--t, --table <table-name>", "Name of the table in database (table-name:event-name)")
         .description("List the events with select option to delete selected events")

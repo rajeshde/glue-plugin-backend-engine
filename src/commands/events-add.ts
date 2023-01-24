@@ -14,7 +14,7 @@ interface contentType {
 
 export function eventsAdd(program: any, glueStackPlugin: GlueStackPlugin) {
 	program
-		.command("events:add")
+		.command("event:add")
 		.option(
 			"--t, --table <table-name>",
 			"Name of the table in database (table-name:event1,event2)"

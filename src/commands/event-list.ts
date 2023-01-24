@@ -19,7 +19,7 @@ interface listObject {
 
 export function eventsList(program: any, glueStackPlugin: GlueStackPlugin) {
   program
-    .command("events:list")
+    .command("event:list")
     .option("--all", "list all the events")
     .option("--app", "list all app events")
     .option("--database", "list all database events")

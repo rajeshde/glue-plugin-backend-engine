@@ -54,7 +54,7 @@ var file_exists_1 = require("../helpers/file-exists");
 var colors = require("colors");
 function eventsAdd(program, glueStackPlugin) {
     program
-        .command("events:add")
+        .command("event:add")
         .option("--t, --table <table-name>", "Name of the table in database (table-name:event1,event2)")
         .option("--f, --function <function-name>", "Name of the function")
         .option("--m, --method <method-name>", "Name of the method in function")
