@@ -92,7 +92,7 @@ var GlueStackPlugin = (function () {
                         _a.sent();
                         if (instanceName !== "engine") {
                             console.log("\x1b[36m");
-                            console.log("Install engine instance: `node glue add engine engine`");
+                            console.log("Install engine instance: `node glue add backend-engine engine`");
                             console.log("\x1b[31m");
                             throw new Error("engine supports instance name `engine` only");
                         }

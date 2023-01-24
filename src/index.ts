@@ -67,7 +67,7 @@ export class GlueStackPlugin implements IPlugin, IManagesInstances, ILifeCycle {
     if (instanceName !== "engine") {
       console.log("\x1b[36m");
       console.log(
-        `Install engine instance: \`node glue add engine engine\``,
+        `Install engine instance: \`node glue add backend-engine engine\``,
       );
       console.log("\x1b[31m");
       throw new Error(
