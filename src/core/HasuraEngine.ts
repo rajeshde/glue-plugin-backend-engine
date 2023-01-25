@@ -3,7 +3,6 @@ import { readFile, readdir } from "node:fs/promises";
 
 import { execute } from "../helpers/spawn";
 import { fileExists } from "../helpers/file-exists";
-import { waitInSeconds } from "../helpers/wait-in-seconds";
 import { removeSpecialChars } from "../helpers/remove-special-chars";
 
 import { IStatelessPlugin } from "./types/IStatelessPlugin";

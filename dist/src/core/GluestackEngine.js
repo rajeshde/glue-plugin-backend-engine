@@ -174,11 +174,10 @@ var GluestackEngine = (function () {
     GluestackEngine.prototype.createNginxConfig = function () {
         var _a, e_1, _b, _c;
         return __awaiter(this, void 0, void 0, function () {
-            var backendInstancePath, plugins, nginxConf, _d, plugins_1, plugins_1_1, plugin, e_1_1;
+            var plugins, nginxConf, _d, plugins_1, plugins_1_1, plugin, e_1_1;
             return __generator(this, function (_e) {
                 switch (_e.label) {
                     case 0:
-                        backendInstancePath = (0, GluestackConfig_1.getConfig)('backendInstancePath');
                         plugins = this.statelessPlugins;
                         nginxConf = new NginxConf_1.default();
                         _e.label = 1;
