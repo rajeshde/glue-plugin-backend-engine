@@ -138,7 +138,7 @@ var DockerCompose = (function () {
                                 "".concat(port_number, ":8080")
                             ],
                             volumes: [
-                                "".concat(plugin.path, "/.db-data:/hasura"),
+                                "".concat(plugin.path, ":/hasura"),
                             ],
                             env_file: [
                                 "".concat(plugin.path, "/.env")

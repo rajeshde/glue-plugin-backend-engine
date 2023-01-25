@@ -88,7 +88,7 @@ export default class DockerCompose implements IDockerCompose {
         `${port_number}:8080`
       ],
       volumes: [
-        `${plugin.path}/.db-data:/hasura`,
+        `${plugin.path}:/hasura`,
       ],
       env_file: [
         `${plugin.path}/.env`
