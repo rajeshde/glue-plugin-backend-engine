@@ -332,12 +332,13 @@ var GluestackEngine = (function () {
     GluestackEngine.prototype.createDockerCompose = function () {
         var _a, e_3, _b, _c;
         return __awaiter(this, void 0, void 0, function () {
-            var dockerCompose, plugins, postgresInstancePath, _d, plugins_2, plugins_2_1, plugin, e_3_1;
+            var dockerCompose, plugins, hasuraInstancePath, postgresInstancePath, _d, plugins_2, plugins_2_1, plugin, e_3_1;
             return __generator(this, function (_e) {
                 switch (_e.label) {
                     case 0:
                         dockerCompose = new DockerCompose_1.default();
                         plugins = __spreadArray(__spreadArray([], this.statelessPlugins, true), this.statefulPlugins, true);
+                        hasuraInstancePath = (0, GluestackConfig_1.getConfig)('hasuraInstancePath');
                         postgresInstancePath = (0, GluestackConfig_1.getConfig)('postgresInstancePath');
                         _e.label = 1;
                     case 1:
@@ -361,7 +362,7 @@ var GluestackEngine = (function () {
                             }
                             if (plugin.name === '@gluestack/glue-plugin-backend-engine') {
                                 this.engineExist = true;
-                                dockerCompose.addNginx(plugin);
+                                dockerCompose.addNginx(plugin, hasuraInstancePath);
                             }
                             dockerCompose.addOthers(plugin);
                         }

@@ -40,7 +40,7 @@ export interface IDockerCompose {
   start(projectName: string, filepath: string): Promise<void>;
   stop(projectName: string, filepath: string): Promise<void>;
 
-  addNginx(plugin: IStatelessPlugin): Promise<void>;
+  addNginx(plugin: IStatelessPlugin, hasura: string): Promise<void>;
   addHasura(plugin: IStatelessPlugin, postgres: string): Promise<void>;
   addPostgres(plugin: IStatelessPlugin): Promise<void>;
   addOthers(plugin: IStatelessPlugin): Promise<void>;

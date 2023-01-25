@@ -87,7 +87,7 @@ var DockerCompose = (function () {
             });
         });
     };
-    DockerCompose.prototype.addNginx = function (plugin) {
+    DockerCompose.prototype.addNginx = function (plugin, hasura) {
         return __awaiter(this, void 0, void 0, function () {
             var instance, port_number, nginx;
             return __generator(this, function (_a) {
@@ -136,7 +136,7 @@ var DockerCompose = (function () {
                             ],
                             env_file: [
                                 "".concat(plugin.path, "/.env")
-                            ]
+                            ],
                         };
                         if (postgres && postgres !== '') {
                             hasura.depends_on = {};

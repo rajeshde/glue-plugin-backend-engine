@@ -8,7 +8,6 @@ import { removeSpecialChars } from '../helpers/remove-special-chars';
 
 import { IStatelessPlugin } from './types/IStatelessPlugin';
 import { IDockerCompose, IService } from './types/IDockerCompose';
-
 /**
  * Docker Compose
  *
@@ -50,11 +49,11 @@ export default class DockerCompose implements IDockerCompose {
   }
 
   // Adds the nginx service to the docker-compose file
-  public async addNginx(plugin: IStatelessPlugin) {
+  public async addNginx(plugin: IStatelessPlugin, hasura: string) {
     const instance: any = plugin.instance_object;
     const port_number = await instance.gluePluginStore.get('port_number');
 
-    const nginx = {
+    const nginx: IService = {
       container_name: 'nginx',
       restart: 'always',
       build: join(plugin.path, 'router'),
@@ -65,6 +64,13 @@ export default class DockerCompose implements IDockerCompose {
         `${join(plugin.path, 'router', 'nginx.conf')}:/etc/nginx/nginx.conf`
       ]
     };
+
+    // if (hasura && hasura !== '') {
+    //   nginx.depends_on = {};
+    //   nginx.depends_on[`${hasura}`] = {
+    //     condition: 'service_healthy'
+    //   }
+    // }
 
     this.addService('nginx', nginx);
   }
@@ -86,7 +92,17 @@ export default class DockerCompose implements IDockerCompose {
       ],
       env_file: [
         `${plugin.path}/.env`
-      ]
+      ],
+      // healthcheck: {
+      //   test: [
+      //     "CMD-SHELL",
+      //     "sleep 20"
+      //   ],
+      //   interval: '10s',
+      //   timeout: '10s',
+      //   retries: 50,
+      //   start_period: '30s'
+      // }
     };
 
     if (postgres && postgres !== '') {

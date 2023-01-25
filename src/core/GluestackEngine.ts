@@ -244,6 +244,7 @@ export default class GluestackEngine implements IGlueEngine {
       ...this.statefulPlugins
     ];
 
+    const hasuraInstancePath: string = getConfig('hasuraInstancePath');
     const postgresInstancePath: string = getConfig('postgresInstancePath');
 
     // Gather all the availables plugin instances
@@ -263,7 +264,7 @@ export default class GluestackEngine implements IGlueEngine {
       // If and only if the instance is engine plugin
       if (plugin.name === '@gluestack/glue-plugin-backend-engine') {
         this.engineExist = true;
-        dockerCompose.addNginx(plugin);
+        dockerCompose.addNginx(plugin, hasuraInstancePath);
       }
 
       // Add the rest of the plugins

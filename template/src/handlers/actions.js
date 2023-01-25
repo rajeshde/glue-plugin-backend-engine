@@ -36,7 +36,7 @@ module.exports = async (req, res) => {
       { headers }
     );
     return res.status(200).json(data);
-  } catch (e) {
+  } catch (err) {
     console.log(`Error invoking action ${serviceAppId}::${serviceMethod}: ${err}`);
     return res.status(500).json({
       status: false,
