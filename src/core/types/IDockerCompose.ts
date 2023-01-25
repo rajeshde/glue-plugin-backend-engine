@@ -5,7 +5,7 @@ interface IHealthCheck {
   interval: string;
   timeout: string;
   retries: number;
-  start_period: string;
+  start_period?: string;
 }
 
 interface IServiceBase {

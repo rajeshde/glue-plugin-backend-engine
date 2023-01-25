@@ -65,12 +65,12 @@ export default class DockerCompose implements IDockerCompose {
       ]
     };
 
-    // if (hasura && hasura !== '') {
-    //   nginx.depends_on = {};
-    //   nginx.depends_on[`${hasura}`] = {
-    //     condition: 'service_healthy'
-    //   }
-    // }
+    if (hasura && hasura !== '') {
+      nginx.depends_on = {};
+      nginx.depends_on[`${hasura}`] = {
+        condition: 'service_healthy'
+      }
+    }
 
     this.addService('nginx', nginx);
   }
@@ -93,16 +93,15 @@ export default class DockerCompose implements IDockerCompose {
       env_file: [
         `${plugin.path}/.env`
       ],
-      // healthcheck: {
-      //   test: [
-      //     "CMD-SHELL",
-      //     "sleep 20"
-      //   ],
-      //   interval: '10s',
-      //   timeout: '10s',
-      //   retries: 50,
-      //   start_period: '30s'
-      // }
+      healthcheck: {
+        test: [
+          "CMD-SHELL",
+          `timeout 30s bash -c ':> /dev/tcp/127.0.0.1/${port_number}' || exit 1`
+        ],
+        interval: '3s',
+        timeout: '1s',
+        retries: 10
+      }
     };
 
     if (postgres && postgres !== '') {

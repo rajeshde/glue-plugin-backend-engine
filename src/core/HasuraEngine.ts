@@ -70,6 +70,8 @@ export default class HasuraEngine implements IHasuraEngine {
 
   // Apply local migrations to the hasura engine's migrations
   public async applyMigrate(): Promise<void> {
+    await this.applyMetadata();
+
     const hasuraEnvs: any = this.metadata.hasuraEnvs;
     const filepath: string = join(process.cwd(), getConfig('backendInstancePath'), 'services', this.pluginName);
 

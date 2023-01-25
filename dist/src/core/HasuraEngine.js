@@ -113,7 +113,9 @@ var HasuraEngine = (function () {
             var hasuraEnvs, filepath;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0:
+                    case 0: return [4, this.applyMetadata()];
+                    case 1:
+                        _a.sent();
                         hasuraEnvs = this.metadata.hasuraEnvs;
                         filepath = (0, path_1.join)(process.cwd(), (0, GluestackConfig_1.getConfig)('backendInstancePath'), 'services', this.pluginName);
                         return [4, (0, spawn_1.execute)('hasura', [
@@ -126,7 +128,7 @@ var HasuraEngine = (function () {
                                 cwd: filepath,
                                 stdio: 'inherit'
                             })];
-                    case 1:
+                    case 2:
                         _a.sent();
                         return [2];
                 }
