@@ -1,4 +1,3 @@
-import { addTrailingSlash } from "./add-trailing-slash";
 
 export const startsWith = `
 events {
@@ -46,7 +45,7 @@ export const setLocation = (
   size_in_mb?: number,
 ): string => `
     location ${path} {
-      rewrite ^${addTrailingSlash(path)}(.*) ${addTrailingSlash(proxy_path)}$1 break;
+      rewrite ^${path} ${proxy_path} break;
 
       client_max_body_size ${size_in_mb || 1}M;
 
