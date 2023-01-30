@@ -44,7 +44,7 @@ var createCustomTypes = function (definitions) {
                 name: propKey,
                 type: (!requiresReplaceTypeDefinition(property)
                     ? capitalize(property.type)
-                    : replaceTypeDefinition(property)) + "!",
+                    : replaceTypeDefinition(property)) + (property.required ? "!" : ""),
             });
         });
         if (type === 'object') {
@@ -79,8 +79,10 @@ var createAction = function (query, type, kind, action) {
     var output_type = replaceRefDefinition(property);
     var argmnts = [];
     property.arguments.forEach(function (arg) {
-        var type = has(arg.type, 'type') ? capitalize(arg.type.type) + '!' : replaceRefDefinition(arg.type) + '!';
-        argmnts.push({ name: arg.title, type: type });
+        var isRequired = arg.type.required ? "!" : "";
+        var type = has(arg.type, 'type') ?
+            capitalize(arg.type.type) : replaceRefDefinition(arg.type);
+        argmnts.push({ name: arg.title, type: type + isRequired });
     });
     var body = {
         type: 'create_action',
@@ -90,7 +92,7 @@ var createAction = function (query, type, kind, action) {
                 arguments: argmnts,
                 handler: "{{ACTION_BASE_URL}}/".concat(action.handler),
                 kind: kind,
-                output_type: output_type,
+                output_type: output_type + (property.required ? '!' : ''),
                 type: type
             }
         }

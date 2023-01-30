@@ -52,7 +52,7 @@ const createCustomTypes = (definitions: any) => {
         type:
           (!requiresReplaceTypeDefinition(property)
             ? capitalize(property.type)
-            : replaceTypeDefinition(property)) + "!",
+            : replaceTypeDefinition(property)) + (property.required ? "!" : ""),
       });
     });
 
@@ -90,13 +90,16 @@ const createAction = (
 ) => {
   const name: string = objectKeys(query.properties)[0];
   const property: any = query.properties[name];
+
   const output_type: string = replaceRefDefinition(property);
   const argmnts: any = [];
 
   property.arguments.forEach((arg: any) => {
-    const type = has(arg.type, 'type') ? capitalize(arg.type.type) + '!' : replaceRefDefinition(arg.type) + '!';
+    const isRequired = arg.type.required ? "!" : "";
+    const type = has(arg.type, 'type') ?
+      capitalize(arg.type.type) : replaceRefDefinition(arg.type);
 
-    argmnts.push({ name: arg.title, type });
+    argmnts.push({ name: arg.title, type: type + isRequired });
   });
 
   const body: any = {
@@ -107,7 +110,7 @@ const createAction = (
         arguments: argmnts,
         handler: `{{ACTION_BASE_URL}}/${action.handler}`,
         kind,
-        output_type,
+        output_type: output_type + (property.required ? '!' : ''),
         type
       }
     }
@@ -135,7 +138,7 @@ const createActionPermission = (
       }
     })
   }
-  
+
   return body;
 };
 
