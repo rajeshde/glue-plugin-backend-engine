@@ -173,7 +173,8 @@ export default class DockerCompose implements IDockerCompose {
 
   // Executes the docker-compose cli
   public async start(projectName: string, filepath: string) {
-    await execute('docker-compose', [
+    await execute('docker', [
+      'compose',
       '-p',
       projectName,
       'up',
@@ -186,7 +187,8 @@ export default class DockerCompose implements IDockerCompose {
   }
 
   public async stop(projectName: string, filepath: string) {
-    await execute('docker-compose', [
+    await execute('docker', [
+      'compose',
       '-p',
       projectName,
       'down',
