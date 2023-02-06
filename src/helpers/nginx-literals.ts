@@ -43,6 +43,7 @@ export const setLocation = (
   proxy_path: string,
   host?: string,
   size_in_mb?: number,
+  host_scheme?: string,
 ): string => `
     location ${path.replace('(.*)', '')} {
       rewrite ^${path} ${proxy_path} break;
@@ -59,5 +60,5 @@ export const setLocation = (
       proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
       proxy_set_header X-Forwarded-Proto $scheme;
 
-      proxy_pass http://${proxy_instance};
+      proxy_pass ${host_scheme || "http"}://${proxy_instance};
     }`;
