@@ -36,73 +36,17 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.serviceAdd = void 0;
-var prompts = require("prompts");
-var services = require("@gluestack/framework/constants/services");
-var spawn_1 = require("../helpers/spawn");
-function serviceAdd(program, glueStackPlugin) {
-    program
-        .command("service:add")
-        .description("Adds a micro-service to the project")
-        .action(function (args) { return runner(glueStackPlugin, args); });
-}
-exports.serviceAdd = serviceAdd;
-var selectPluginName = function (services) { return __awaiter(void 0, void 0, void 0, function () {
-    var choices, value;
+exports.getDirectories = void 0;
+var promises_1 = require("fs/promises");
+var getDirectories = function (source) { return __awaiter(void 0, void 0, void 0, function () {
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0:
-                choices = services.map(function (service) {
-                    return {
-                        title: service,
-                        description: "Select a language for your service",
-                        value: service,
-                    };
-                });
-                return [4, prompts({
-                        type: "select",
-                        name: "value",
-                        message: "Select a service plugin",
-                        choices: choices,
-                    })];
-            case 1:
-                value = (_a.sent()).value;
-                return [2, value];
+            case 0: return [4, (0, promises_1.readdir)(source, { withFileTypes: true })];
+            case 1: return [2, (_a.sent())
+                    .filter(function (dirent) { return dirent.isDirectory(); })
+                    .map(function (dirent) { return dirent.name; })];
         }
     });
 }); };
-var runner = function (glueStackPlugin, args) { return __awaiter(void 0, void 0, void 0, function () {
-    var pluginName, instanceName;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0: return [4, selectPluginName(services)];
-            case 1:
-                pluginName = _a.sent();
-                if (!pluginName) {
-                    console.log("No plugin selected");
-                    return [2];
-                }
-                return [4, prompts({
-                        type: "text",
-                        name: "instanceName",
-                        message: "Enter the instance name",
-                        validate: function (value) { return value.length > 1 ? true : "Instance name must be longer than 1 character"; }
-                    })];
-            case 2:
-                instanceName = (_a.sent()).instanceName;
-                return [4, (0, spawn_1.execute)('node', [
-                        'glue',
-                        'add',
-                        pluginName,
-                        instanceName
-                    ], {
-                        cwd: process.cwd(),
-                        stdio: 'inherit'
-                    })];
-            case 3:
-                _a.sent();
-                return [2];
-        }
-    });
-}); };
-//# sourceMappingURL=service-add.js.map
+exports.getDirectories = getDirectories;
+//# sourceMappingURL=get-directories.js.map

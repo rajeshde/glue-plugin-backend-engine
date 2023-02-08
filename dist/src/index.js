@@ -57,13 +57,13 @@ var GlueStackPlugin = (function () {
     }
     GlueStackPlugin.prototype.init = function () {
         var _this = this;
-        this.app.addCommand(function (program) { return (0, commands_1.eventsAdd)(program, _this); });
-        this.app.addCommand(function (program) { return (0, commands_1.eventsList)(program, _this); });
-        this.app.addCommand(function (program) { return (0, commands_1.eventRemove)(program, _this); });
-        this.app.addCommand(function (program) { return (0, commands_1.cronsAdd)(program, _this); });
-        this.app.addCommand(function (program) { return (0, commands_1.cronsList)(program, _this); });
-        this.app.addCommand(function (program) { return (0, commands_1.cronsRemove)(program, _this); });
         this.app.addCommand(function (program) { return (0, service_add_1.serviceAdd)(program, _this); });
+        this.app.addCommand(function (program) { return (0, commands_1.eventAdd)(program, _this); });
+        this.app.addCommand(function (program) { return (0, commands_1.eventList)(program, _this); });
+        this.app.addCommand(function (program) { return (0, commands_1.eventRemove)(program, _this); });
+        this.app.addCommand(function (program) { return (0, commands_1.cronAdd)(program, _this); });
+        this.app.addCommand(function (program) { return (0, commands_1.cronList)(program, _this); });
+        this.app.addCommand(function (program) { return (0, commands_1.cronRemove)(program, _this); });
     };
     GlueStackPlugin.prototype.destroy = function () {
     };

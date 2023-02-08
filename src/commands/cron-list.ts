@@ -6,10 +6,10 @@ import { GlueStackPlugin } from "src";
 import { fileExists } from "../helpers/file-exists";
 import { timeStamp } from "../helpers/file-time-stamp";
 
-export function cronsList(program: any, glueStackPlugin: GlueStackPlugin) {
+export function cronList(program: any, glueStackPlugin: GlueStackPlugin) {
 	program
 		.command("cron:list")
-		.description("List all cron")
+		.description("List all Crons")
 		.action(() => list(glueStackPlugin));
 }
 
@@ -31,7 +31,7 @@ export async function list(_glueStackPlugin: GlueStackPlugin) {
 	const fileData = require(dataFilePath);
 
 	if (fileData.length <= 0) {
-		console.log(`error: cron file empty! please add one and try again.\nyou can add cron "node glue cron:add --s <schedule-value> --w <webhook-url> or --f <function-name>"`);
+		console.log(`> Error: Cron.json file's empty! Please add one and try again.\n> You can add cron "node glue cron:add"`);
 		process.exit(0);
 	}
 

@@ -7,7 +7,7 @@ import { execute } from "../helpers/spawn";
 export function serviceAdd(program: any, glueStackPlugin: GlueStackPlugin) {
 	program
 		.command("service:add")
-		.description("Create the events")
+		.description("Adds a micro-service to the project")
 		.action((args: any) => runner(glueStackPlugin, args));
 }
 

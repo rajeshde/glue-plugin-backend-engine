@@ -17,7 +17,7 @@ interface listObject {
   lastModified: string;
 }
 
-export function eventsList(program: any, glueStackPlugin: GlueStackPlugin) {
+export function eventList(program: any, glueStackPlugin: GlueStackPlugin) {
   program
     .command("event:list")
     .option("--all", "list all the events")

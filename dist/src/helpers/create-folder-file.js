@@ -36,73 +36,18 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.serviceAdd = void 0;
-var prompts = require("prompts");
-var services = require("@gluestack/framework/constants/services");
-var spawn_1 = require("../helpers/spawn");
-function serviceAdd(program, glueStackPlugin) {
-    program
-        .command("service:add")
-        .description("Adds a micro-service to the project")
-        .action(function (args) { return runner(glueStackPlugin, args); });
-}
-exports.serviceAdd = serviceAdd;
-var selectPluginName = function (services) { return __awaiter(void 0, void 0, void 0, function () {
-    var choices, value;
+exports.writeContentToFilePath = void 0;
+var path_1 = require("path");
+var promises_1 = require("fs/promises");
+var writeContentToFilePath = function (filePath, content) { return __awaiter(void 0, void 0, void 0, function () {
+    var _dirname;
     return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0:
-                choices = services.map(function (service) {
-                    return {
-                        title: service,
-                        description: "Select a language for your service",
-                        value: service,
-                    };
-                });
-                return [4, prompts({
-                        type: "select",
-                        name: "value",
-                        message: "Select a service plugin",
-                        choices: choices,
-                    })];
-            case 1:
-                value = (_a.sent()).value;
-                return [2, value];
-        }
+        _dirname = (0, path_1.dirname)(filePath);
+        return [2, (0, promises_1.mkdir)(_dirname, { recursive: true })
+                .then(function () { return (0, promises_1.writeFile)(filePath, content); })
+                .then(function () { return Promise.resolve("File created at ".concat(filePath, " with content: ")); })
+                .catch(function (err) { return Promise.reject(console.error(err)); })];
     });
 }); };
-var runner = function (glueStackPlugin, args) { return __awaiter(void 0, void 0, void 0, function () {
-    var pluginName, instanceName;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0: return [4, selectPluginName(services)];
-            case 1:
-                pluginName = _a.sent();
-                if (!pluginName) {
-                    console.log("No plugin selected");
-                    return [2];
-                }
-                return [4, prompts({
-                        type: "text",
-                        name: "instanceName",
-                        message: "Enter the instance name",
-                        validate: function (value) { return value.length > 1 ? true : "Instance name must be longer than 1 character"; }
-                    })];
-            case 2:
-                instanceName = (_a.sent()).instanceName;
-                return [4, (0, spawn_1.execute)('node', [
-                        'glue',
-                        'add',
-                        pluginName,
-                        instanceName
-                    ], {
-                        cwd: process.cwd(),
-                        stdio: 'inherit'
-                    })];
-            case 3:
-                _a.sent();
-                return [2];
-        }
-    });
-}); };
-//# sourceMappingURL=service-add.js.map
+exports.writeContentToFilePath = writeContentToFilePath;
+//# sourceMappingURL=create-folder-file.js.map

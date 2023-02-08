@@ -46,14 +46,14 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.list = exports.eventsList = void 0;
+exports.list = exports.eventList = void 0;
 var fs_1 = __importDefault(require("fs"));
 var path_1 = __importDefault(require("path"));
 var cli_table3_1 = __importDefault(require("cli-table3"));
 var promises_1 = __importDefault(require("fs/promises"));
 var file_time_stamp_1 = require("../helpers/file-time-stamp");
 var colors = require("colors");
-function eventsList(program, glueStackPlugin) {
+function eventList(program, glueStackPlugin) {
     program
         .command("event:list")
         .option("--all", "list all the events")
@@ -62,7 +62,7 @@ function eventsList(program, glueStackPlugin) {
         .description("List the events")
         .action(function (args) { return list(glueStackPlugin, args); });
 }
-exports.eventsList = eventsList;
+exports.eventList = eventList;
 function list(_glueStackPlugin, args) {
     return __awaiter(this, void 0, void 0, function () {
         var dbEventPath, appEventPath, table, _a;

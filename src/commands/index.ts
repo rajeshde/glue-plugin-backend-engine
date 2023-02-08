@@ -1,7 +1,7 @@
-export { eventsList } from "./event-list";
-export { eventsAdd } from "./events-add";
+export { eventList } from "./event-list";
+export { eventAdd } from "./event-add";
 export { eventRemove } from "./event-remove";
 
-export { cronsAdd } from "./crons-add";
-export { cronsList } from "./crons-list";
-export { cronsRemove } from "./crons-remove";
+export { cronAdd } from "./cron-add";
+export { cronList } from "./cron-list";
+export { cronRemove } from "./cron-remove";

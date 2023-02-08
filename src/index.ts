@@ -11,7 +11,9 @@ import { writeEnv } from "./helpers/write-env";
 import { addMainRouter } from "./helpers/add-main-router";
 import { addMainEvents } from "./helpers/add-main-events";
 import { addMainCron } from "./helpers/add-main-cron";
-import { cronsAdd, cronsList, cronsRemove, eventRemove, eventsAdd, eventsList } from "./commands";
+import {
+  cronAdd, cronList, cronRemove, eventRemove, eventAdd, eventList
+} from "./commands";
 import { serviceAdd } from "./commands/service-add";
 
 
@@ -29,13 +31,13 @@ export class GlueStackPlugin implements IPlugin, IManagesInstances, ILifeCycle {
   }
 
   init() {
-    this.app.addCommand((program: any) => eventsAdd(program, this));
-    this.app.addCommand((program: any) => eventsList(program, this));
-    this.app.addCommand((program: any) => eventRemove(program, this));
-    this.app.addCommand((program: any) => cronsAdd(program, this));
-    this.app.addCommand((program: any) => cronsList(program, this));
-    this.app.addCommand((program: any) => cronsRemove(program, this));
     this.app.addCommand((program: any) => serviceAdd(program, this));
+    this.app.addCommand((program: any) => eventAdd(program, this));
+    this.app.addCommand((program: any) => eventList(program, this));
+    this.app.addCommand((program: any) => eventRemove(program, this));
+    this.app.addCommand((program: any) => cronAdd(program, this));
+    this.app.addCommand((program: any) => cronList(program, this));
+    this.app.addCommand((program: any) => cronRemove(program, this));
   }
 
   destroy() {
