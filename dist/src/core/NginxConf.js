@@ -39,6 +39,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var path_1 = require("path");
 var fs_1 = require("fs");
 var file_exists_1 = require("../helpers/file-exists");
+var create_folder_1 = require("../helpers/create-folder");
 var nginx_literals_1 = require("../helpers/nginx-literals");
 var GluestackConfig_1 = require("./GluestackConfig");
 var NginxConf = (function () {
@@ -62,6 +63,36 @@ var NginxConf = (function () {
                         console.log(err_1);
                         return [3, 3];
                     case 3: return [2];
+                }
+            });
+        });
+    };
+    NginxConf.prototype.build = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var conf, path, err_2;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 5, , 6]);
+                        return [4, this.toBuildConf()];
+                    case 1:
+                        conf = _a.sent();
+                        path = (0, path_1.join)(process.cwd(), 'meta/router/prod');
+                        return [4, (0, file_exists_1.fileExists)(path)];
+                    case 2:
+                        if (!!(_a.sent())) return [3, 4];
+                        return [4, (0, create_folder_1.createFolder)(path)];
+                    case 3:
+                        _a.sent();
+                        _a.label = 4;
+                    case 4:
+                        (0, fs_1.writeFileSync)((0, path_1.join)(path, 'backend.conf'), conf);
+                        return [3, 6];
+                    case 5:
+                        err_2 = _a.sent();
+                        console.log(err_2);
+                        return [3, 6];
+                    case 6: return [2];
                 }
             });
         });
@@ -96,6 +127,21 @@ var NginxConf = (function () {
                     }
                 });
                 return [2, Promise.resolve(nginx_literals_1.startsWith + (0, nginx_literals_1.setServer)(locations) + nginx_literals_1.endsWith)];
+            });
+        });
+    };
+    NginxConf.prototype.toBuildConf = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var locations, data;
+            return __generator(this, function (_a) {
+                locations = [];
+                data = this.data;
+                data.forEach(function (routes) {
+                    if (routes.hasOwnProperty('path')) {
+                        locations.push((0, nginx_literals_1.setLocation)(routes.path, routes.proxy.instance, routes.proxy.path, routes.host, routes.size_in_mb, routes.host_scheme, routes.read_timeout));
+                    }
+                });
+                return [2, Promise.resolve(locations.join("\n"))];
             });
         });
     };

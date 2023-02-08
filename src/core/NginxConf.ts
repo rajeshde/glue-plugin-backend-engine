@@ -1,6 +1,7 @@
 import { join } from 'path';
 import { writeFileSync } from 'fs';
 import { fileExists } from '../helpers/file-exists';
+import { createFolder } from '../helpers/create-folder';
 import {
   endsWith, startsWith, setServer, setLocation
 } from '../helpers/nginx-literals';
@@ -40,6 +41,28 @@ export default class NginxConf {
     }
   }
 
+  // Generates the nginx.conf file for production
+  public async build(): Promise<void> {
+    try {
+      const conf: string = await this.toBuildConf();
+      const path: string = join(
+        process.cwd(),
+        'meta/router/prod'
+      );
+
+      if (!await fileExists(path)) {
+        await createFolder(path);
+      }
+
+      writeFileSync(
+        join(path, 'backend.conf'),
+        conf
+      );
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
   // Adds router.js data to the nginx conf data
   // if and only if the given path exists
   public async addRouter(string: string): Promise<boolean> {
@@ -61,7 +84,7 @@ export default class NginxConf {
     data.forEach((routes: any) => {
       if (routes.hasOwnProperty('path')) {
         locations.push(setLocation(
-          routes.path, routes.proxy.instance, routes.proxy.path, routes.host, routes.size_in_mb, routes.host_scheme, routes.read_timeout 
+          routes.path, routes.proxy.instance, routes.proxy.path, routes.host, routes.size_in_mb, routes.host_scheme, routes.read_timeout
         ));
       }
     });
@@ -69,5 +92,21 @@ export default class NginxConf {
     return Promise.resolve(
       startsWith + setServer(locations) + endsWith
     );
+  }
+
+  // Convertrs the nginx conf data to a string for production
+  private async toBuildConf(): Promise<string> {
+    let locations: string[] = [];
+    const data: any[] = this.data;
+
+    data.forEach((routes: any) => {
+      if (routes.hasOwnProperty('path')) {
+        locations.push(setLocation(
+          routes.path, routes.proxy.instance, routes.proxy.path, routes.host, routes.size_in_mb, routes.host_scheme, routes.read_timeout
+        ));
+      }
+    });
+
+    return Promise.resolve(locations.join("\n"));
   }
 }

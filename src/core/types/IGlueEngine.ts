@@ -7,10 +7,11 @@ export interface IGlueEngine {
 
   start(): Promise<void>;
   stop(): Promise<void>;
+  build(): Promise<void>;
 
   startDockerCompose(): Promise<void>;
   stopDockerCompose(): Promise<void>;
 
   createDockerCompose(): Promise<void>;
-  createNginxConfig(): Promise<void>;
+  createNginxConfig(environment: 'dev' | 'prod'): Promise<void>;
 }

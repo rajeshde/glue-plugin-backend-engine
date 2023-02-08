@@ -130,7 +130,7 @@ export default class GluestackEngine implements IGlueEngine {
   }
 
   // Creates the nginx config from all available plugins' router.js file
-  async createNginxConfig(): Promise<void> {
+  async createNginxConfig(environment: 'dev' | 'prod' = 'dev'): Promise<void> {
     const plugins = this.statelessPlugins;
     const nginxConf = new NginxConf();
 
@@ -140,7 +140,11 @@ export default class GluestackEngine implements IGlueEngine {
       );
     }
 
-    await nginxConf.generate();
+    if (environment === 'prod') {
+      await nginxConf.build();
+    } else {
+      await nginxConf.generate();
+    }
   }
 
   // Collects all the stateless plugins and their dockerfiles
@@ -337,5 +341,13 @@ export default class GluestackEngine implements IGlueEngine {
     );
 
     await writeFile(join(details.path, 'Dockerfile'), context);
+  }
+
+  public async build(): Promise<void> {
+    await this.collectPlugins('stateless');
+    await this.collectPlugins('stateful');
+
+    await this.createDockerCompose();
+    await this.createNginxConfig('prod');
   }
 }

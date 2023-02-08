@@ -172,8 +172,9 @@ var GluestackEngine = (function () {
             });
         });
     };
-    GluestackEngine.prototype.createNginxConfig = function () {
+    GluestackEngine.prototype.createNginxConfig = function (environment) {
         var _a, e_1, _b, _c;
+        if (environment === void 0) { environment = 'dev'; }
         return __awaiter(this, void 0, void 0, function () {
             var plugins, nginxConf, _d, plugins_1, plugins_1_1, plugin, e_1_1;
             return __generator(this, function (_e) {
@@ -220,10 +221,17 @@ var GluestackEngine = (function () {
                         if (e_1) throw e_1.error;
                         return [7];
                     case 14: return [7];
-                    case 15: return [4, nginxConf.generate()];
+                    case 15:
+                        if (!(environment === 'prod')) return [3, 17];
+                        return [4, nginxConf.build()];
                     case 16:
                         _e.sent();
-                        return [2];
+                        return [3, 19];
+                    case 17: return [4, nginxConf.generate()];
+                    case 18:
+                        _e.sent();
+                        _e.label = 19;
+                    case 19: return [2];
                 }
             });
         });
@@ -455,6 +463,27 @@ var GluestackEngine = (function () {
                         context = _a.sent();
                         return [4, (0, write_file_1.writeFile)((0, path_1.join)(details.path, 'Dockerfile'), context)];
                     case 2:
+                        _a.sent();
+                        return [2];
+                }
+            });
+        });
+    };
+    GluestackEngine.prototype.build = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4, this.collectPlugins('stateless')];
+                    case 1:
+                        _a.sent();
+                        return [4, this.collectPlugins('stateful')];
+                    case 2:
+                        _a.sent();
+                        return [4, this.createDockerCompose()];
+                    case 3:
+                        _a.sent();
+                        return [4, this.createNginxConfig('prod')];
+                    case 4:
                         _a.sent();
                         return [2];
                 }

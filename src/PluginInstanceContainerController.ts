@@ -124,8 +124,14 @@ export class PluginInstanceContainerController implements IContainerController {
   }
 
   async build() {
-    await SpawnHelper.run(this.callerInstance.getInstallationPath(), this.installScript());
-    await SpawnHelper.run(this.callerInstance.getInstallationPath(), this.buildScript());
+    const app: IApp = this.app;
+
+    try {
+      const engine: IGlueEngine = new GluestackEngine(app, 'backend');
+      await engine.build();
+    } catch (err) {
+      console.log('>> err', err);
+    }
   }
 
   async getRoutes(): Promise<IRoutes[]> {
