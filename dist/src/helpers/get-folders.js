@@ -35,18 +35,20 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getDirectories = void 0;
-var promises_1 = require("fs/promises");
-var getDirectories = function (source) { return __awaiter(void 0, void 0, void 0, function () {
+exports.getFolders = void 0;
+var node_os_1 = __importDefault(require("node:os"));
+var getFolders = function () { return __awaiter(void 0, void 0, void 0, function () {
+    var folders;
     return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0: return [4, (0, promises_1.readdir)(source, { withFileTypes: true })];
-            case 1: return [2, (_a.sent())
-                    .filter(function (dirent) { return dirent.isDirectory(); })
-                    .map(function (dirent) { return dirent.name; })];
-        }
+        folders = node_os_1.default.platform() === 'win32' ?
+            process.cwd().split('\\') :
+            process.cwd().split('/');
+        return [2, folders];
     });
 }); };
-exports.getDirectories = getDirectories;
-//# sourceMappingURL=get-directories%20copy.js.map
+exports.getFolders = getFolders;
+//# sourceMappingURL=get-folders.js.map

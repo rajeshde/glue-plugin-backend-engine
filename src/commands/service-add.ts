@@ -30,7 +30,7 @@ const selectPluginName = async (services: string[]) => {
   return value;
 }
 
-const runner = async (glueStackPlugin: GlueStackPlugin, args: any) => {
+const runner = async (_glueStackPlugin: GlueStackPlugin, args: any) => {
   const pluginName = await selectPluginName(services);
   if (!pluginName) {
     console.log("No plugin selected");
@@ -51,6 +51,7 @@ const runner = async (glueStackPlugin: GlueStackPlugin, args: any) => {
     instanceName
   ], {
     cwd: process.cwd(),
-    stdio: 'inherit'
+    stdio: 'inherit',
+    shell: true
   });
 };

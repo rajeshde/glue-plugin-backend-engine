@@ -71,7 +71,7 @@ var selectPluginName = function (services) { return __awaiter(void 0, void 0, vo
         }
     });
 }); };
-var runner = function (glueStackPlugin, args) { return __awaiter(void 0, void 0, void 0, function () {
+var runner = function (_glueStackPlugin, args) { return __awaiter(void 0, void 0, void 0, function () {
     var pluginName, instanceName;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -97,7 +97,8 @@ var runner = function (glueStackPlugin, args) { return __awaiter(void 0, void 0,
                         instanceName
                     ], {
                         cwd: process.cwd(),
-                        stdio: 'inherit'
+                        stdio: 'inherit',
+                        shell: true
                     })];
             case 3:
                 _a.sent();
