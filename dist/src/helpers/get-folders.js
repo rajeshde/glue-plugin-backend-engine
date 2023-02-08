@@ -35,75 +35,20 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.serviceAdd = void 0;
-var prompts = require("prompts");
-var services = require("@gluestack/framework/constants/services");
-var spawn_1 = require("../helpers/spawn");
-function serviceAdd(program, glueStackPlugin) {
-    program
-        .command("service:add")
-        .description("Create the events")
-        .action(function (args) { return runner(glueStackPlugin, args); });
-}
-exports.serviceAdd = serviceAdd;
-var selectPluginName = function (services) { return __awaiter(void 0, void 0, void 0, function () {
-    var choices, value;
+exports.getFolders = void 0;
+var node_os_1 = __importDefault(require("node:os"));
+var getFolders = function () { return __awaiter(void 0, void 0, void 0, function () {
+    var folders;
     return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0:
-                choices = services.map(function (service) {
-                    return {
-                        title: service,
-                        description: "Select a language for your service",
-                        value: service,
-                    };
-                });
-                return [4, prompts({
-                        type: "select",
-                        name: "value",
-                        message: "Select a service plugin",
-                        choices: choices,
-                    })];
-            case 1:
-                value = (_a.sent()).value;
-                return [2, value];
-        }
+        folders = node_os_1.default.platform() === 'win32' ?
+            process.cwd().split('\\') :
+            process.cwd().split('/');
+        return [2, folders];
     });
 }); };
-var runner = function (glueStackPlugin, args) { return __awaiter(void 0, void 0, void 0, function () {
-    var pluginName, instanceName;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0: return [4, selectPluginName(services)];
-            case 1:
-                pluginName = _a.sent();
-                if (!pluginName) {
-                    console.log("No plugin selected");
-                    return [2];
-                }
-                return [4, prompts({
-                        type: "text",
-                        name: "instanceName",
-                        message: "Enter the instance name",
-                        validate: function (value) { return value.length > 1 ? true : "Instance name must be longer than 1 character"; }
-                    })];
-            case 2:
-                instanceName = (_a.sent()).instanceName;
-                return [4, (0, spawn_1.execute)('node', [
-                        'glue',
-                        'add',
-                        pluginName,
-                        instanceName
-                    ], {
-                        cwd: process.cwd(),
-                        stdio: 'inherit',
-                        shell: true
-                    })];
-            case 3:
-                _a.sent();
-                return [2];
-        }
-    });
-}); };
-//# sourceMappingURL=service-add.js.map
+exports.getFolders = getFolders;
+//# sourceMappingURL=get-folders.js.map
