@@ -1,9 +1,11 @@
-const services = require("@gluestack/framework/constants/services");
 
 import IApp from "@gluestack/framework/types/app/interface/IApp";
 import IInstance from "@gluestack/framework/types/plugin/interface/IInstance";
 import IHasContainerController from "@gluestack/framework/types/plugin/interface/IHasContainerController";
+
 import { IGlueEngine } from "./types/IGlueEngine";
+import { IHasuraEngine } from "./types/IHasuraEngine";
+import { IGluestackCron } from "./types/IGluestackCron";
 import { IStatelessPlugin } from "./types/IStatelessPlugin";
 
 import NginxConf from "./NginxConf";
@@ -14,16 +16,17 @@ import { getConfig, setConfig } from "./GluestackConfig";
 
 import { join } from "path";
 import { includes } from "lodash";
-import { writeFile } from "../helpers/write-file";
-import { waitInSeconds } from "../helpers/wait-in-seconds";
-import { replaceKeyword } from "../helpers/replace-keyword";
-import { isValidGluePlugin, isDaprService, isGlueService } from "../helpers/valid-glue-service";
-import { removeSpecialChars } from "../helpers/remove-special-chars";
+
 import { backendPlugins, noDockerfiles } from "../configs/constants";
 
-import { IHasuraEngine } from "./types/IHasuraEngine";
-import { IGluestackCron } from "./types/IGluestackCron";
+import { writeFile } from "../helpers/write-file";
 import { getFolders } from "../helpers/get-folders";
+import { waitInSeconds } from "../helpers/wait-in-seconds";
+import { replaceKeyword } from "../helpers/replace-keyword";
+import { removeSpecialChars } from "../helpers/remove-special-chars";
+import { isValidGluePlugin, isDaprService, isGlueService } from "../helpers/valid-glue-service";
+
+const services = require("@gluestack/framework/constants/services");
 
 /**
  * Gluestack Engine
@@ -92,20 +95,22 @@ export default class GluestackEngine implements IGlueEngine {
 
       // 11. clears & registers all events
       await hasuraEngine.reapplyEvents();
-
-      console.log('\n> Note: ');
-      console.log(`>  1. In case a table does not exist in Hasura Engine, Gluestack Engine`);
-      console.log(`>     will skip the event trigger registration.`);
-      console.log(`>  2. Gluestack Engine drops all existing event triggers, actions & `);
-      console.log(`>     custom-types and re-registers them again. (This is to prevent any`);
-      console.log(`>     issues with the event trigger, custom types & actions)`);
-      console.log(`>  3. Gluestack Engine will not drop any existing event triggers, actions`);
-      console.log(`>     & custom-types that are not registered by Gluestack Engine.\n`);
     }
 
     // 12. collects, validates & register crons into gluestack cron
     const cron: IGluestackCron = new GluestackCron();
     await cron.start();
+
+    console.log('\n> Note: ');
+    console.log(`>  1. In case a table does not exist in Hasura Engine, Gluestack Engine`);
+    console.log(`>     will skip the event trigger registration.`);
+    console.log(`>  2. Gluestack Engine drops all existing event triggers, actions & `);
+    console.log(`>     custom-types and re-registers them again. (This is to prevent any`);
+    console.log(`>     issues with the event trigger, custom types & actions)`);
+    console.log(`>  3. Gluestack Engine will not drop any existing event triggers, actions`);
+    console.log(`>     & custom-types that were not registered with or by Gluestack Engine.\n`);
+    console.log(`>  4. Gluestack Engine will not skip/drop any database events, app events or crons`);
+    console.log(`>     which does not hold valid input against the keys.\n`);
   }
 
   // Stops the engine for the backend instance

@@ -154,8 +154,13 @@ export default class GluestackEvent implements IGluestackEvent {
       const serviceName = value.split('::')[0];
       const methodName = value.split('::')[1];
 
+      if (!serviceName || !methodName) {
+        console.log(`> ${source} - service name or method name missing from value`);
+        continue;
+      }
+
       if (!this.daprServices[serviceName]) {
-        console.log(`> ${source} - service name "${serviceName}" does not exist in services list!`);
+        console.log(`> ${source} - service name "${serviceName}" does not exist in services list`);
         continue;
       }
 
@@ -165,7 +170,7 @@ export default class GluestackEvent implements IGluestackEvent {
 
       const folders = await getDirectories(functionsPath);
       if (!folders || !folders.includes(methodName)) {
-        console.log(`> ${source} - method name "${methodName}" does not exist in "${serviceName}" service!`);
+        console.log(`> ${source} - method name "${methodName}" does not exist in "${serviceName}" service`);
         continue;
       }
 

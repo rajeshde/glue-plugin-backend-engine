@@ -367,8 +367,12 @@ var GluestackEvent = (function () {
                         }
                         serviceName = value.split('::')[0];
                         methodName = value.split('::')[1];
+                        if (!serviceName || !methodName) {
+                            console.log("> ".concat(source, " - service name or method name missing from value"));
+                            return [3, 7];
+                        }
                         if (!this.daprServices[serviceName]) {
-                            console.log("> ".concat(source, " - service name \"").concat(serviceName, "\" does not exist in services list!"));
+                            console.log("> ".concat(source, " - service name \"").concat(serviceName, "\" does not exist in services list"));
                             return [3, 7];
                         }
                         service = this.daprServices[serviceName];
@@ -377,7 +381,7 @@ var GluestackEvent = (function () {
                     case 5:
                         folders = _e.sent();
                         if (!folders || !folders.includes(methodName)) {
-                            console.log("> ".concat(source, " - method name \"").concat(methodName, "\" does not exist in \"").concat(serviceName, "\" service!"));
+                            console.log("> ".concat(source, " - method name \"").concat(methodName, "\" does not exist in \"").concat(serviceName, "\" service"));
                             return [3, 7];
                         }
                         events.push(_event);

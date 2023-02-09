@@ -1,15 +1,4 @@
 "use strict";
-var __assign = (this && this.__assign) || function () {
-    __assign = Object.assign || function(t) {
-        for (var s, i = 1, n = arguments.length; i < n; i++) {
-            s = arguments[i];
-            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
-                t[p] = s[p];
-        }
-        return t;
-    };
-    return __assign.apply(this, arguments);
-};
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
     var desc = Object.getOwnPropertyDescriptor(m, k);
@@ -81,11 +70,14 @@ var get = require('lodash').get;
 var path_1 = require("path");
 var cron = __importStar(require("node-cron"));
 var file_exists_1 = require("../helpers/file-exists");
+var get_directories_1 = require("../helpers/get-directories");
 var GluestackConfig_1 = require("./GluestackConfig");
 var GluestackCron = (function () {
     function GluestackCron() {
+        this.daprServices = {};
         this.filePath = 'crons/crons.json';
         this.collection = [];
+        this.daprServices = (0, GluestackConfig_1.getConfig)('daprServices');
     }
     GluestackCron.prototype.collect = function () {
         return __awaiter(this, void 0, void 0, function () {
@@ -121,56 +113,73 @@ var GluestackCron = (function () {
         var _a, collection_1, collection_1_1;
         var _b, e_1, _c, _d;
         return __awaiter(this, void 0, void 0, function () {
-            var object, schedule, type, value, e_1_1;
+            var object, schedule, type, value, serviceName, methodName, service, functionsPath, folders, e_1_1;
             return __generator(this, function (_e) {
                 switch (_e.label) {
                     case 0:
-                        _e.trys.push([0, 5, 6, 11]);
+                        _e.trys.push([0, 8, 9, 14]);
                         _a = true, collection_1 = __asyncValues(collection);
                         _e.label = 1;
                     case 1: return [4, collection_1.next()];
                     case 2:
-                        if (!(collection_1_1 = _e.sent(), _b = collection_1_1.done, !_b)) return [3, 4];
+                        if (!(collection_1_1 = _e.sent(), _b = collection_1_1.done, !_b)) return [3, 7];
                         _d = collection_1_1.value;
                         _a = false;
-                        try {
-                            object = _d;
-                            schedule = get(object, 'schedule', '');
-                            type = get(object, 'type', '');
-                            value = get(object, 'value', '');
-                            if (!schedule || !type || !value
-                                || !cron.validate(schedule)) {
-                                console.log('> Found invalid schedule. Skipping...');
-                                console.log(__assign({}, object));
-                                return [3, 3];
-                            }
-                            else {
-                                this.collection.push(object);
-                            }
-                        }
-                        finally {
-                            _a = true;
-                        }
                         _e.label = 3;
-                    case 3: return [3, 1];
-                    case 4: return [3, 11];
+                    case 3:
+                        _e.trys.push([3, , 5, 6]);
+                        object = _d;
+                        schedule = get(object, 'schedule', '');
+                        type = get(object, 'type', '');
+                        value = get(object, 'value', '');
+                        if (!schedule || !type || !value
+                            || !cron.validate(schedule)) {
+                            console.log("> Found an invalid schedule. Skipping...");
+                            return [3, 6];
+                        }
+                        serviceName = value.split('::')[0];
+                        methodName = value.split('::')[1];
+                        if (!serviceName || !methodName) {
+                            console.log("> Cron - service name or method name missing from value");
+                            return [3, 6];
+                        }
+                        if (!this.daprServices[serviceName]) {
+                            console.log("> Cron - service name \"".concat(serviceName, "\" does not exist in services list"));
+                            return [3, 6];
+                        }
+                        service = this.daprServices[serviceName];
+                        functionsPath = (0, path_1.join)(service.path, 'functions');
+                        return [4, (0, get_directories_1.getDirectories)(functionsPath)];
+                    case 4:
+                        folders = _e.sent();
+                        if (!folders || !folders.includes(methodName)) {
+                            console.log("> Cron - method name \"".concat(methodName, "\" does not exist in \"").concat(serviceName, "\" service"));
+                            return [3, 6];
+                        }
+                        this.collection.push(object);
+                        return [3, 6];
                     case 5:
+                        _a = true;
+                        return [7];
+                    case 6: return [3, 1];
+                    case 7: return [3, 14];
+                    case 8:
                         e_1_1 = _e.sent();
                         e_1 = { error: e_1_1 };
-                        return [3, 11];
-                    case 6:
-                        _e.trys.push([6, , 9, 10]);
-                        if (!(!_a && !_b && (_c = collection_1.return))) return [3, 8];
-                        return [4, _c.call(collection_1)];
-                    case 7:
-                        _e.sent();
-                        _e.label = 8;
-                    case 8: return [3, 10];
+                        return [3, 14];
                     case 9:
+                        _e.trys.push([9, , 12, 13]);
+                        if (!(!_a && !_b && (_c = collection_1.return))) return [3, 11];
+                        return [4, _c.call(collection_1)];
+                    case 10:
+                        _e.sent();
+                        _e.label = 11;
+                    case 11: return [3, 13];
+                    case 12:
                         if (e_1) throw e_1.error;
                         return [7];
-                    case 10: return [7];
-                    case 11: return [2];
+                    case 13: return [7];
+                    case 14: return [2];
                 }
             });
         });

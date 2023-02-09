@@ -55,7 +55,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var services = require("@gluestack/framework/constants/services");
 var NginxConf_1 = __importDefault(require("./NginxConf"));
 var HasuraEngine_1 = __importDefault(require("./HasuraEngine"));
 var GluestackCron_1 = __importDefault(require("./GluestackCron"));
@@ -63,13 +62,14 @@ var DockerCompose_1 = __importDefault(require("./DockerCompose"));
 var GluestackConfig_1 = require("./GluestackConfig");
 var path_1 = require("path");
 var lodash_1 = require("lodash");
+var constants_1 = require("../configs/constants");
 var write_file_1 = require("../helpers/write-file");
+var get_folders_1 = require("../helpers/get-folders");
 var wait_in_seconds_1 = require("../helpers/wait-in-seconds");
 var replace_keyword_1 = require("../helpers/replace-keyword");
-var valid_glue_service_1 = require("../helpers/valid-glue-service");
 var remove_special_chars_1 = require("../helpers/remove-special-chars");
-var constants_1 = require("../configs/constants");
-var get_folders_1 = require("../helpers/get-folders");
+var valid_glue_service_1 = require("../helpers/valid-glue-service");
+var services = require("@gluestack/framework/constants/services");
 var GluestackEngine = (function () {
     function GluestackEngine(app, backendInstancePath) {
         this.engineExist = false;
@@ -127,6 +127,12 @@ var GluestackEngine = (function () {
                         return [4, hasuraEngine.reapplyEvents()];
                     case 13:
                         _a.sent();
+                        _a.label = 14;
+                    case 14:
+                        cron = new GluestackCron_1.default();
+                        return [4, cron.start()];
+                    case 15:
+                        _a.sent();
                         console.log('\n> Note: ');
                         console.log(">  1. In case a table does not exist in Hasura Engine, Gluestack Engine");
                         console.log(">     will skip the event trigger registration.");
@@ -134,13 +140,9 @@ var GluestackEngine = (function () {
                         console.log(">     custom-types and re-registers them again. (This is to prevent any");
                         console.log(">     issues with the event trigger, custom types & actions)");
                         console.log(">  3. Gluestack Engine will not drop any existing event triggers, actions");
-                        console.log(">     & custom-types that are not registered by Gluestack Engine.\n");
-                        _a.label = 14;
-                    case 14:
-                        cron = new GluestackCron_1.default();
-                        return [4, cron.start()];
-                    case 15:
-                        _a.sent();
+                        console.log(">     & custom-types that were not registered with or by Gluestack Engine.\n");
+                        console.log(">  4. Gluestack Engine will not skip/drop any database events, app events or crons");
+                        console.log(">     which does not hold valid input against the keys.\n");
                         return [2];
                 }
             });

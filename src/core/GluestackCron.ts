@@ -6,15 +6,18 @@ import * as cron from 'node-cron';
 import { ICronObject, IGluestackCron } from './types/IGluestackCron';
 
 import { fileExists } from '../helpers/file-exists';
+import { getDirectories } from '../helpers/get-directories';
 import { getConfig, prepareConfigJSON } from './GluestackConfig';
 
 export default class GluestackCron implements IGluestackCron {
   public collection: ICronObject[];
+  public daprServices: any = {};
 
   private filePath: string = 'crons/crons.json';
 
   constructor() {
     this.collection = [];
+    this.daprServices = getConfig('daprServices');
   }
 
   // collects and validates all the cron object
@@ -45,12 +48,35 @@ export default class GluestackCron implements IGluestackCron {
         !schedule || !type || !value
           || !cron.validate(schedule)
       ) {
-        console.log('> Found invalid schedule. Skipping...');
-        console.log({ ...object });
+        console.log(`> Found an invalid schedule. Skipping...`);
         continue;
-      } else {
-        this.collection.push(object);
       }
+
+      // if function, check if the service name exists in the services list
+      const serviceName = value.split('::')[0];
+      const methodName = value.split('::')[1];
+
+      if (!serviceName || !methodName) {
+        console.log(`> Cron - service name or method name missing from value`);
+        continue;
+      }
+
+      if (!this.daprServices[serviceName]) {
+        console.log(`> Cron - service name "${serviceName}" does not exist in services list`);
+        continue;
+      }
+
+      // if function, check if the method name exists in the service's functions directory
+      const service = this.daprServices[serviceName];
+      const functionsPath = join(service.path, 'functions');
+
+      const folders = await getDirectories(functionsPath);
+      if (!folders || !folders.includes(methodName)) {
+        console.log(`> Cron - method name "${methodName}" does not exist in "${serviceName}" service`);
+        continue;
+      }
+
+      this.collection.push(object);
     }
   }
 
