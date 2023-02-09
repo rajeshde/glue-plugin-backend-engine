@@ -5,7 +5,8 @@
   "scripts": {
     "start:server": "nodemon src/server.js",
     "start:cron": "node src/cron.js",
-    "build": ""
+    "build": "",
+    "start": "node src/server.js"
   },
   "license": "ISC",
   "dependencies": {
