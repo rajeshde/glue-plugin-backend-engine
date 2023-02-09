@@ -4,9 +4,10 @@ const services = require("@gluestack/framework/constants/services");
 import IInstance from "@gluestack/framework/types/plugin/interface/IInstance";
 import IHasContainerController from "@gluestack/framework/types/plugin/interface/IHasContainerController";
 
-import { join, relative } from "path";
 import * as cron from "node-cron";
+import { join, relative } from "path";
 import { GlueStackPlugin } from "src";
+import { unique } from "../helpers/unique";
 import { writeFile } from "../helpers/write-file";
 import { fileExists } from "../helpers/file-exists";
 import { getDirectories } from "../helpers/get-directories";
@@ -78,7 +79,8 @@ export async function create(gluestackPlugin: GlueStackPlugin) {
   )
 
   fileContent = require(cronsFilePath);
-  fileContent = `${JSON.stringify([content, ...fileContent], null, 2)}`;
+  fileContent = await unique([content, ...fileContent]);
+  fileContent = `${JSON.stringify(fileContent, null, 2)}`;
 
   await writeFile(cronsFilePath, fileContent);
 }

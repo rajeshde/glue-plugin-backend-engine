@@ -1,9 +1,9 @@
 import { GlueStackPlugin } from "src";
 
-import fs from "fs";
 import path from "path";
+// import { readdir } from "fs";
 import Table from "cli-table3";
-import promises from "fs/promises";
+import { lstat, readdir } from "fs/promises";
 import { timeStamp } from "../helpers/file-time-stamp";
 
 const colors = require("colors");
@@ -27,7 +27,7 @@ export function eventList(program: any, glueStackPlugin: GlueStackPlugin) {
     .action((args: any) => list(glueStackPlugin, args));
 }
 
-export async function list(_glueStackPlugin: GlueStackPlugin, args: any) {
+const list = async (_glueStackPlugin: GlueStackPlugin, args: any) => {
   const dbEventPath = "./backend/events/database";
   const appEventPath = "./backend/events/app";
 
@@ -39,6 +39,7 @@ export async function list(_glueStackPlugin: GlueStackPlugin, args: any) {
       colors.brightGreen("Modified on"),
     ],
   });
+
   switch (true) {
     case args.hasOwnProperty("all") || Object.entries(args).length === 0:
       await getEvents(appEventPath, table, false);
@@ -59,9 +60,9 @@ export async function list(_glueStackPlugin: GlueStackPlugin, args: any) {
       console.log(table.toString());
       break;
   }
-}
+};
 
-async function getEvents(eventPath: any, table: any, dbEvent: boolean) {
+const getEvents = async (eventPath: any, table: any, dbEvent: boolean) => {
   const files: any = await getFiles(eventPath);
   let listData: listObject;
   try {
@@ -121,19 +122,12 @@ async function getEvents(eventPath: any, table: any, dbEvent: boolean) {
   }
 }
 
-async function getFiles(filePath: string) {
-  return new Promise((resolve, reject) => {
-    fs.readdir(filePath, (err: Error, files: string[]) => {
-      if (err) {
-        console.log("error: no files found!");
-        process.exit(0);
-      }
-      return resolve(files);
-    });
-  });
-}
+const getFiles = async (filePath: string) => {
+  const files: string[] = await readdir(filePath);
+  return (!files || files.length === 0) ? [] : files;
+};
 
-async function sortingArray(table: any) {
+const sortingArray = async (table: any) => {
   table.sort(async (a: Table, b: Table) => {
     // get the timing value of each object
     let timingA = Object.values(a)[0][2];
@@ -152,9 +146,9 @@ async function sortingArray(table: any) {
     const timingBInSeconds = await getSecondsFromTiming(timingB);
     return timingAInSeconds - timingBInSeconds;
   });
-}
+};
 
-async function getSecondsFromTiming(timing: any) {
+const getSecondsFromTiming = async (timing: any) => {
   let time = timing.match(/\d+/);
   let unit = timing.match(/[a-zA-Z]+/);
   time = time ? time[0] : 1;
@@ -167,11 +161,11 @@ async function getSecondsFromTiming(timing: any) {
   } else if (unit[0] === "year" || unit[0] === "years") {
     return time * 365 * 24 * 60 * 60;
   }
-}
+};
 
-async function isDirectory(path: any) {
+const isDirectory = async (path: any) => {
   try {
-    const data = await promises.lstat(path);
+    const data = await lstat(path);
     if (data.isDirectory()) {
       return true;
     } else {
@@ -181,4 +175,4 @@ async function isDirectory(path: any) {
     console.log(error);
     process.exit(0);
   }
-}
+};

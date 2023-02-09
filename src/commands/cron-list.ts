@@ -23,7 +23,7 @@ export async function list(_glueStackPlugin: GlueStackPlugin) {
 	});
 
 	if (!(await fileExists(cronsFilePath))) {
-		console.log("error: cron file missing!");
+		console.log("> Error: cron file missing!");
 		process.exit(0);
 	}
 
@@ -31,7 +31,7 @@ export async function list(_glueStackPlugin: GlueStackPlugin) {
 	const fileData = require(dataFilePath);
 
 	if (fileData.length <= 0) {
-		console.log(`> Error: Cron.json file's empty! Please add one and try again.\n> You can add cron "node glue cron:add"`);
+		console.log(`> Error: Cron.json file's empty! Please add one and try again.\n> You can add cron using "node glue cron:add" command.`);
 		process.exit(0);
 	}
 
@@ -43,5 +43,5 @@ export async function list(_glueStackPlugin: GlueStackPlugin) {
 	console.log(table.toString());
 
 	const lastModified = await timeStamp(cronsFilePath);
-	console.log(`Cron last updated: ${lastModified}`);
+	console.log(`Crons last updated: ${lastModified}`);
 }

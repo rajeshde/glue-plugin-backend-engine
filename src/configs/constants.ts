@@ -25,3 +25,9 @@ export const noDockerfiles: string[] = [
   '@gluestack/glue-plugin-postgres'
 ];
 
+export const daprServices: string[] = [
+  '@gluestack/glue-plugin-backend-engine',
+  '@gluestack/glue-plugin-auth',
+  '@gluestack/glue-plugin-storage',
+  '@gluestack/glue-plugin-service-*'
+];

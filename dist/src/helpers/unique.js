@@ -1,15 +1,4 @@
 "use strict";
-var __assign = (this && this.__assign) || function () {
-    __assign = Object.assign || function(t) {
-        for (var s, i = 1, n = arguments.length; i < n; i++) {
-            s = arguments[i];
-            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
-                t[p] = s[p];
-        }
-        return t;
-    };
-    return __assign.apply(this, arguments);
-};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -46,52 +35,66 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.prepareConfigJSON = exports.setConfig = exports.getConfig = exports.config = void 0;
-var path_1 = require("path");
-var promises_1 = require("fs/promises");
-var file_exists_1 = require("../helpers/file-exists");
-var write_file_1 = require("../helpers/write-file");
-exports.config = {
-    postgresInstancePath: '',
-    postgresConnectionString: '',
-    authInstancePath: '',
-    backendInstancePath: '',
-    engineInstancePath: '',
-    hasuraInstancePath: '',
-    hasuraInstanceStatus: 'down',
-    hasuraEnvs: {},
-    daprServices: []
+var __asyncValues = (this && this.__asyncValues) || function (o) {
+    if (!Symbol.asyncIterator) throw new TypeError("Symbol.asyncIterator is not defined.");
+    var m = o[Symbol.asyncIterator], i;
+    return m ? m.call(o) : (o = typeof __values === "function" ? __values(o) : o[Symbol.iterator](), i = {}, verb("next"), verb("throw"), verb("return"), i[Symbol.asyncIterator] = function () { return this; }, i);
+    function verb(n) { i[n] = o[n] && function (v) { return new Promise(function (resolve, reject) { v = o[n](v), settle(resolve, reject, v.done, v.value); }); }; }
+    function settle(resolve, reject, d, v) { Promise.resolve(v).then(function(v) { resolve({ value: v, done: d }); }, reject); }
 };
-var getConfig = function (key) { return exports.config[key]; };
-exports.getConfig = getConfig;
-var setConfig = function (key, value) { return exports.config[key] = value; };
-exports.setConfig = setConfig;
-var prepareConfigJSON = function (newContent) { return __awaiter(void 0, void 0, void 0, function () {
-    var content, engineInstance, backendInstance, filepath;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.unique = void 0;
+var unique = function (array) { var _a, array_1, array_1_1; return __awaiter(void 0, void 0, void 0, function () {
+    var unique, seen, item, itemKey, e_1_1;
+    var _b, e_1, _c, _d;
+    return __generator(this, function (_e) {
+        switch (_e.label) {
             case 0:
-                content = {};
-                engineInstance = (0, exports.getConfig)('engineInstancePath');
-                backendInstance = (0, exports.getConfig)('backendInstancePath');
-                filepath = (0, path_1.join)(process.cwd(), backendInstance, engineInstance, 'config.json');
-                return [4, (0, file_exists_1.fileExists)(filepath)];
+                unique = [];
+                seen = new Map();
+                _e.label = 1;
             case 1:
-                if (!_a.sent()) return [3, 3];
-                return [4, (0, promises_1.readFile)(filepath)];
-            case 2:
-                content = _a.sent();
-                content = JSON.parse(content.toString());
-                _a.label = 3;
+                _e.trys.push([1, 6, 7, 12]);
+                _a = true, array_1 = __asyncValues(array);
+                _e.label = 2;
+            case 2: return [4, array_1.next()];
             case 3:
-                content = __assign(__assign({}, content), newContent);
-                return [4, (0, write_file_1.writeFile)(filepath, JSON.stringify(content, null, 2))];
-            case 4:
-                _a.sent();
-                return [2];
+                if (!(array_1_1 = _e.sent(), _b = array_1_1.done, !_b)) return [3, 5];
+                _d = array_1_1.value;
+                _a = false;
+                try {
+                    item = _d;
+                    itemKey = JSON.stringify(item);
+                    if (!seen.has(itemKey)) {
+                        seen.set(itemKey, true);
+                        unique.push(item);
+                    }
+                }
+                finally {
+                    _a = true;
+                }
+                _e.label = 4;
+            case 4: return [3, 2];
+            case 5: return [3, 12];
+            case 6:
+                e_1_1 = _e.sent();
+                e_1 = { error: e_1_1 };
+                return [3, 12];
+            case 7:
+                _e.trys.push([7, , 10, 11]);
+                if (!(!_a && !_b && (_c = array_1.return))) return [3, 9];
+                return [4, _c.call(array_1)];
+            case 8:
+                _e.sent();
+                _e.label = 9;
+            case 9: return [3, 11];
+            case 10:
+                if (e_1) throw e_1.error;
+                return [7];
+            case 11: return [7];
+            case 12: return [2, unique];
         }
     });
 }); };
-exports.prepareConfigJSON = prepareConfigJSON;
-//# sourceMappingURL=GluestackConfig.js.map
+exports.unique = unique;
+//# sourceMappingURL=unique.js.map

@@ -1,3 +1,4 @@
+import { daprServices } from '../configs/constants';
 
 export const isValidGluePlugin = (
   backendPlugins: string[], name: string
@@ -20,3 +21,25 @@ export const isValidGluePlugin = (
   return validPlugins;
 };
 
+
+export const isDaprService = (name: string): boolean => {
+  if (daprServices.includes(name)) {
+    return true;
+  }
+
+  const _name = '@gluestack/glue-plugin-service-';
+  if (name.startsWith(_name)) {
+    return true
+  } else {
+    return false;
+  }
+};
+
+export const isGlueService = (name: string): boolean => {
+  const _name = '@gluestack/glue-plugin-service-';
+  if (name.startsWith(_name)) {
+    return true
+  } else {
+    return false;
+  }
+};

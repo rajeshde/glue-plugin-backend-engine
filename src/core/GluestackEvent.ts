@@ -5,17 +5,20 @@ import { readdir } from 'node:fs/promises';
 
 import { fileExists } from '../helpers/file-exists';
 import { IGluestackEvent } from './types/IGluestackEvent';
+import { getDirectories } from '../helpers/get-directories';
 import { getConfig, prepareConfigJSON } from './GluestackConfig';
 
 export default class GluestackEvent implements IGluestackEvent {
   public events: any = {};
   public eventsPath: string;
   public hasuraPluginName: string;
+  public daprServices: any = {};
 
   constructor(hasuraPluginName: string) {
     this.events = {};
     this.hasuraPluginName = hasuraPluginName;
     this.eventsPath = join(getConfig('backendInstancePath'), 'events');
+    this.daprServices = getConfig('daprServices');
   }
 
   // Scans the events directory and prepares the events object
@@ -90,10 +93,12 @@ export default class GluestackEvent implements IGluestackEvent {
     for await (const table of Object.keys(database)) {
       content.database[table] = {};
       for await (const event of database[table]) {
-
         const filepath: string = join(process.cwd(), backendInstance, 'events', 'database', table, event + '.js');
         try {
-          content.database[table][event] = require(filepath)();
+          const filecontent = await this.validateEvents(
+            require(filepath)(), `Event ${table}::${event}`
+          );
+          content.database[table][event] = filecontent;
         } catch (e) {
           continue;
         }
@@ -103,12 +108,70 @@ export default class GluestackEvent implements IGluestackEvent {
     for await (const event of app) {
       const filepath: string = join(process.cwd(), backendInstance, 'events', 'app', event + '.js');
       try {
-        content.app[event] = require(filepath)();
+        const filecontent = await this.validateEvents(
+          require(filepath)(), `Event ${event}`
+        );
+        content.app[event] = filecontent;
       } catch (e) {
         continue;
       }
     }
 
     await prepareConfigJSON(content);
+  }
+
+  private async validateEvents(_events: any, source: string): Promise<any> {
+    const events: any = [];
+    for await (const _event of _events) {
+      const { kind, type, value } = _event;
+      if (!kind || !type || !value) {
+        console.log(`> ${source} - kind, type or value missing!`);
+        continue;
+      }
+
+      if (!['sync', 'async'].includes(kind)) {
+        console.log(`> ${source} - kind must be either "sync" or "async"!`);
+        continue;
+      }
+
+      if (!['function', 'webhook'].includes(type)) {
+        console.log(`> ${source} - type must be either "function" or "webhook"!`);
+        continue;
+      }
+
+      if (value === '') {
+        console.log(`> ${source} - value cannot be empty!`);
+        continue;
+      }
+
+      // if webhook, skip the rest of the checks
+      if (type === 'webhook') {
+        events.push(_event);
+        continue;
+      }
+
+      // if function, check if the service name exists in the services list
+      const serviceName = value.split('::')[0];
+      const methodName = value.split('::')[1];
+
+      if (!this.daprServices[serviceName]) {
+        console.log(`> ${source} - service name "${serviceName}" does not exist in services list!`);
+        continue;
+      }
+
+      // if function, check if the method name exists in the service's functions directory
+      const service = this.daprServices[serviceName];
+      const functionsPath = join(service.path, 'functions');
+
+      const folders = await getDirectories(functionsPath);
+      if (!folders || !folders.includes(methodName)) {
+        console.log(`> ${source} - method name "${methodName}" does not exist in "${serviceName}" service!`);
+        continue;
+      }
+
+      events.push(_event);
+    }
+
+    return Promise.resolve(events);
   }
 }

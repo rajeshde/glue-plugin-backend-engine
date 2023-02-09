@@ -47,13 +47,16 @@ var get = require('lodash').get;
 var path_1 = require("path");
 var promises_1 = require("node:fs/promises");
 var file_exists_1 = require("../helpers/file-exists");
+var get_directories_1 = require("../helpers/get-directories");
 var GluestackConfig_1 = require("./GluestackConfig");
 var GluestackEvent = (function () {
     function GluestackEvent(hasuraPluginName) {
         this.events = {};
+        this.daprServices = {};
         this.events = {};
         this.hasuraPluginName = hasuraPluginName;
         this.eventsPath = (0, path_1.join)((0, GluestackConfig_1.getConfig)('backendInstancePath'), 'events');
+        this.daprServices = (0, GluestackConfig_1.getConfig)('daprServices');
     }
     GluestackEvent.prototype.scanEvents = function () {
         return __awaiter(this, void 0, void 0, function () {
@@ -166,7 +169,7 @@ var GluestackEvent = (function () {
     GluestackEvent.prototype.prepareConfigJSON = function () {
         var _a, e_2, _b, _c, _d, e_3, _e, _f, _g, e_4, _h, _j;
         return __awaiter(this, void 0, void 0, function () {
-            var events, app, database, content, backendInstance, _k, _l, _m, table, _o, _p, _q, event_1, filepath, e_3_1, e_2_1, _r, app_1, app_1_1, event_2, filepath, e_4_1;
+            var events, app, database, content, backendInstance, _k, _l, _m, table, _o, _p, _q, event_1, filepath, filecontent, e_5, e_3_1, e_2_1, _r, app_1, app_1_1, event_2, filepath, filecontent, e_6, e_4_1;
             return __generator(this, function (_s) {
                 switch (_s.label) {
                     case 0:
@@ -180,128 +183,227 @@ var GluestackEvent = (function () {
                         backendInstance = (0, GluestackConfig_1.getConfig)('backendInstancePath');
                         _s.label = 1;
                     case 1:
-                        _s.trys.push([1, 20, 21, 26]);
+                        _s.trys.push([1, 26, 27, 32]);
                         _k = true, _l = __asyncValues(Object.keys(database));
                         _s.label = 2;
                     case 2: return [4, _l.next()];
                     case 3:
-                        if (!(_m = _s.sent(), _a = _m.done, !_a)) return [3, 19];
+                        if (!(_m = _s.sent(), _a = _m.done, !_a)) return [3, 25];
                         _c = _m.value;
                         _k = false;
                         _s.label = 4;
                     case 4:
-                        _s.trys.push([4, , 17, 18]);
+                        _s.trys.push([4, , 23, 24]);
                         table = _c;
                         content.database[table] = {};
                         _s.label = 5;
                     case 5:
-                        _s.trys.push([5, 10, 11, 16]);
+                        _s.trys.push([5, 16, 17, 22]);
                         _o = true, _p = (e_3 = void 0, __asyncValues(database[table]));
                         _s.label = 6;
                     case 6: return [4, _p.next()];
                     case 7:
-                        if (!(_q = _s.sent(), _d = _q.done, !_d)) return [3, 9];
+                        if (!(_q = _s.sent(), _d = _q.done, !_d)) return [3, 15];
                         _f = _q.value;
                         _o = false;
-                        try {
-                            event_1 = _f;
-                            filepath = (0, path_1.join)(process.cwd(), backendInstance, 'events', 'database', table, event_1 + '.js');
-                            try {
-                                content.database[table][event_1] = require(filepath)();
-                            }
-                            catch (e) {
-                                return [3, 8];
-                            }
-                        }
-                        finally {
-                            _o = true;
-                        }
                         _s.label = 8;
-                    case 8: return [3, 6];
-                    case 9: return [3, 16];
+                    case 8:
+                        _s.trys.push([8, , 13, 14]);
+                        event_1 = _f;
+                        filepath = (0, path_1.join)(process.cwd(), backendInstance, 'events', 'database', table, event_1 + '.js');
+                        _s.label = 9;
+                    case 9:
+                        _s.trys.push([9, 11, , 12]);
+                        return [4, this.validateEvents(require(filepath)(), "Event ".concat(table, "::").concat(event_1))];
                     case 10:
+                        filecontent = _s.sent();
+                        content.database[table][event_1] = filecontent;
+                        return [3, 12];
+                    case 11:
+                        e_5 = _s.sent();
+                        return [3, 14];
+                    case 12: return [3, 14];
+                    case 13:
+                        _o = true;
+                        return [7];
+                    case 14: return [3, 6];
+                    case 15: return [3, 22];
+                    case 16:
                         e_3_1 = _s.sent();
                         e_3 = { error: e_3_1 };
-                        return [3, 16];
-                    case 11:
-                        _s.trys.push([11, , 14, 15]);
-                        if (!(!_o && !_d && (_e = _p.return))) return [3, 13];
+                        return [3, 22];
+                    case 17:
+                        _s.trys.push([17, , 20, 21]);
+                        if (!(!_o && !_d && (_e = _p.return))) return [3, 19];
                         return [4, _e.call(_p)];
-                    case 12:
+                    case 18:
                         _s.sent();
-                        _s.label = 13;
-                    case 13: return [3, 15];
-                    case 14:
+                        _s.label = 19;
+                    case 19: return [3, 21];
+                    case 20:
                         if (e_3) throw e_3.error;
                         return [7];
-                    case 15: return [7];
-                    case 16: return [3, 18];
-                    case 17:
+                    case 21: return [7];
+                    case 22: return [3, 24];
+                    case 23:
                         _k = true;
                         return [7];
-                    case 18: return [3, 2];
-                    case 19: return [3, 26];
-                    case 20:
+                    case 24: return [3, 2];
+                    case 25: return [3, 32];
+                    case 26:
                         e_2_1 = _s.sent();
                         e_2 = { error: e_2_1 };
-                        return [3, 26];
-                    case 21:
-                        _s.trys.push([21, , 24, 25]);
-                        if (!(!_k && !_a && (_b = _l.return))) return [3, 23];
+                        return [3, 32];
+                    case 27:
+                        _s.trys.push([27, , 30, 31]);
+                        if (!(!_k && !_a && (_b = _l.return))) return [3, 29];
                         return [4, _b.call(_l)];
-                    case 22:
+                    case 28:
                         _s.sent();
-                        _s.label = 23;
-                    case 23: return [3, 25];
-                    case 24:
+                        _s.label = 29;
+                    case 29: return [3, 31];
+                    case 30:
                         if (e_2) throw e_2.error;
                         return [7];
-                    case 25: return [7];
-                    case 26:
-                        _s.trys.push([26, 31, 32, 37]);
+                    case 31: return [7];
+                    case 32:
+                        _s.trys.push([32, 43, 44, 49]);
                         _r = true, app_1 = __asyncValues(app);
-                        _s.label = 27;
-                    case 27: return [4, app_1.next()];
-                    case 28:
-                        if (!(app_1_1 = _s.sent(), _g = app_1_1.done, !_g)) return [3, 30];
+                        _s.label = 33;
+                    case 33: return [4, app_1.next()];
+                    case 34:
+                        if (!(app_1_1 = _s.sent(), _g = app_1_1.done, !_g)) return [3, 42];
                         _j = app_1_1.value;
                         _r = false;
-                        try {
-                            event_2 = _j;
-                            filepath = (0, path_1.join)(process.cwd(), backendInstance, 'events', 'app', event_2 + '.js');
-                            try {
-                                content.app[event_2] = require(filepath)();
-                            }
-                            catch (e) {
-                                return [3, 29];
-                            }
-                        }
-                        finally {
-                            _r = true;
-                        }
-                        _s.label = 29;
-                    case 29: return [3, 27];
-                    case 30: return [3, 37];
-                    case 31:
+                        _s.label = 35;
+                    case 35:
+                        _s.trys.push([35, , 40, 41]);
+                        event_2 = _j;
+                        filepath = (0, path_1.join)(process.cwd(), backendInstance, 'events', 'app', event_2 + '.js');
+                        _s.label = 36;
+                    case 36:
+                        _s.trys.push([36, 38, , 39]);
+                        return [4, this.validateEvents(require(filepath)(), "Event ".concat(event_2))];
+                    case 37:
+                        filecontent = _s.sent();
+                        content.app[event_2] = filecontent;
+                        return [3, 39];
+                    case 38:
+                        e_6 = _s.sent();
+                        return [3, 41];
+                    case 39: return [3, 41];
+                    case 40:
+                        _r = true;
+                        return [7];
+                    case 41: return [3, 33];
+                    case 42: return [3, 49];
+                    case 43:
                         e_4_1 = _s.sent();
                         e_4 = { error: e_4_1 };
-                        return [3, 37];
-                    case 32:
-                        _s.trys.push([32, , 35, 36]);
-                        if (!(!_r && !_g && (_h = app_1.return))) return [3, 34];
+                        return [3, 49];
+                    case 44:
+                        _s.trys.push([44, , 47, 48]);
+                        if (!(!_r && !_g && (_h = app_1.return))) return [3, 46];
                         return [4, _h.call(app_1)];
-                    case 33:
+                    case 45:
                         _s.sent();
-                        _s.label = 34;
-                    case 34: return [3, 36];
-                    case 35:
+                        _s.label = 46;
+                    case 46: return [3, 48];
+                    case 47:
                         if (e_4) throw e_4.error;
                         return [7];
-                    case 36: return [7];
-                    case 37: return [4, (0, GluestackConfig_1.prepareConfigJSON)(content)];
-                    case 38:
+                    case 48: return [7];
+                    case 49: return [4, (0, GluestackConfig_1.prepareConfigJSON)(content)];
+                    case 50:
                         _s.sent();
                         return [2];
+                }
+            });
+        });
+    };
+    GluestackEvent.prototype.validateEvents = function (_events, source) {
+        var _a, _events_1, _events_1_1;
+        var _b, e_7, _c, _d;
+        return __awaiter(this, void 0, void 0, function () {
+            var events, _event, kind, type, value, serviceName, methodName, service, functionsPath, folders, e_7_1;
+            return __generator(this, function (_e) {
+                switch (_e.label) {
+                    case 0:
+                        events = [];
+                        _e.label = 1;
+                    case 1:
+                        _e.trys.push([1, 9, 10, 15]);
+                        _a = true, _events_1 = __asyncValues(_events);
+                        _e.label = 2;
+                    case 2: return [4, _events_1.next()];
+                    case 3:
+                        if (!(_events_1_1 = _e.sent(), _b = _events_1_1.done, !_b)) return [3, 8];
+                        _d = _events_1_1.value;
+                        _a = false;
+                        _e.label = 4;
+                    case 4:
+                        _e.trys.push([4, , 6, 7]);
+                        _event = _d;
+                        kind = _event.kind, type = _event.type, value = _event.value;
+                        if (!kind || !type || !value) {
+                            console.log("> ".concat(source, " - kind, type or value missing!"));
+                            return [3, 7];
+                        }
+                        if (!['sync', 'async'].includes(kind)) {
+                            console.log("> ".concat(source, " - kind must be either \"sync\" or \"async\"!"));
+                            return [3, 7];
+                        }
+                        if (!['function', 'webhook'].includes(type)) {
+                            console.log("> ".concat(source, " - type must be either \"function\" or \"webhook\"!"));
+                            return [3, 7];
+                        }
+                        if (value === '') {
+                            console.log("> ".concat(source, " - value cannot be empty!"));
+                            return [3, 7];
+                        }
+                        if (type === 'webhook') {
+                            events.push(_event);
+                            return [3, 7];
+                        }
+                        serviceName = value.split('::')[0];
+                        methodName = value.split('::')[1];
+                        if (!this.daprServices[serviceName]) {
+                            console.log("> ".concat(source, " - service name \"").concat(serviceName, "\" does not exist in services list!"));
+                            return [3, 7];
+                        }
+                        service = this.daprServices[serviceName];
+                        functionsPath = (0, path_1.join)(service.path, 'functions');
+                        return [4, (0, get_directories_1.getDirectories)(functionsPath)];
+                    case 5:
+                        folders = _e.sent();
+                        if (!folders || !folders.includes(methodName)) {
+                            console.log("> ".concat(source, " - method name \"").concat(methodName, "\" does not exist in \"").concat(serviceName, "\" service!"));
+                            return [3, 7];
+                        }
+                        events.push(_event);
+                        return [3, 7];
+                    case 6:
+                        _a = true;
+                        return [7];
+                    case 7: return [3, 2];
+                    case 8: return [3, 15];
+                    case 9:
+                        e_7_1 = _e.sent();
+                        e_7 = { error: e_7_1 };
+                        return [3, 15];
+                    case 10:
+                        _e.trys.push([10, , 13, 14]);
+                        if (!(!_a && !_b && (_c = _events_1.return))) return [3, 12];
+                        return [4, _c.call(_events_1)];
+                    case 11:
+                        _e.sent();
+                        _e.label = 12;
+                    case 12: return [3, 14];
+                    case 13:
+                        if (e_7) throw e_7.error;
+                        return [7];
+                    case 14: return [7];
+                    case 15: return [2, Promise.resolve(events)];
                 }
             });
         });

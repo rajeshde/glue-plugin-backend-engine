@@ -21,11 +21,11 @@ export const config: any = {
 
   hasuraEnvs: {},
 
-  services: []
+  daprServices: []
 };
 
 // Gets the configuration
-export const getConfig = (key: string): string => config[key];
+export const getConfig = (key: string): any => config[key];
 
 // Sets the configuration
 export const setConfig = (key: string, value: any): string => config[key] = value;

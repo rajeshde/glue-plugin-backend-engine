@@ -3,13 +3,14 @@ const services = require("@gluestack/framework/constants/services");
 
 import { join, relative } from "path";
 import { GlueStackPlugin } from "src";
+import { unique } from "../helpers/unique";
 import { fileExists } from "../helpers/file-exists";
 import { getDirectories } from "../helpers/get-directories";
 import { removeSpecialChars } from "../helpers/remove-special-chars";
+import { writeContentToFilePath } from "../helpers/write-content-to-filepath";
 
 import IInstance from "@gluestack/framework/types/plugin/interface/IInstance";
 import IHasContainerController from "@gluestack/framework/types/plugin/interface/IHasContainerController";
-import { writeContentToFilePath } from "../helpers/write-content-to-filepath";
 
 interface IChoice {
 	title: string;
@@ -107,7 +108,7 @@ const createFileByType = async (
 		await appendFile(filepath, content);
 	}
 
-	if (type === 'database') {
+	if (type === 'database' && dirent.triggers?.length) {
 		for await (const trigger of dirent.triggers) {
 			const filepath: string = join(process.cwd(), dbEventPath, dirent.tableName, `${trigger}.js`);
 			await appendFile(filepath, content);
@@ -122,10 +123,17 @@ const appendFile = async (filepath: string, content: IContentType) => {
 		);
 	}
 
-	const fileContent = require(filepath)();
-	await writeContentToFilePath(
-		filepath, `module.exports = () => ${JSON.stringify([content, ...fileContent], null, 2)};`
-	);
+	try {
+		const fileContent = require(filepath)();
+
+		const uniqueContent: IContentType[] = await unique([content, ...fileContent]);
+
+		await writeContentToFilePath(
+			filepath, `module.exports = () => ${JSON.stringify(uniqueContent, null, 2)};`
+		);
+	} catch (err) {
+		console.log('Error while writing event to the file ' + filepath + '. Please check if file content is a valid json & try again!');
+	}
 };
 
 const TABLE_NAME = async () => {

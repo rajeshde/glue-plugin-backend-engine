@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.isValidGluePlugin = void 0;
+exports.isGlueService = exports.isDaprService = exports.isValidGluePlugin = void 0;
+var constants_1 = require("../configs/constants");
 var isValidGluePlugin = function (backendPlugins, name) {
     var validPlugins = [];
     backendPlugins.forEach(function (_plugin) {
@@ -17,4 +18,27 @@ var isValidGluePlugin = function (backendPlugins, name) {
     return validPlugins;
 };
 exports.isValidGluePlugin = isValidGluePlugin;
+var isDaprService = function (name) {
+    if (constants_1.daprServices.includes(name)) {
+        return true;
+    }
+    var _name = '@gluestack/glue-plugin-service-';
+    if (name.startsWith(_name)) {
+        return true;
+    }
+    else {
+        return false;
+    }
+};
+exports.isDaprService = isDaprService;
+var isGlueService = function (name) {
+    var _name = '@gluestack/glue-plugin-service-';
+    if (name.startsWith(_name)) {
+        return true;
+    }
+    else {
+        return false;
+    }
+};
+exports.isGlueService = isGlueService;
 //# sourceMappingURL=valid-glue-service.js.map

@@ -78,8 +78,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.create = exports.cronAdd = void 0;
 var prompts = require("prompts");
 var services = require("@gluestack/framework/constants/services");
-var path_1 = require("path");
 var cron = __importStar(require("node-cron"));
+var path_1 = require("path");
+var unique_1 = require("../helpers/unique");
 var write_file_1 = require("../helpers/write-file");
 var file_exists_1 = require("../helpers/file-exists");
 var get_directories_1 = require("../helpers/get-directories");
@@ -147,9 +148,12 @@ function create(gluestackPlugin) {
                     content = CREATE_CONTENT(schedule, type, type === 'function' ?
                         { function: functionName, method: method } : { webhook: webhook });
                     fileContent = require(cronsFilePath);
-                    fileContent = "".concat(JSON.stringify(__spreadArray([content], fileContent, true), null, 2));
-                    return [4, (0, write_file_1.writeFile)(cronsFilePath, fileContent)];
+                    return [4, (0, unique_1.unique)(__spreadArray([content], fileContent, true))];
                 case 13:
+                    fileContent = _a.sent();
+                    fileContent = "".concat(JSON.stringify(fileContent, null, 2));
+                    return [4, (0, write_file_1.writeFile)(cronsFilePath, fileContent)];
+                case 14:
                     _a.sent();
                     return [2];
             }

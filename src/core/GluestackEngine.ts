@@ -1,7 +1,8 @@
+const services = require("@gluestack/framework/constants/services");
+
 import IApp from "@gluestack/framework/types/app/interface/IApp";
 import IInstance from "@gluestack/framework/types/plugin/interface/IInstance";
 import IHasContainerController from "@gluestack/framework/types/plugin/interface/IHasContainerController";
-
 import { IGlueEngine } from "./types/IGlueEngine";
 import { IStatelessPlugin } from "./types/IStatelessPlugin";
 
@@ -16,7 +17,7 @@ import { includes } from "lodash";
 import { writeFile } from "../helpers/write-file";
 import { waitInSeconds } from "../helpers/wait-in-seconds";
 import { replaceKeyword } from "../helpers/replace-keyword";
-import { isValidGluePlugin } from "../helpers/valid-glue-service";
+import { isValidGluePlugin, isDaprService, isGlueService } from "../helpers/valid-glue-service";
 import { removeSpecialChars } from "../helpers/remove-special-chars";
 import { backendPlugins, noDockerfiles } from "../configs/constants";
 
@@ -189,6 +190,17 @@ export default class GluestackEngine implements IGlueEngine {
           instance_object: instance
         };
 
+        if (pluginType === 'stateless' && isDaprService(name)) {
+          const daprServices: any = getConfig('daprServices');
+          daprServices[details.instance] = {
+            name: details.name,
+            path: details.path,
+            instance: details.instance,
+            isService: isGlueService(details.name)
+          };
+          setConfig('daprServices', daprServices);
+        }
+
         // Ignore graphql plugin
         if (!includes(noDockerfiles, details.name)) {
           // Collect the dockerfile & store the context into the instance store
@@ -343,6 +355,7 @@ export default class GluestackEngine implements IGlueEngine {
     await writeFile(join(details.path, 'Dockerfile'), context);
   }
 
+  // Creates the nginx config file for the production environment
   public async build(): Promise<void> {
     await this.collectPlugins('stateless');
     await this.collectPlugins('stateful');

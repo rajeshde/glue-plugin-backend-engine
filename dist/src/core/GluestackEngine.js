@@ -55,6 +55,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+var services = require("@gluestack/framework/constants/services");
 var NginxConf_1 = __importDefault(require("./NginxConf"));
 var HasuraEngine_1 = __importDefault(require("./HasuraEngine"));
 var GluestackCron_1 = __importDefault(require("./GluestackCron"));
@@ -241,7 +242,7 @@ var GluestackEngine = (function () {
         if (pluginType === void 0) { pluginType = 'stateless'; }
         if (status === void 0) { status = 'up'; }
         return __awaiter(this, void 0, void 0, function () {
-            var app, arr, instances, validPlugins, _d, instances_1, instances_1_1, instance, type, name_1, details, e_2_1;
+            var app, arr, instances, validPlugins, _d, instances_1, instances_1_1, instance, type, name_1, details, daprServices, e_2_1;
             return __generator(this, function (_e) {
                 switch (_e.label) {
                     case 0:
@@ -278,6 +279,16 @@ var GluestackEngine = (function () {
                             path: (0, path_1.join)(process.cwd(), instance.getInstallationPath()),
                             instance_object: instance
                         };
+                        if (pluginType === 'stateless' && (0, valid_glue_service_1.isDaprService)(name_1)) {
+                            daprServices = (0, GluestackConfig_1.getConfig)('daprServices');
+                            daprServices[details.instance] = {
+                                name: details.name,
+                                path: details.path,
+                                instance: details.instance,
+                                isService: (0, valid_glue_service_1.isGlueService)(details.name)
+                            };
+                            (0, GluestackConfig_1.setConfig)('daprServices', daprServices);
+                        }
                         if (!!(0, lodash_1.includes)(constants_1.noDockerfiles, details.name)) return [3, 6];
                         return [4, this.collectDockerContext(details, instance)];
                     case 5:

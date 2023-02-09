@@ -56,6 +56,7 @@ exports.eventAdd = void 0;
 var prompts = require("prompts");
 var services = require("@gluestack/framework/constants/services");
 var path_1 = require("path");
+var unique_1 = require("../helpers/unique");
 var file_exists_1 = require("../helpers/file-exists");
 var get_directories_1 = require("../helpers/get-directories");
 var remove_special_chars_1 = require("../helpers/remove-special-chars");
@@ -139,8 +140,9 @@ var create = function (gluestackPlugin) { return __awaiter(void 0, void 0, void 
 var createFileByType = function (backendInstance, type, dirent, content) { return __awaiter(void 0, void 0, void 0, function () {
     var appEventPath, dbEventPath, filepath, _a, _b, _c, trigger, filepath, e_1_1;
     var _d, e_1, _e, _f;
-    return __generator(this, function (_g) {
-        switch (_g.label) {
+    var _g;
+    return __generator(this, function (_h) {
+        switch (_h.label) {
             case 0:
                 appEventPath = "./".concat(backendInstance, "/events/app");
                 dbEventPath = "./".concat(backendInstance, "/events/database");
@@ -148,28 +150,28 @@ var createFileByType = function (backendInstance, type, dirent, content) { retur
                 filepath = (0, path_1.join)(process.cwd(), appEventPath, "".concat(dirent.eventName, ".js"));
                 return [4, appendFile(filepath, content)];
             case 1:
-                _g.sent();
-                _g.label = 2;
+                _h.sent();
+                _h.label = 2;
             case 2:
-                if (!(type === 'database')) return [3, 17];
-                _g.label = 3;
+                if (!(type === 'database' && ((_g = dirent.triggers) === null || _g === void 0 ? void 0 : _g.length))) return [3, 17];
+                _h.label = 3;
             case 3:
-                _g.trys.push([3, 11, 12, 17]);
+                _h.trys.push([3, 11, 12, 17]);
                 _a = true, _b = __asyncValues(dirent.triggers);
-                _g.label = 4;
+                _h.label = 4;
             case 4: return [4, _b.next()];
             case 5:
-                if (!(_c = _g.sent(), _d = _c.done, !_d)) return [3, 10];
+                if (!(_c = _h.sent(), _d = _c.done, !_d)) return [3, 10];
                 _f = _c.value;
                 _a = false;
-                _g.label = 6;
+                _h.label = 6;
             case 6:
-                _g.trys.push([6, , 8, 9]);
+                _h.trys.push([6, , 8, 9]);
                 trigger = _f;
                 filepath = (0, path_1.join)(process.cwd(), dbEventPath, dirent.tableName, "".concat(trigger, ".js"));
                 return [4, appendFile(filepath, content)];
             case 7:
-                _g.sent();
+                _h.sent();
                 return [3, 9];
             case 8:
                 _a = true;
@@ -177,16 +179,16 @@ var createFileByType = function (backendInstance, type, dirent, content) { retur
             case 9: return [3, 4];
             case 10: return [3, 17];
             case 11:
-                e_1_1 = _g.sent();
+                e_1_1 = _h.sent();
                 e_1 = { error: e_1_1 };
                 return [3, 17];
             case 12:
-                _g.trys.push([12, , 15, 16]);
+                _h.trys.push([12, , 15, 16]);
                 if (!(!_a && !_d && (_e = _b.return))) return [3, 14];
                 return [4, _e.call(_b)];
             case 13:
-                _g.sent();
-                _g.label = 14;
+                _h.sent();
+                _h.label = 14;
             case 14: return [3, 16];
             case 15:
                 if (e_1) throw e_1.error;
@@ -197,7 +199,7 @@ var createFileByType = function (backendInstance, type, dirent, content) { retur
     });
 }); };
 var appendFile = function (filepath, content) { return __awaiter(void 0, void 0, void 0, function () {
-    var fileContent;
+    var fileContent, uniqueContent, err_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0: return [4, (0, file_exists_1.fileExists)(filepath)];
@@ -206,11 +208,20 @@ var appendFile = function (filepath, content) { return __awaiter(void 0, void 0,
                 return [4, (0, write_content_to_filepath_1.writeContentToFilePath)(filepath, "module.exports = () => ".concat(JSON.stringify([content], null, 2), ";"))];
             case 2: return [2, _a.sent()];
             case 3:
+                _a.trys.push([3, 6, , 7]);
                 fileContent = require(filepath)();
-                return [4, (0, write_content_to_filepath_1.writeContentToFilePath)(filepath, "module.exports = () => ".concat(JSON.stringify(__spreadArray([content], fileContent, true), null, 2), ";"))];
+                return [4, (0, unique_1.unique)(__spreadArray([content], fileContent, true))];
             case 4:
+                uniqueContent = _a.sent();
+                return [4, (0, write_content_to_filepath_1.writeContentToFilePath)(filepath, "module.exports = () => ".concat(JSON.stringify(uniqueContent, null, 2), ";"))];
+            case 5:
                 _a.sent();
-                return [2];
+                return [3, 7];
+            case 6:
+                err_1 = _a.sent();
+                console.log('Error while writing event to the file ' + filepath + '. Please check if file content is a valid json & try again!');
+                return [3, 7];
+            case 7: return [2];
         }
     });
 }); };
