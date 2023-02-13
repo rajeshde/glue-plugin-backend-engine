@@ -107,7 +107,7 @@ var GluestackEngine = (function () {
                         _a.label = 7;
                     case 7:
                         hasuraPluginName = (0, GluestackConfig_1.getConfig)('hasuraInstancePath');
-                        if (!(hasuraPluginName && hasuraPluginName !== '')) return [3, 14];
+                        if (!(hasuraPluginName && hasuraPluginName !== '')) return [3, 15];
                         hasuraEngine = new HasuraEngine_1.default(this.actionPlugins);
                         return [4, hasuraEngine.applyMigrate()];
                     case 8:
@@ -118,20 +118,23 @@ var GluestackEngine = (function () {
                         return [4, hasuraEngine.applyTracks()];
                     case 10:
                         _a.sent();
-                        return [4, hasuraEngine.exportMetadata()];
+                        return [4, hasuraEngine.applySeed()];
                     case 11:
                         _a.sent();
-                        return [4, hasuraEngine.reapplyActions()];
+                        return [4, hasuraEngine.exportMetadata()];
                     case 12:
                         _a.sent();
-                        return [4, hasuraEngine.reapplyEvents()];
+                        return [4, hasuraEngine.reapplyActions()];
                     case 13:
                         _a.sent();
-                        _a.label = 14;
+                        return [4, hasuraEngine.reapplyEvents()];
                     case 14:
+                        _a.sent();
+                        _a.label = 15;
+                    case 15:
                         cron = new GluestackCron_1.default();
                         return [4, cron.start()];
-                    case 15:
+                    case 16:
                         _a.sent();
                         console.log('\n> Note: ');
                         console.log(">  1. In case a table does not exist in Hasura Engine, Gluestack Engine");

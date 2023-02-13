@@ -138,6 +138,32 @@ var HasuraEngine = (function () {
             });
         });
     };
+    HasuraEngine.prototype.applySeed = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var hasuraEnvs, filepath;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        hasuraEnvs = this.metadata.hasuraEnvs;
+                        filepath = (0, path_1.join)(process.cwd(), (0, GluestackConfig_1.getConfig)('backendInstancePath'), 'services', this.pluginName);
+                        return [4, (0, spawn_1.execute)('hasura', [
+                                'seed',
+                                'apply',
+                                '--database-name',
+                                hasuraEnvs.HASURA_GRAPHQL_DB_NAME,
+                                '--skip-update-check'
+                            ], {
+                                cwd: filepath,
+                                stdio: 'inherit',
+                                shell: true,
+                            })];
+                    case 1:
+                        _a.sent();
+                        return [2];
+                }
+            });
+        });
+    };
     HasuraEngine.prototype.reapplyActions = function () {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {

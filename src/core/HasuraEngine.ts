@@ -89,6 +89,24 @@ export default class HasuraEngine implements IHasuraEngine {
     });
   }
 
+  // Apply local seeds to the hasura engine's seeds
+  public async applySeed(): Promise<void> {
+    const hasuraEnvs: any = this.metadata.hasuraEnvs;
+    const filepath: string = join(process.cwd(), getConfig('backendInstancePath'), 'services', this.pluginName);
+
+    await execute('hasura', [
+      'seed',
+      'apply',
+      '--database-name',
+      hasuraEnvs.HASURA_GRAPHQL_DB_NAME,
+      '--skip-update-check'
+    ], {
+      cwd: filepath,
+      stdio: 'inherit',
+      shell:true,
+    });
+  }
+
   // Apply all the actions into the hasura engine
   public async reapplyActions(): Promise<void> {
     // scan for actions plugins

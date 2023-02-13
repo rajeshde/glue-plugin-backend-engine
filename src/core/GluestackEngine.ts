@@ -87,17 +87,20 @@ export default class GluestackEngine implements IGlueEngine {
       // 8. runs track files into hasura metadata
       await hasuraEngine.applyTracks();
 
-      // 9. runs hasura metadata export
+      // 9. runs seed files into hasura engine
+      await hasuraEngine.applySeed();
+
+      // 10. runs hasura metadata export
       await hasuraEngine.exportMetadata();
 
-      // 10. clears & registers all actions
+      // 11. clears & registers all actions
       await hasuraEngine.reapplyActions();
 
-      // 11. clears & registers all events
+      // 12. clears & registers all events
       await hasuraEngine.reapplyEvents();
     }
 
-    // 12. collects, validates & register crons into gluestack cron
+    // 13. collects, validates & register crons into gluestack cron
     const cron: IGluestackCron = new GluestackCron();
     await cron.start();
 

@@ -15,6 +15,7 @@ export interface IHasuraEngine {
   exportMetadata(): Promise<void>;
   applyMetadata(): Promise<void>;
   applyMigrate(): Promise<void>;
+  applySeed(): Promise<void>;
   reapplyActions(): Promise<void>;
   reapplyEvents(): Promise<void>;
   applyTracks(): Promise<string>;
