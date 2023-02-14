@@ -53,6 +53,7 @@ var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.eventAdd = void 0;
+var colors = require('colors');
 var prompts = require("prompts");
 var services = require("@gluestack/framework/constants/services");
 var path_1 = require("path");
@@ -105,19 +106,23 @@ var create = function (gluestackPlugin) { return __awaiter(void 0, void 0, void 
                 return [4, SELECT_INSTANCES(gluestackPlugin.app.getContainerTypePluginInstances(false))];
             case 9:
                 instance = _a.sent();
+                if (!instance) {
+                    console.log(colors.brightRed('> No services found. Please add one and try again!'));
+                    process.exit(-1);
+                }
                 functionName = instance.getName();
                 functionsPath = (0, path_1.join)(process.cwd(), instance.getInstallationPath(), 'functions');
                 return [4, (0, file_exists_1.fileExists)(functionsPath)];
             case 10:
                 if (!(_a.sent())) {
-                    console.log("No functions found in ".concat((0, path_1.relative)('.', functionsPath), ". Please add one and try again!"));
+                    console.log(colors.brightRed("> No functions found in ".concat((0, path_1.relative)('.', functionsPath), ". Please add one and try again!")));
                     return [2];
                 }
                 return [4, (0, get_directories_1.getDirectories)(functionsPath)];
             case 11:
                 directories = _a.sent();
                 if (!directories.length) {
-                    console.log("No functions found in ".concat((0, path_1.relative)('.', functionsPath), ". Please add one and try again!"));
+                    console.log(colors.brightRed("> No functions found in ".concat((0, path_1.relative)('.', functionsPath), ". Please add one and try again!")));
                     return [2];
                 }
                 return [4, SELECT_FUNCTIONS(directories)];
@@ -219,7 +224,7 @@ var appendFile = function (filepath, content) { return __awaiter(void 0, void 0,
                 return [3, 7];
             case 6:
                 err_1 = _a.sent();
-                console.log('Error while writing event to the file ' + filepath + '. Please check if file content is a valid json & try again!');
+                console.log(colors.brightRed("> Error while writing event to the file ".concat(filepath, ". Please check if file content is a valid json & try again!")));
                 return [3, 7];
             case 7: return [2];
         }
@@ -475,6 +480,12 @@ var INPUT_EVENT_NAME = function () { return __awaiter(void 0, void 0, void 0, fu
     });
 }); };
 var CREATE_CONTENT = function (kind, type, value) {
+    if (type === 'function' && (!value.function || !value.method)) {
+        process.exit(-1);
+    }
+    if (type === 'webhook' && !value.webhook) {
+        process.exit(-1);
+    }
     return {
         kind: kind,
         type: type,

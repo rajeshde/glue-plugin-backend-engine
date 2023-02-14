@@ -76,6 +76,7 @@ var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.create = exports.cronAdd = void 0;
+var colors = require('colors');
 var prompts = require("prompts");
 var services = require("@gluestack/framework/constants/services");
 var cron = __importStar(require("node-cron"));
@@ -121,19 +122,23 @@ function create(gluestackPlugin) {
                     return [4, SELECT_INSTANCES(gluestackPlugin.app.getContainerTypePluginInstances(false))];
                 case 6:
                     instance = _a.sent();
+                    if (!instance) {
+                        console.log(colors.brightRed('> No services found. Please add one and try again!'));
+                        process.exit(-1);
+                    }
                     functionName = instance.getName();
                     functionsPath = (0, path_1.join)(process.cwd(), instance.getInstallationPath(), 'functions');
                     return [4, (0, file_exists_1.fileExists)(functionsPath)];
                 case 7:
                     if (!(_a.sent())) {
-                        console.log("No functions found in ".concat((0, path_1.relative)('.', functionsPath), ". Please add one and try again!"));
+                        console.log(colors.brightRed("> No functions found in ".concat((0, path_1.relative)('.', functionsPath), ". Please add one and try again!")));
                         return [2];
                     }
                     return [4, (0, get_directories_1.getDirectories)(functionsPath)];
                 case 8:
                     directories = _a.sent();
                     if (!directories.length) {
-                        console.log("No functions found in ".concat((0, path_1.relative)('.', functionsPath), ". Please add one and try again!"));
+                        console.log(colors.brightRed("> No functions found in ".concat((0, path_1.relative)('.', functionsPath), ". Please add one and try again!")));
                         return [2];
                     }
                     return [4, SELECT_FUNCTIONS(directories)];
@@ -311,6 +316,12 @@ var INPUT_WEBHOOK = function () { return __awaiter(void 0, void 0, void 0, funct
     });
 }); };
 var CREATE_CONTENT = function (schedule, type, value) {
+    if (type === 'function' && (!value.function || !value.method)) {
+        process.exit(-1);
+    }
+    if (type === 'webhook' && !value.webhook) {
+        process.exit(-1);
+    }
     return {
         schedule: schedule,
         type: type,

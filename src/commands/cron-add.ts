@@ -1,3 +1,4 @@
+const colors = require('colors');
 const prompts = require("prompts");
 const services = require("@gluestack/framework/constants/services");
 
@@ -47,6 +48,11 @@ export async function create(gluestackPlugin: GlueStackPlugin) {
 			gluestackPlugin.app.getContainerTypePluginInstances(false)
 		);
 
+    if (!instance) {
+			console.log(colors.brightRed('> No services found. Please add one and try again!'));
+			process.exit(-1);
+		}
+
 		functionName = instance.getName();
 
 		const functionsPath: string = join(
@@ -56,13 +62,13 @@ export async function create(gluestackPlugin: GlueStackPlugin) {
 		);
 
 		if (!await fileExists(functionsPath)) {
-			console.log(`No functions found in ${relative('.', functionsPath)}. Please add one and try again!`);
+			console.log(colors.brightRed(`> No functions found in ${relative('.', functionsPath)}. Please add one and try again!`));
 			return;
 		}
 
 		const directories: string[] = await getDirectories(functionsPath);
 		if (!directories.length) {
-			console.log(`No functions found in ${relative('.', functionsPath)}. Please add one and try again!`);
+			console.log(colors.brightRed(`> No functions found in ${relative('.', functionsPath)}. Please add one and try again!`));
 			return;
 		}
 
@@ -182,6 +188,14 @@ const INPUT_WEBHOOK = async () => {
 };
 
 const CREATE_CONTENT = (schedule: string, type: 'function' | 'webhook', value: any) => {
+  if (type === 'function' && (!value.function || !value.method)) {
+		process.exit(-1);
+	}
+
+	if (type === 'webhook' && !value.webhook) {
+		process.exit(-1);
+	}
+
 	return {
 		schedule,
 		type,

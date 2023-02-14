@@ -1,3 +1,4 @@
+const colors = require('colors');
 const prompts = require("prompts");
 const services = require("@gluestack/framework/constants/services");
 
@@ -59,6 +60,11 @@ const create = async (gluestackPlugin: GlueStackPlugin) => {
 			gluestackPlugin.app.getContainerTypePluginInstances(false)
 		);
 
+		if (!instance) {
+			console.log(colors.brightRed('> No services found. Please add one and try again!'));
+			process.exit(-1);
+		}
+
 		functionName = instance.getName();
 
 		const functionsPath: string = join(
@@ -68,13 +74,13 @@ const create = async (gluestackPlugin: GlueStackPlugin) => {
 		);
 
 		if (!await fileExists(functionsPath)) {
-			console.log(`No functions found in ${relative('.', functionsPath)}. Please add one and try again!`);
+			console.log(colors.brightRed(`> No functions found in ${relative('.', functionsPath)}. Please add one and try again!`));
 			return;
 		}
 
 		const directories: string[] = await getDirectories(functionsPath);
 		if (!directories.length) {
-			console.log(`No functions found in ${relative('.', functionsPath)}. Please add one and try again!`);
+			console.log(colors.brightRed(`> No functions found in ${relative('.', functionsPath)}. Please add one and try again!`));
 			return;
 		}
 
@@ -132,7 +138,7 @@ const appendFile = async (filepath: string, content: IContentType) => {
 			filepath, `module.exports = () => ${JSON.stringify(uniqueContent, null, 2)};`
 		);
 	} catch (err) {
-		console.log('Error while writing event to the file ' + filepath + '. Please check if file content is a valid json & try again!');
+		console.log(colors.brightRed(`> Error while writing event to the file ${filepath}. Please check if file content is a valid json & try again!`));
 	}
 };
 
@@ -253,7 +259,6 @@ const SELECT_INSTANCES = async (_instances: (IInstance & IHasContainerController
       instance?.containerController &&
       type === 'stateless' && services.includes(name)
     ) {
-
 			choices.push({
 				title: instance.getName(),
 				description: `Select instance ${instance.getName()}`,
@@ -314,6 +319,14 @@ const INPUT_EVENT_NAME = async () => {
 };
 
 const CREATE_CONTENT = (kind: 'sync' | 'async', type: 'function' | 'webhook', value: any) => {
+	if (type === 'function' && (!value.function || !value.method)) {
+		process.exit(-1);
+	}
+
+	if (type === 'webhook' && !value.webhook) {
+		process.exit(-1);
+	}
+
 	return {
 		kind,
 		type,
