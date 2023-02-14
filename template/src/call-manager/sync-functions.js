@@ -20,7 +20,7 @@ module.exports = async (callbacks, payload) => {
 
     try {
       await client.invoker.invoke(
-        serviceAppId,
+        serviceAppId.replace(/-/g, ''),
         serviceMethod,
         HttpMethod.POST,
         { ...payload },
