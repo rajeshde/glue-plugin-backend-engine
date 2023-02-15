@@ -147,7 +147,7 @@ var HasuraEngine = (function () {
                     case 0:
                         hasuraEnvs = this.metadata.hasuraEnvs;
                         filepath = (0, path_1.join)(process.cwd(), (0, GluestackConfig_1.getConfig)('backendInstancePath'), 'services', this.pluginName);
-                        sqlsPath = (0, path_1.join)(filepath, hasuraEnvs.HASURA_GRAPHQL_DB_NAME);
+                        sqlsPath = (0, path_1.join)(filepath, 'seeds', hasuraEnvs.HASURA_GRAPHQL_DB_NAME);
                         return [4, (0, file_exists_1.fileExists)(sqlsPath)];
                     case 1:
                         if (!(_a.sent())) {

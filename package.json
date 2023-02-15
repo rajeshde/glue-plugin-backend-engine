@@ -1,6 +1,6 @@
 {
   "name": "@gluestack/glue-plugin-backend-engine",
-  "version": "0.0.36",
+  "version": "0.0.37",
   "description": "Create an Application using GlueStack framework",
   "repository": {
     "type": "git",
@@ -15,7 +15,7 @@
     "@gluestack/framework": "^0.0.x",
     "@gluestack/glue-plugin-engine": "^0.0.x",
     "@gluestack/graphql-sdl-to-json": "^0.0.x",
-    "@gluestack/helpers": "^0.0.9",
+    "@gluestack/helpers": "^0.0.x",
     "@types/node": "^18.11.18",
     "axios": "^1.2.2",
     "cli-table3": "^0.6.3",

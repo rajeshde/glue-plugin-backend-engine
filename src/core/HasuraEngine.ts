@@ -95,7 +95,7 @@ export default class HasuraEngine implements IHasuraEngine {
     const hasuraEnvs: any = this.metadata.hasuraEnvs;
     const filepath: string = join(process.cwd(), getConfig('backendInstancePath'), 'services', this.pluginName);
 
-    const sqlsPath: string = join(filepath, hasuraEnvs.HASURA_GRAPHQL_DB_NAME);
+    const sqlsPath: string = join(filepath, 'seeds', hasuraEnvs.HASURA_GRAPHQL_DB_NAME);
     if (! await fileExists(sqlsPath)) {
       return;
     }
