@@ -2,6 +2,7 @@ import { extname, join } from "path";
 import { readFile, readdir } from "node:fs/promises";
 
 import { execute } from "../helpers/spawn";
+import { getFiles } from "../helpers/get-files";
 import { fileExists } from "../helpers/file-exists";
 import { removeSpecialChars } from "../helpers/remove-special-chars";
 
@@ -93,6 +94,16 @@ export default class HasuraEngine implements IHasuraEngine {
   public async applySeed(): Promise<void> {
     const hasuraEnvs: any = this.metadata.hasuraEnvs;
     const filepath: string = join(process.cwd(), getConfig('backendInstancePath'), 'services', this.pluginName);
+
+    const sqlsPath: string = join(filepath, hasuraEnvs.HASURA_GRAPHQL_DB_NAME);
+    if (! await fileExists(sqlsPath)) {
+      return;
+    }
+
+    const files = await getFiles(sqlsPath);
+    if (!files || files.length === 0) {
+      return;
+    }
 
     await execute('hasura', [
       'seed',

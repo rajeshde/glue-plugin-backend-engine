@@ -49,6 +49,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var path_1 = require("path");
 var promises_1 = require("node:fs/promises");
 var spawn_1 = require("../helpers/spawn");
+var get_files_1 = require("../helpers/get-files");
 var file_exists_1 = require("../helpers/file-exists");
 var remove_special_chars_1 = require("../helpers/remove-special-chars");
 var GluestackConfig_1 = require("./GluestackConfig");
@@ -140,12 +141,24 @@ var HasuraEngine = (function () {
     };
     HasuraEngine.prototype.applySeed = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var hasuraEnvs, filepath;
+            var hasuraEnvs, filepath, sqlsPath, files;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         hasuraEnvs = this.metadata.hasuraEnvs;
                         filepath = (0, path_1.join)(process.cwd(), (0, GluestackConfig_1.getConfig)('backendInstancePath'), 'services', this.pluginName);
+                        sqlsPath = (0, path_1.join)(filepath, hasuraEnvs.HASURA_GRAPHQL_DB_NAME);
+                        return [4, (0, file_exists_1.fileExists)(sqlsPath)];
+                    case 1:
+                        if (!(_a.sent())) {
+                            return [2];
+                        }
+                        return [4, (0, get_files_1.getFiles)(sqlsPath)];
+                    case 2:
+                        files = _a.sent();
+                        if (!files || files.length === 0) {
+                            return [2];
+                        }
                         return [4, (0, spawn_1.execute)('hasura', [
                                 'seed',
                                 'apply',
@@ -157,7 +170,7 @@ var HasuraEngine = (function () {
                                 stdio: 'inherit',
                                 shell: true,
                             })];
-                    case 1:
+                    case 3:
                         _a.sent();
                         return [2];
                 }
