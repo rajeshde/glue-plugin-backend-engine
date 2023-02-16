@@ -1,12 +1,8 @@
 const prompts = require("prompts");
 
-const { writeFile } = require("@gluestack/helpers");
-const { fileExists } = require("@gluestack/helpers");
-
 import { join } from "path";
 import { GlueStackPlugin } from "src";
-
-
+import { writeFile, fileExists } from "@gluestack/helpers";
 
 export function cronRemove(program: any, glueStackPlugin: GlueStackPlugin) {
 	program

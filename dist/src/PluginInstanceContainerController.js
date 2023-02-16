@@ -40,8 +40,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.PluginInstanceContainerController = void 0;
-var _a = require("@gluestack/helpers"), SpawnHelper = _a.SpawnHelper, DockerodeHelper = _a.DockerodeHelper;
 var GluestackEngine_1 = __importDefault(require("./core/GluestackEngine"));
+var helpers_1 = require("@gluestack/helpers");
 var PluginInstanceContainerController = (function () {
     function PluginInstanceContainerController(app, callerInstance) {
         this.status = "down";
@@ -91,7 +91,7 @@ var PluginInstanceContainerController = (function () {
                             return resolve(_this.portNumber);
                         }
                         var ports = _this.callerInstance.callerPlugin.gluePluginStore.get("ports") || [];
-                        DockerodeHelper.getPort(9090, ports)
+                        helpers_1.DockerodeHelper.getPort(9090, ports)
                             .then(function (port) {
                             _this.setPortNumber(port);
                             ports.push(port);
@@ -197,7 +197,7 @@ var PluginInstanceContainerController = (function () {
                         return [4, this.installScript()];
                     case 5:
                         _b.apply(_a, [_d.apply(_c, [(_j.sent()).join(' ')])]);
-                        return [4, SpawnHelper.run(this.callerInstance.getInstallationPath(), this.installScript())];
+                        return [4, helpers_1.SpawnHelper.run(this.callerInstance.getInstallationPath(), this.installScript())];
                     case 6:
                         _j.sent();
                         _f = (_e = console).log;
@@ -205,7 +205,7 @@ var PluginInstanceContainerController = (function () {
                         return [4, this.buildScript()];
                     case 7:
                         _f.apply(_e, [_h.apply(_g, [(_j.sent()).join(' ')])]);
-                        return [4, SpawnHelper.run(this.callerInstance.getInstallationPath(), this.buildScript())];
+                        return [4, helpers_1.SpawnHelper.run(this.callerInstance.getInstallationPath(), this.buildScript())];
                     case 8:
                         _j.sent();
                         return [2];

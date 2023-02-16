@@ -2,10 +2,7 @@ import { extname, join } from "path";
 import { readFile, readdir } from "node:fs/promises";
 
 import { execute } from "../helpers/spawn";
-const { getFiles } = require("@gluestack/helpers");
-const { fileExists } = require("@gluestack/helpers");
-const { removeSpecialChars } = require("@gluestack/helpers");
-
+import { getFiles, fileExists, removeSpecialChars } from "@gluestack/helpers";
 
 import { IStatelessPlugin } from "./types/IStatelessPlugin";
 import { IAction, IHasuraEngine } from "./types/IHasuraEngine";

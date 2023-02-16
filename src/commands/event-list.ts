@@ -1,10 +1,9 @@
-import { GlueStackPlugin } from "src";
 
 import path from "path";
+import { GlueStackPlugin } from "src";
 import { lstat, readdir } from "fs/promises";
+import { ConsoleTable } from "@gluestack/helpers";
 import { timeStamp } from "../helpers/file-time-stamp";
-
-const { ConsoleTable } = require("@gluestack/helpers")
 
 interface listObject {
   fileName: string;

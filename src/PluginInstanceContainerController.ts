@@ -1,9 +1,9 @@
 import { PluginInstance } from "./PluginInstance";
-import IApp from "@gluestack/framework/types/app/interface/IApp";
-import IContainerController, { IRoutes } from "@gluestack/framework/types/plugin/interface/IContainerController";
-const { SpawnHelper, DockerodeHelper } = require("@gluestack/helpers");
 import GluestackEngine from "./core/GluestackEngine";
 import { IGlueEngine } from "./core/types/IGlueEngine";
+import IApp from "@gluestack/framework/types/app/interface/IApp";
+import { SpawnHelper, DockerodeHelper } from "@gluestack/helpers";
+import IContainerController, { IRoutes } from "@gluestack/framework/types/plugin/interface/IContainerController";
 
 export class PluginInstanceContainerController implements IContainerController {
   app: IApp;

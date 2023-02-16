@@ -50,8 +50,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.prepareConfigJSON = exports.setConfig = exports.getConfig = exports.config = void 0;
 var path_1 = require("path");
 var promises_1 = require("fs/promises");
-var fileExists = require("@gluestack/helpers").fileExists;
-var writeFile = require("@gluestack/helpers").writeFile;
+var helpers_1 = require("@gluestack/helpers");
 exports.config = {
     postgresInstancePath: '',
     postgresConnectionString: '',
@@ -77,7 +76,7 @@ var prepareConfigJSON = function (newContent) { return __awaiter(void 0, void 0,
                 engineInstance = (0, exports.getConfig)('engineInstancePath');
                 backendInstance = (0, exports.getConfig)('backendInstancePath');
                 filepath = (0, path_1.join)(process.cwd(), backendInstance, engineInstance, 'config.json');
-                return [4, fileExists(filepath)];
+                return [4, (0, helpers_1.fileExists)(filepath)];
             case 1:
                 if (!_a.sent()) return [3, 3];
                 return [4, (0, promises_1.readFile)(filepath)];
@@ -87,7 +86,7 @@ var prepareConfigJSON = function (newContent) { return __awaiter(void 0, void 0,
                 _a.label = 3;
             case 3:
                 content = __assign(__assign({}, content), newContent);
-                return [4, writeFile(filepath, JSON.stringify(content, null, 2))];
+                return [4, (0, helpers_1.writeFile)(filepath, JSON.stringify(content, null, 2))];
             case 4:
                 _a.sent();
                 return [2];

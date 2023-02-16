@@ -49,8 +49,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.eventList = void 0;
 var path_1 = __importDefault(require("path"));
 var promises_1 = require("fs/promises");
+var helpers_1 = require("@gluestack/helpers");
 var file_time_stamp_1 = require("../helpers/file-time-stamp");
-var ConsoleTable = require("@gluestack/helpers").ConsoleTable;
 function eventList(program, glueStackPlugin) {
     program
         .command("event:list")
@@ -91,7 +91,7 @@ var list = function (_glueStackPlugin, args) { return __awaiter(void 0, void 0, 
                 return [4, sortingArray(rows)];
             case 4:
                 _b.sent();
-                ConsoleTable.print(head, rows);
+                helpers_1.ConsoleTable.print(head, rows);
                 return [3, 11];
             case 5: return [4, getEvents(appEventPath, rows, false)];
             case 6:
@@ -99,7 +99,7 @@ var list = function (_glueStackPlugin, args) { return __awaiter(void 0, void 0, 
                 return [4, sortingArray(rows)];
             case 7:
                 _b.sent();
-                ConsoleTable.print(head, rows);
+                helpers_1.ConsoleTable.print(head, rows);
                 return [3, 11];
             case 8: return [4, getEvents(dbEventPath, rows, false)];
             case 9:
@@ -107,7 +107,7 @@ var list = function (_glueStackPlugin, args) { return __awaiter(void 0, void 0, 
                 return [4, sortingArray(rows)];
             case 10:
                 _b.sent();
-                ConsoleTable.print(head, rows);
+                helpers_1.ConsoleTable.print(head, rows);
                 return [3, 11];
             case 11: return [2];
         }

@@ -2,19 +2,13 @@ const colors = require('colors');
 const prompts = require("prompts");
 const services = require("@gluestack/framework/constants/services");
 
-const { fileExists } = require("@gluestack/helpers");
-const { getDirectories } = require("@gluestack/helpers");
-
 import { join, relative } from "path";
 import { GlueStackPlugin } from "src";
 import { unique } from "../helpers/unique";
-
-const { removeSpecialChars } = require("@gluestack/helpers");
 import { writeContentToFilePath } from "../helpers/write-content-to-filepath";
-
 import IInstance from "@gluestack/framework/types/plugin/interface/IInstance";
+import { removeSpecialChars, fileExists, getDirectories } from "@gluestack/helpers";
 import IHasContainerController from "@gluestack/framework/types/plugin/interface/IHasContainerController";
-
 
 interface IChoice {
 	title: string;

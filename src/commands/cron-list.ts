@@ -1,11 +1,7 @@
-const { fileExists } = require("@gluestack/helpers");
-
 import path from "path";
-
 import { GlueStackPlugin } from "src";
 import { timeStamp } from "../helpers/file-time-stamp";
-const { ConsoleTable } = require("@gluestack/helpers");
-
+import { fileExists, ConsoleTable } from "@gluestack/helpers";
 
 export function cronList(program: any, glueStackPlugin: GlueStackPlugin) {
 	program

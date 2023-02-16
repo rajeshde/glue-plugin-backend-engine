@@ -79,12 +79,10 @@ exports.create = exports.cronAdd = void 0;
 var colors = require('colors');
 var prompts = require("prompts");
 var services = require("@gluestack/framework/constants/services");
-var writeFile = require("@gluestack/helpers").writeFile;
-var fileExists = require("@gluestack/helpers").fileExists;
-var getDirectories = require("@gluestack/helpers").getDirectories;
 var cron = __importStar(require("node-cron"));
 var path_1 = require("path");
 var unique_1 = require("../helpers/unique");
+var helpers_1 = require("@gluestack/helpers");
 var cronAdd = function (program, gluestackPlugin) {
     program
         .command("cron:add")
@@ -105,10 +103,10 @@ function create(gluestackPlugin) {
                     fileContent = [];
                     backendInstance = 'backend';
                     cronsFilePath = (0, path_1.join)(process.cwd(), backendInstance, 'crons/crons.json');
-                    return [4, fileExists(cronsFilePath)];
+                    return [4, (0, helpers_1.fileExists)(cronsFilePath)];
                 case 1:
                     if (!!(_a.sent())) return [3, 3];
-                    return [4, writeFile(cronsFilePath, '[]')];
+                    return [4, (0, helpers_1.writeFile)(cronsFilePath, '[]')];
                 case 2:
                     _a.sent();
                     _a.label = 3;
@@ -128,13 +126,13 @@ function create(gluestackPlugin) {
                     }
                     functionName = instance.getName();
                     functionsPath = (0, path_1.join)(process.cwd(), instance.getInstallationPath(), 'functions');
-                    return [4, fileExists(functionsPath)];
+                    return [4, (0, helpers_1.fileExists)(functionsPath)];
                 case 7:
                     if (!(_a.sent())) {
                         console.log(colors.brightRed("> No functions found in ".concat((0, path_1.relative)('.', functionsPath), ". Please add one and try again!")));
                         return [2];
                     }
-                    return [4, getDirectories(functionsPath)];
+                    return [4, (0, helpers_1.getDirectories)(functionsPath)];
                 case 8:
                     directories = _a.sent();
                     if (!directories.length) {
@@ -157,7 +155,7 @@ function create(gluestackPlugin) {
                 case 13:
                     fileContent = _a.sent();
                     fileContent = "".concat(JSON.stringify(fileContent, null, 2));
-                    return [4, writeFile(cronsFilePath, fileContent)];
+                    return [4, (0, helpers_1.writeFile)(cronsFilePath, fileContent)];
                 case 14:
                     _a.sent();
                     return [2];

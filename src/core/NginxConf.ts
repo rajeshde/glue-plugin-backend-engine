@@ -1,8 +1,6 @@
 import { join } from 'path';
 import { writeFileSync } from 'fs';
-
-const { fileExists } = require("@gluestack/helpers");
-const { createFolder } = require("@gluestack/helpers");
+import { fileExists, createFolder } from "@gluestack/helpers";
 
 import {
   endsWith, startsWith, setServer, setLocation

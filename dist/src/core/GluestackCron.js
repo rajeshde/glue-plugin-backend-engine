@@ -69,8 +69,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var get = require('lodash').get;
 var path_1 = require("path");
 var cron = __importStar(require("node-cron"));
-var fileExists = require("@gluestack/helpers").fileExists;
-var getDirectories = require("@gluestack/helpers").getDirectories;
+var helpers_1 = require("@gluestack/helpers");
 var GluestackConfig_1 = require("./GluestackConfig");
 var GluestackCron = (function () {
     function GluestackCron() {
@@ -87,7 +86,7 @@ var GluestackCron = (function () {
                     case 0:
                         backendInstance = (0, GluestackConfig_1.getConfig)('backendInstancePath');
                         filePath = (0, path_1.join)(process.cwd(), backendInstance, this.filePath);
-                        return [4, fileExists(filePath)];
+                        return [4, (0, helpers_1.fileExists)(filePath)];
                     case 1:
                         if (!(_a.sent())) {
                             return [2];
@@ -149,7 +148,7 @@ var GluestackCron = (function () {
                         }
                         service = this.daprServices[serviceName];
                         functionsPath = (0, path_1.join)(service.path, 'functions');
-                        return [4, getDirectories(functionsPath)];
+                        return [4, (0, helpers_1.getDirectories)(functionsPath)];
                     case 4:
                         folders = _e.sent();
                         if (!folders || !folders.includes(methodName)) {

@@ -1,10 +1,8 @@
+const prompts = require("prompts");
+
 import { join } from "path";
 import { GlueStackPlugin } from "src";
-
-const prompts = require("prompts");
-const { getDirectories } = require("@gluestack/helpers");
-const { getFiles } = require("@gluestack/helpers");
-const { writeFile } = require("@gluestack/helpers");
+import { getDirectories, getFiles, writeFile } from "@gluestack/helpers";
 
 export function eventRemove(program: any, glueStackPlugin: GlueStackPlugin) {
 	program

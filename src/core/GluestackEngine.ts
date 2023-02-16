@@ -1,3 +1,4 @@
+const services = require("@gluestack/framework/constants/services");
 
 import IApp from "@gluestack/framework/types/app/interface/IApp";
 import IInstance from "@gluestack/framework/types/plugin/interface/IInstance";
@@ -16,18 +17,11 @@ import { getConfig, setConfig } from "./GluestackConfig";
 
 import { join } from "path";
 import { includes } from "lodash";
-
 import { backendPlugins, noDockerfiles } from "../configs/constants";
+import { writeFile, removeSpecialChars, getOSFolders, waitInSeconds } from "@gluestack/helpers";
 
-const { writeFile } = require("@gluestack/helpers");
-const { removeSpecialChars } = require("@gluestack/helpers");
-const { getOSFolders } = require("@gluestack/helpers");
-
-import { waitInSeconds } from "../helpers/wait-in-seconds";
 import { replaceKeyword } from "../helpers/replace-keyword";
 import { isValidGluePlugin, isDaprService, isGlueService } from "../helpers/valid-glue-service";
-
-const services = require("@gluestack/framework/constants/services");
 
 /**
  * Gluestack Engine

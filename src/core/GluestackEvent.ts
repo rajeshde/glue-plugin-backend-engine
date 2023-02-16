@@ -2,10 +2,8 @@ const { get } = require('lodash');
 
 import { join } from 'path';
 import { readdir } from 'node:fs/promises';
-
-const { fileExists } = require("@gluestack/helpers");
 import { IGluestackEvent } from './types/IGluestackEvent';
-const { getDirectories } = require("@gluestack/helpers");
+import { fileExists, getDirectories } from "@gluestack/helpers";
 import { getConfig, prepareConfigJSON } from './GluestackConfig';
 
 export default class GluestackEvent implements IGluestackEvent {

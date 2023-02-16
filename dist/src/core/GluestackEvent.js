@@ -46,8 +46,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var get = require('lodash').get;
 var path_1 = require("path");
 var promises_1 = require("node:fs/promises");
-var fileExists = require("@gluestack/helpers").fileExists;
-var getDirectories = require("@gluestack/helpers").getDirectories;
+var helpers_1 = require("@gluestack/helpers");
 var GluestackConfig_1 = require("./GluestackConfig");
 var GluestackEvent = (function () {
     function GluestackEvent(hasuraPluginName) {
@@ -98,7 +97,7 @@ var GluestackEvent = (function () {
                     case 0:
                         paths = readDirectory ? {} : [];
                         dirPath = (0, path_1.join)(this.eventsPath, dirName);
-                        return [4, fileExists(dirPath)];
+                        return [4, (0, helpers_1.fileExists)(dirPath)];
                     case 1:
                         exist = _g.sent();
                         if (!exist) {
@@ -377,7 +376,7 @@ var GluestackEvent = (function () {
                         }
                         service = this.daprServices[serviceName];
                         functionsPath = (0, path_1.join)(service.path, 'functions');
-                        return [4, getDirectories(functionsPath)];
+                        return [4, (0, helpers_1.getDirectories)(functionsPath)];
                     case 5:
                         folders = _e.sent();
                         if (!folders || !folders.includes(methodName)) {

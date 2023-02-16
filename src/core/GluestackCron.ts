@@ -2,12 +2,9 @@ const { get } = require('lodash');
 
 import { join } from 'path';
 import * as cron from 'node-cron';
-
-import { ICronObject, IGluestackCron } from './types/IGluestackCron';
-
-const { fileExists } = require("@gluestack/helpers");
-const { getDirectories } = require("@gluestack/helpers");
+import { fileExists, getDirectories } from "@gluestack/helpers";
 import { getConfig, prepareConfigJSON } from './GluestackConfig';
+import { ICronObject, IGluestackCron } from './types/IGluestackCron';
 
 export default class GluestackCron implements IGluestackCron {
   public collection: ICronObject[];

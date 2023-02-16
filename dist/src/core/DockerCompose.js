@@ -59,12 +59,12 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var removeSpecialChars = require("@gluestack/helpers").removeSpecialChars;
 var path_1 = require("path");
 var yaml = __importStar(require("yaml"));
 var fs_1 = require("fs");
 var spawn_1 = require("../helpers/spawn");
 var GluestackConfig_1 = require("./GluestackConfig");
+var helpers_1 = require("@gluestack/helpers");
 var DockerCompose = (function () {
     function DockerCompose() {
         this.version = '3.9';
@@ -77,7 +77,7 @@ var DockerCompose = (function () {
         });
     };
     DockerCompose.prototype.addService = function (name, service) {
-        this.services[removeSpecialChars(name)] = service;
+        this.services[(0, helpers_1.removeSpecialChars)(name)] = service;
     };
     DockerCompose.prototype.generate = function () {
         return __awaiter(this, void 0, void 0, function () {
@@ -215,7 +215,7 @@ var DockerCompose = (function () {
             return __generator(this, function (_a) {
                 name = plugin.instance;
                 service = {
-                    container_name: removeSpecialChars(plugin.instance),
+                    container_name: (0, helpers_1.removeSpecialChars)(plugin.instance),
                     restart: 'always',
                     build: plugin.path,
                     volumes: [

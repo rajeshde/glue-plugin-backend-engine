@@ -7,17 +7,19 @@ import IInstance from "@gluestack/framework/types/plugin/interface/IInstance";
 import ILifeCycle from "@gluestack/framework/types/plugin/interface/ILifeCycle";
 import IManagesInstances from "@gluestack/framework/types/plugin/interface/IManagesInstances";
 import IGlueStorePlugin from "@gluestack/framework/types/store/interface/IGluePluginStore";
-import { writeEnv } from "./helpers/write-env";
-import { addMainRouter } from "./helpers/add-main-router";
-import { addMainEvents } from "./helpers/add-main-events";
-import { addMainCron } from "./helpers/add-main-cron";
+
 import {
   cronAdd, cronList, cronRemove, eventRemove, eventAdd, eventList
 } from "./commands";
+
+import { Workspaces } from "@gluestack/helpers";
+
+import { writeEnv } from "./helpers/write-env";
 import { serviceAdd } from "./commands/service-add";
 import { reWriteFile } from "./helpers/rewrite-file";
-
-const { Workspaces } = require("@gluestack/helpers");
+import { addMainCron } from "./helpers/add-main-cron";
+import { addMainRouter } from "./helpers/add-main-router";
+import { addMainEvents } from "./helpers/add-main-events";
 
 // Do not edit the name of this class
 export class GlueStackPlugin implements IPlugin, IManagesInstances, ILifeCycle {

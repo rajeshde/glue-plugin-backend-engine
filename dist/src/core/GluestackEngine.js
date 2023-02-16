@@ -55,6 +55,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+var services = require("@gluestack/framework/constants/services");
 var NginxConf_1 = __importDefault(require("./NginxConf"));
 var HasuraEngine_1 = __importDefault(require("./HasuraEngine"));
 var GluestackCron_1 = __importDefault(require("./GluestackCron"));
@@ -63,13 +64,9 @@ var GluestackConfig_1 = require("./GluestackConfig");
 var path_1 = require("path");
 var lodash_1 = require("lodash");
 var constants_1 = require("../configs/constants");
-var writeFile = require("@gluestack/helpers").writeFile;
-var removeSpecialChars = require("@gluestack/helpers").removeSpecialChars;
-var getOSFolders = require("@gluestack/helpers").getOSFolders;
-var wait_in_seconds_1 = require("../helpers/wait-in-seconds");
+var helpers_1 = require("@gluestack/helpers");
 var replace_keyword_1 = require("../helpers/replace-keyword");
 var valid_glue_service_1 = require("../helpers/valid-glue-service");
-var services = require("@gluestack/framework/constants/services");
 var GluestackEngine = (function () {
     function GluestackEngine(app, backendInstancePath) {
         this.engineExist = false;
@@ -440,7 +437,7 @@ var GluestackEngine = (function () {
                     case 0:
                         backendInstancePath = (0, GluestackConfig_1.getConfig)('backendInstancePath');
                         filepath = (0, path_1.join)(process.cwd(), backendInstancePath, 'engine/router');
-                        return [4, getOSFolders()];
+                        return [4, (0, helpers_1.getOSFolders)()];
                     case 1:
                         folders = _a.sent();
                         lastFolder = folders[folders.length - 1];
@@ -449,7 +446,7 @@ var GluestackEngine = (function () {
                         return [4, dockerCompose.start(projectName, filepath)];
                     case 2:
                         _a.sent();
-                        return [4, (0, wait_in_seconds_1.waitInSeconds)(2)];
+                        return [4, (0, helpers_1.waitInSeconds)(2)];
                     case 3:
                         _a.sent();
                         return [2];
@@ -465,7 +462,7 @@ var GluestackEngine = (function () {
                     case 0:
                         backendInstancePath = (0, GluestackConfig_1.getConfig)('backendInstancePath');
                         filepath = (0, path_1.join)(process.cwd(), backendInstancePath, 'engine/router');
-                        return [4, getOSFolders()];
+                        return [4, (0, helpers_1.getOSFolders)()];
                     case 1:
                         folders = _a.sent();
                         lastFolder = folders[folders.length - 1];
@@ -486,10 +483,10 @@ var GluestackEngine = (function () {
                 switch (_a.label) {
                     case 0:
                         dockerfile = (0, path_1.join)(process.cwd(), 'node_modules', instance.callerPlugin.getName(), 'src/assets/Dockerfile');
-                        return [4, (0, replace_keyword_1.replaceKeyword)(dockerfile, removeSpecialChars(instance.getName()), '{APP_ID}')];
+                        return [4, (0, replace_keyword_1.replaceKeyword)(dockerfile, (0, helpers_1.removeSpecialChars)(instance.getName()), '{APP_ID}')];
                     case 1:
                         context = _a.sent();
-                        return [4, writeFile((0, path_1.join)(details.path, 'Dockerfile'), context)];
+                        return [4, (0, helpers_1.writeFile)((0, path_1.join)(details.path, 'Dockerfile'), context)];
                     case 2:
                         _a.sent();
                         return [2];
