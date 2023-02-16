@@ -1,6 +1,6 @@
 {
     "name": "@gluestack/glue-plugin-backend-engine",
-    "version": "0.0.43",
+    "version": "0.0.44",
     "description": "Create an Application using GlueStack framework",
     "repository": {
         "type": "git",
@@ -34,7 +34,7 @@
     "main": "dist/src/index.js",
     "scripts": {
         "dev": "tsc --watch",
-        "build": "tsc --declaration"
+        "build": "tsc"
     },
     "devDependencies": {
         "@types/lodash": "^4.14.191",

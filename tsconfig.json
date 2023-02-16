@@ -2,7 +2,6 @@
 	"compilerOptions": {
 		"baseUrl": ".",
 		"outDir": "dist",
-		"rootDir": ".",
 		"module": "commonjs",
 		"noImplicitAny": true,
 		"removeComments": true,
@@ -11,8 +10,10 @@
 		"moduleResolution": "node",
 		"resolveJsonModule": true,
 		"esModuleInterop": true,
+		"declaration": true,
 		"paths": {
-			"@gluestack/framework": ["node_modules/@gluestack/framework"]
+			"@gluestack/framework": ["node_modules/@gluestack/framework"],
+      "@gluestack/glue-plugin-backend-engine/sdk": ["dist/sdk/*"]
 		},
 		"lib": ["dom", "es6"],
 		"target": "es5"
