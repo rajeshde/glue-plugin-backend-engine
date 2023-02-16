@@ -4,6 +4,7 @@ import IInstance from "@gluestack/framework/types/plugin/interface/IInstance";
 import ILifeCycle from "@gluestack/framework/types/plugin/interface/ILifeCycle";
 import IManagesInstances from "@gluestack/framework/types/plugin/interface/IManagesInstances";
 import IGlueStorePlugin from "@gluestack/framework/types/store/interface/IGluePluginStore";
+export { EnginePlugin } from "./plugin";
 export declare class GlueStackPlugin implements IPlugin, IManagesInstances, ILifeCycle {
     app: IApp;
     instances: IInstance[];

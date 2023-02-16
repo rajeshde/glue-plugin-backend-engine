@@ -1,6 +1,6 @@
 {
     "name": "@gluestack/glue-plugin-backend-engine",
-    "version": "0.0.39",
+    "version": "0.0.40",
     "description": "Create an Application using GlueStack framework",
     "repository": {
         "type": "git",

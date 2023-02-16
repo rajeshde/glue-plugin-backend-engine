@@ -39,7 +39,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.GlueStackPlugin = void 0;
+exports.GlueStackPlugin = exports.EnginePlugin = void 0;
 var package_json_1 = __importDefault(require("../package.json"));
 var PluginInstance_1 = require("./PluginInstance");
 var commands_1 = require("./commands");
@@ -50,6 +50,8 @@ var rewrite_file_1 = require("./helpers/rewrite-file");
 var add_main_cron_1 = require("./helpers/add-main-cron");
 var add_main_router_1 = require("./helpers/add-main-router");
 var add_main_events_1 = require("./helpers/add-main-events");
+var plugin_1 = require("./plugin");
+Object.defineProperty(exports, "EnginePlugin", { enumerable: true, get: function () { return plugin_1.EnginePlugin; } });
 var GlueStackPlugin = (function () {
     function GlueStackPlugin(app, gluePluginStore) {
         this.type = "stateless";

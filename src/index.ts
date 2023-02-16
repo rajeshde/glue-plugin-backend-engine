@@ -21,6 +21,8 @@ import { addMainCron } from "./helpers/add-main-cron";
 import { addMainRouter } from "./helpers/add-main-router";
 import { addMainEvents } from "./helpers/add-main-events";
 
+export { EnginePlugin } from "./plugin";
+
 // Do not edit the name of this class
 export class GlueStackPlugin implements IPlugin, IManagesInstances, ILifeCycle {
   app: IApp;
