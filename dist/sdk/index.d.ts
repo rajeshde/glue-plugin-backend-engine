@@ -9,3 +9,4 @@ export declare class EnginePlugin implements ISDKPlugin, IEngine {
     boot(_sdk: SDK): void;
     invoke(serviceAppId: string, serviceMethod: string, body?: any, headers?: any, method?: HttpMethod): Promise<any>;
 }
+export default EnginePlugin;

@@ -81,4 +81,5 @@ var EnginePlugin = (function () {
     return EnginePlugin;
 }());
 exports.EnginePlugin = EnginePlugin;
+exports.default = EnginePlugin;
 //# sourceMappingURL=index.js.map

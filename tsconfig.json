@@ -2,6 +2,7 @@
 	"compilerOptions": {
 		"baseUrl": ".",
 		"outDir": "dist",
+		"rootDir": ".",
 		"module": "commonjs",
 		"noImplicitAny": true,
 		"removeComments": true,
@@ -17,6 +18,11 @@
 		"target": "es5"
 	},
 	"include": [
-		"src/**/*.ts"
+		"src/**/*.ts",
+		"sdk/**/*.ts",
 	],
+	"exclude": [
+		"node_modules",
+		"dist"
+	]
 }

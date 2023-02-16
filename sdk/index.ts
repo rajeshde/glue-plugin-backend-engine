@@ -42,3 +42,5 @@ export class EnginePlugin implements ISDKPlugin, IEngine {
     return data.data;
   }
 }
+
+export default EnginePlugin;

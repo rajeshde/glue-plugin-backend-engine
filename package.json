@@ -31,8 +31,7 @@
   "peerDependencies": {
     "@gluestack/framework": "^0.0.x"
   },
-  "main": "dist/src/index",
-  "typings": "dist/src/index",
+  "main": "dist/src/index.js",
   "scripts": {
     "dev": "tsc --watch",
     "build": "tsc --declaration"
