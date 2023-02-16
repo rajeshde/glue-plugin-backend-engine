@@ -50,6 +50,8 @@ var EnginePlugin = (function () {
     EnginePlugin.prototype.register = function (sdk) {
         this.sdk = sdk;
     };
+    EnginePlugin.prototype.boot = function (_sdk) {
+    };
     EnginePlugin.prototype.invoke = function (serviceAppId, serviceMethod, body, headers, method) {
         if (body === void 0) { body = {}; }
         if (headers === void 0) { headers = {}; }

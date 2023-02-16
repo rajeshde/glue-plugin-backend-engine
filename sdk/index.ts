@@ -17,6 +17,10 @@ export class EnginePlugin implements ISDKPlugin, IEngine {
     this.sdk = sdk;
   }
 
+  boot(_sdk: SDK) {
+    // this.sdk = _sdk;
+  }
+
   async invoke(
     serviceAppId: string,
     serviceMethod: string,
