@@ -11,12 +11,14 @@
 		"resolveJsonModule": true,
 		"esModuleInterop": true,
 		"declaration": true,
-		"lib": [
-			"ES2021.String"
-		]
+		"paths": {
+			"@gluestack/framework": ["node_modules/@gluestack/framework"]
+		},
+		"lib": ["dom", "es6"],
+		"target": "es5"
 	},
 	"exclude": [
 		"node_modules",
 		"dist"
-	],
+	]
 }

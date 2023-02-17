@@ -38,7 +38,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
-exports.__esModule = true;
+Object.defineProperty(exports, "__esModule", { value: true });
 exports.EnginePlugin = void 0;
 var axios_1 = __importDefault(require("axios"));
 var HttpMethod_1 = require("./interfaces/HttpMethod");
@@ -60,7 +60,7 @@ var EnginePlugin = (function () {
             var data;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4, (0, axios_1["default"])({
+                    case 0: return [4, (0, axios_1.default)({
                             method: HttpMethod_1.HttpMethod.POST,
                             url: "".concat(this.baseURL, "/backend/engine/server/invoke"),
                             data: {
@@ -81,5 +81,5 @@ var EnginePlugin = (function () {
     return EnginePlugin;
 }());
 exports.EnginePlugin = EnginePlugin;
-exports["default"] = EnginePlugin;
+exports.default = EnginePlugin;
 //# sourceMappingURL=index.js.map
