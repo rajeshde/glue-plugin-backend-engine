@@ -9,7 +9,7 @@ on:
 
 jobs:
   install-cli:
-    name: Install NPM Dependencies in CLI Package
+    name: "CLI: NPM Install"
     defaults:
       run:
         working-directory: packages/cli
@@ -22,7 +22,7 @@ jobs:
       - run: npm install
 
   publish-cli:
-    name: NPM Publish CLI Package
+    name: "CLI: NPM Publish"
     needs: install-cli
     defaults:
       run:
@@ -40,7 +40,7 @@ jobs:
           NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
 
   install-sdk:
-    name: Install NPM Dependencies in SDK Package
+    name: "SDK: NPM Install"
     defaults:
       run:
         working-directory: packages/sdk
@@ -53,7 +53,7 @@ jobs:
       - run: npm install
 
   publish-sdk:
-    name: NPM Publish SDK Package
+    name: "SDK: NPM Publish"
     needs: install-sdk
     defaults:
       run:
