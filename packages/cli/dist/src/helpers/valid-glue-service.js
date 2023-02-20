@@ -4,12 +4,15 @@ exports.isGlueService = exports.isDaprService = exports.isValidGluePlugin = void
 var constants_1 = require("../configs/constants");
 var isValidGluePlugin = function (backendPlugins, name) {
     var validPlugins = [];
+    if (constants_1.ignorePlugins.includes(name)) {
+        return validPlugins;
+    }
     backendPlugins.forEach(function (_plugin) {
         if (_plugin === name) {
             validPlugins.push(name);
         }
         if (_plugin.includes('*')) {
-            var _name = '@gluestack/glue-plugin-service-';
+            var _name = '@gluestack/glue-plugin-';
             if (name && name.startsWith(_name)) {
                 validPlugins.push(name);
             }

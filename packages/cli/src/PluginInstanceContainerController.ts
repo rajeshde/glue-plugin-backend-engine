@@ -1,6 +1,5 @@
 import { PluginInstance } from "./PluginInstance";
-import GluestackEngine from "./core/GluestackEngine";
-import { IGlueEngine } from "./core/types/IGlueEngine";
+
 import IApp from "@gluestack/framework/types/app/interface/IApp";
 import { SpawnHelper, DockerodeHelper } from "@gluestack/helpers";
 import IContainerController, { IRoutes } from "@gluestack/framework/types/plugin/interface/IContainerController";
@@ -98,21 +97,11 @@ export class PluginInstanceContainerController implements IContainerController {
   getConfig(): any { }
 
   async up() {
-    const app: IApp = this.app;
-
-    try {
-      const engine: IGlueEngine = new GluestackEngine(app, 'backend');
-      await engine.start();
-    } catch (err) {
-      console.log('>> err', err);
-    }
+    //
   }
 
   async down() {
-    const app: IApp = this.app;
-
-    const engine: IGlueEngine = new GluestackEngine(app, 'backend');
-    await engine.stop();
+    //
   }
 
   async watch(): Promise<string[]> {
@@ -124,21 +113,13 @@ export class PluginInstanceContainerController implements IContainerController {
   }
 
   async build() {
-    const app: IApp = this.app;
-
-    try {
-      const engine: IGlueEngine = new GluestackEngine(app, 'backend');
-      await engine.build();
-    } catch (err) {
-      console.log('>> err', err);
-    }
-
     console.log(
       `${this.callerInstance.getName()}: Running ${(await this.installScript()).join(
         ' '
       )}`
     );
     await SpawnHelper.run(this.callerInstance.getInstallationPath(), this.installScript());
+
     console.log(
       `${this.callerInstance.getName()}: Running ${(await this.buildScript()).join(
         ' '

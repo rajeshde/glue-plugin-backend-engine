@@ -1,6 +1,6 @@
 {
     "name": "@gluestack/glue-plugin-backend-engine",
-    "version": "0.0.46",
+    "version": "0.0.47",
     "description": "Create an Application using GlueStack framework",
     "repository": {
         "type": "git",
@@ -29,7 +29,7 @@
         "yaml": "^2.2.1"
     },
     "peerDependencies": {
-        "@gluestack/framework": "^0.0.x"
+        "@gluestack/engine": "^0.0.x"
     },
     "main": "dist/src/index.js",
     "scripts": {

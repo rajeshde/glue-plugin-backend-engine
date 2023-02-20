@@ -35,12 +35,8 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.PluginInstanceContainerController = void 0;
-var GluestackEngine_1 = __importDefault(require("./core/GluestackEngine"));
 var helpers_1 = require("@gluestack/helpers");
 var PluginInstanceContainerController = (function () {
     function PluginInstanceContainerController(app, callerInstance) {
@@ -123,41 +119,15 @@ var PluginInstanceContainerController = (function () {
     PluginInstanceContainerController.prototype.getConfig = function () { };
     PluginInstanceContainerController.prototype.up = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var app, engine, err_1;
             return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        app = this.app;
-                        _a.label = 1;
-                    case 1:
-                        _a.trys.push([1, 3, , 4]);
-                        engine = new GluestackEngine_1.default(app, 'backend');
-                        return [4, engine.start()];
-                    case 2:
-                        _a.sent();
-                        return [3, 4];
-                    case 3:
-                        err_1 = _a.sent();
-                        console.log('>> err', err_1);
-                        return [3, 4];
-                    case 4: return [2];
-                }
+                return [2];
             });
         });
     };
     PluginInstanceContainerController.prototype.down = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var app, engine;
             return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        app = this.app;
-                        engine = new GluestackEngine_1.default(app, 'backend');
-                        return [4, engine.stop()];
-                    case 1:
-                        _a.sent();
-                        return [2];
-                }
+                return [2];
             });
         });
     };
@@ -174,39 +144,25 @@ var PluginInstanceContainerController = (function () {
     };
     PluginInstanceContainerController.prototype.build = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var app, engine, err_2, _a, _b, _c, _d, _e, _f, _g, _h;
+            var _a, _b, _c, _d, _e, _f, _g, _h;
             return __generator(this, function (_j) {
                 switch (_j.label) {
                     case 0:
-                        app = this.app;
-                        _j.label = 1;
-                    case 1:
-                        _j.trys.push([1, 3, , 4]);
-                        engine = new GluestackEngine_1.default(app, 'backend');
-                        return [4, engine.build()];
-                    case 2:
-                        _j.sent();
-                        return [3, 4];
-                    case 3:
-                        err_2 = _j.sent();
-                        console.log('>> err', err_2);
-                        return [3, 4];
-                    case 4:
                         _b = (_a = console).log;
                         _d = (_c = "".concat(this.callerInstance.getName(), ": Running ")).concat;
                         return [4, this.installScript()];
-                    case 5:
+                    case 1:
                         _b.apply(_a, [_d.apply(_c, [(_j.sent()).join(' ')])]);
                         return [4, helpers_1.SpawnHelper.run(this.callerInstance.getInstallationPath(), this.installScript())];
-                    case 6:
+                    case 2:
                         _j.sent();
                         _f = (_e = console).log;
                         _h = (_g = "".concat(this.callerInstance.getName(), ": Running ")).concat;
                         return [4, this.buildScript()];
-                    case 7:
+                    case 3:
                         _f.apply(_e, [_h.apply(_g, [(_j.sent()).join(' ')])]);
                         return [4, helpers_1.SpawnHelper.run(this.callerInstance.getInstallationPath(), this.buildScript())];
-                    case 8:
+                    case 4:
                         _j.sent();
                         return [2];
                 }
