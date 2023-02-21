@@ -93,8 +93,8 @@ export class GlueStackPlugin implements IPlugin, IManagesInstances, ILifeCycle {
       // Write env file
       await writeEnv(engineInstance);
 
-      // Add main router
-      await addMainRouter(engineInstance);
+      // // Add main router
+      // await addMainRouter(engineInstance);
 
       // Adds events directories
       await addMainEvents(engineInstance);

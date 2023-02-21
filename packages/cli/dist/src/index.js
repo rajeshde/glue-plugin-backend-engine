@@ -48,7 +48,6 @@ var write_env_1 = require("./helpers/write-env");
 var service_add_1 = require("./commands/service-add");
 var rewrite_file_1 = require("./helpers/rewrite-file");
 var add_main_cron_1 = require("./helpers/add-main-cron");
-var add_main_router_1 = require("./helpers/add-main-router");
 var add_main_events_1 = require("./helpers/add-main-events");
 var GlueStackPlugin = (function () {
     function GlueStackPlugin(app, gluePluginStore) {
@@ -101,29 +100,26 @@ var GlueStackPlugin = (function () {
                         return [4, this.app.createPluginInstance(this, instanceName, this.getTemplateFolderPath(), target)];
                     case 2:
                         engineInstance = _a.sent();
-                        if (!engineInstance) return [3, 9];
+                        if (!engineInstance) return [3, 8];
                         return [4, (0, write_env_1.writeEnv)(engineInstance)];
                     case 3:
                         _a.sent();
-                        return [4, (0, add_main_router_1.addMainRouter)(engineInstance)];
+                        return [4, (0, add_main_events_1.addMainEvents)(engineInstance)];
                     case 4:
                         _a.sent();
-                        return [4, (0, add_main_events_1.addMainEvents)(engineInstance)];
-                    case 5:
-                        _a.sent();
                         return [4, (0, add_main_cron_1.addMainCron)(engineInstance)];
-                    case 6:
+                    case 5:
                         _a.sent();
                         pluginPackage = "".concat(engineInstance.getInstallationPath(), "/package.json");
                         return [4, (0, rewrite_file_1.reWriteFile)(pluginPackage, instanceName, 'INSTANCENAME')];
-                    case 7:
+                    case 6:
                         _a.sent();
                         rootPackage = "".concat(process.cwd(), "/package.json");
                         return [4, helpers_1.Workspaces.append(rootPackage, engineInstance.getInstallationPath())];
-                    case 8:
+                    case 7:
                         _a.sent();
-                        _a.label = 9;
-                    case 9: return [2];
+                        _a.label = 8;
+                    case 8: return [2];
                 }
             });
         });
