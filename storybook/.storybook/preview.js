@@ -13,7 +13,7 @@ export const parameters = {
     storySort: {
       method: 'alphabetical',
       order: [
-        'Backend Engine Plugin Docs',
+        'Backend Engine Plugin',
         ['Getting Started', 'How to Install', 'CLI Reference'],
       ]
     },
