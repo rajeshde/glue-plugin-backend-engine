@@ -4,6 +4,7 @@
   "description": "",
   "scripts": {
     "start:server": "nodemon src/server.js",
+    "start:prod": "node src/server.js",
     "start:cron": "node src/cron.js",
     "build": "",
     "start": "node src/server.js"
