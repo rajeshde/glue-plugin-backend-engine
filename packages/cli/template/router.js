@@ -6,8 +6,8 @@ module.exports = () => {
     {
       "path": "/backend/engine/(.*)",
       "proxy": {
-        "instance": "engine:3500",
-        "path": "/v1.0/invoke/engine/method/$1"
+        "instance": `engine:${process.env.APP_PORT}`,
+        "path": "/$1"
       }
     }
   ];
