@@ -19,12 +19,7 @@ module.exports = async (callbacks, payload) => {
       await axios({
         method: 'post',
         url: `http://${appId}:${process.env.APP_PORT}/${serviceMethod}`,
-        data: {
-          action_name: appId,
-          method_uri: serviceMethod,
-          method_name: 'post',
-          data: { ...payload },
-        },
+        data: payload,
         headers: {},
       });
     } catch (err) {
