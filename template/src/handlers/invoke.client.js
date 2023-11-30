@@ -30,12 +30,7 @@ module.exports = async (req, res) => {
     await axios({
       method,
       url: `http://${appId}:${process.env.APP_PORT}/${methodName}`,
-      data: {
-        action_name: appId,
-        method_uri: methodName,
-        method_name: method,
-        data,
-      },
+      data,
       headers: options.headers,
     });
 
