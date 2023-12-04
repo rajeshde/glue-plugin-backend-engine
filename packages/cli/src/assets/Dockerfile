@@ -15,3 +15,6 @@ RUN ["npm", "install", "nodemon"]
 
 # Run the app
 CMD ["npm", "run", "start:server"]
+
+
+# done
