@@ -18,7 +18,7 @@ module.exports = async (callbacks, payload) => {
 
       await axios({
         method: 'post',
-        url: `http://${appId}:${process.env.APP_PORT}/${serviceMethod}`,
+        url: `http://${appId}:9000/${serviceMethod}`,
         data: payload,
         headers: {},
       });

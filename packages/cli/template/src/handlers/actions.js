@@ -32,7 +32,7 @@ module.exports = async (req, res) => {
   try {
     const { data } = await axios({
       method: req.method,
-      url: `http://${serviceAppId}:${process.env.APP_PORT}/${serviceMethod}`,
+      url: `http://${serviceAppId}:9000/${serviceMethod}`,
       data: body,
       headers: headers,
     });

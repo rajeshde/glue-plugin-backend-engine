@@ -6,7 +6,7 @@ module.exports = () => {
     {
       "path": "/backend/engine/(.*)",
       "proxy": {
-        "instance": `engine:${process.env.APP_PORT}`,
+        "instance": `engine:9000`,
         "path": "/$1"
       }
     }
